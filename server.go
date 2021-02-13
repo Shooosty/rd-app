@@ -2,6 +2,8 @@ package rd_app
 
 import (
 	"context"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
 )
@@ -11,6 +13,20 @@ type Server struct {
 }
 
 func (s *Server) Run(port string, handler http.Handler) error {
+	router := gin.Default()
+
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowMethods:     []string{"PUT", "PATCH"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		AllowOriginFunc: func(origin string) bool {
+			return origin == "https://github.com"
+		},
+		MaxAge: 12 * time.Hour,
+	}))
+
 	s.httpServer = &http.Server{
 		Addr:           ":" + port,
 		Handler:        handler,

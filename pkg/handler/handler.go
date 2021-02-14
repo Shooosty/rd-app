@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/shooosty/rd-app/pkg/service"
 	"github.com/swaggo/gin-swagger"
@@ -18,13 +17,6 @@ func NewHandler(services *service.Service) *Handler {
 
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
-
-	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"https://rd-app-bukn7.ondigitalocean.app"},
-		AllowMethods:     []string{"PUT", "PATCH", "GET", "POST", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"},
-		AllowCredentials: true,
-	}))
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

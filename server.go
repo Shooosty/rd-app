@@ -2,6 +2,7 @@ package rd_app
 
 import (
 	"context"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
 )
@@ -10,7 +11,7 @@ type Server struct {
 	httpServer *http.Server
 }
 
-func (s *Server) Run(port string, handler http.Handler) error {
+func (s *Server) Run(port string, handlerFunc gin.HandlerFunc, handler http.Handler) error {
 	s.httpServer = &http.Server{
 		Addr:           ":" + port,
 		Handler:        handler,

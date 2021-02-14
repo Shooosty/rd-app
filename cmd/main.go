@@ -1,14 +1,13 @@
 package main
 
 import (
-	"context"
-	"github.com/shooosty/rd-app"
-	"github.com/shooosty/rd-app/pkg/handler"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 	"github.com/shooosty/rd-app/pkg/repository"
-	"github.com/shooosty/rd-app/pkg/service"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
@@ -36,16 +35,22 @@ func main() {
 		logrus.Fatalf("failed to initialize db: %s", err.Error())
 	}
 
-	repos := repository.NewRepository(db)
-	services := service.NewService(repos)
-	handlers := handler.NewHandler(services)
+	router := gin.Default()
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"https://rd-app-bukn7.ondigitalocean.app"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "OPTIONS"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		AllowOriginFunc: func(origin string) bool {
+			return origin == "https://github.com"
+		},
+		MaxAge: 12 * time.Hour,
+	}))
 
-	srv := new(rd_app.Server)
-	go func() {
-		if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
-			logrus.Fatalf("error occured while running http server: %s", err.Error())
-		}
-	}()
+	if err := router.Run(); err != nil {
+		logrus.Fatalf("error occured while running http server: %s", err.Error())
+	}
 
 	logrus.Print("RD-app Started")
 
@@ -54,10 +59,6 @@ func main() {
 	<-quit
 
 	logrus.Print("RD-app Shutting Down")
-
-	if err := srv.Shutdown(context.Background()); err != nil {
-		logrus.Errorf("error occured on server shutting down: %s", err.Error())
-	}
 
 	if err := db.Close(); err != nil {
 		logrus.Errorf("error occured on db connection close: %s", err.Error())

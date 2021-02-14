@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"github.com/gin-contrib/cors"
 	"github.com/jmoiron/sqlx"
 	"github.com/shooosty/rd-app"
 )
@@ -17,7 +18,8 @@ func NewAuthPostgres(db *sqlx.DB) *AuthPostgres {
 func (r *AuthPostgres) CreateUser(user rd_app.User) (int, error) {
 	var id int
 	query := fmt.Sprintf("INSERT INTO %s (name, email, role, password_hash) values ($1, $2, $3, $4) RETURNING id", usersTable)
-
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"https://rd-cabinet-7mds4.ondigitalocean.app"}
 	row := r.db.QueryRow(query, user.Name, user.Email, user.Role, user.Password)
 	if err := row.Scan(&id); err != nil {
 		return 0, err

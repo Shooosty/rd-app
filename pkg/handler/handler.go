@@ -6,7 +6,6 @@ import (
 	"github.com/shooosty/rd-app/pkg/service"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
-	"time"
 )
 
 type Handler struct {
@@ -24,12 +23,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		AllowOrigins:     []string{"https://rd-app-bukn7.ondigitalocean.app"},
 		AllowMethods:     []string{"PUT", "PATCH", "GET", "POST", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"},
-		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
-		AllowOriginFunc: func(origin string) bool {
-			return origin == "https://github.com"
-		},
-		MaxAge: 12 * time.Hour,
 	}))
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

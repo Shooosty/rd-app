@@ -18,7 +18,7 @@ func NewHandler(services *service.Service) *Handler {
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {
-	router := gin.Default()
+	router := gin.New()
 
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"https://rd-app-bukn7.ondigitalocean.app"},

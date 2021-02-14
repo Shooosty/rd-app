@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"github.com/gin-contrib/cors"
 	"github.com/shooosty/rd-app"
 	"github.com/shooosty/rd-app/pkg/handler"
 	"github.com/shooosty/rd-app/pkg/repository"
@@ -43,9 +42,7 @@ func main() {
 
 	srv := new(rd_app.Server)
 	go func() {
-		config := cors.DefaultConfig()
-		config.AllowOrigins = []string{"https://rd-cabinet-7mds4.ondigitalocean.app"}
-		if err := srv.Run(viper.GetString("port"), (cors.New(config)), handlers.InitRoutes()); err != nil {
+		if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
 			logrus.Fatalf("error occured while running http server: %s", err.Error())
 		}
 	}()

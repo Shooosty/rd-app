@@ -68,7 +68,14 @@ func (h *Handler) signIn(c *gin.Context) {
 		return
 	}
 
+	user, err := h.services.Authorization.GetCurrentUser(input.Email, input.Password)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"token": token,
+		"user":  user,
 	})
 }

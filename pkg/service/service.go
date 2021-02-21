@@ -10,6 +10,7 @@ import (
 type Authorization interface {
 	CreateUser(user rd_app.User) (int, error)
 	GenerateToken(username, password string) (string, error)
+	GetCurrentUser(username, password string) (rd_app.User, error)
 	ParseToken(token string) (int, error)
 }
 

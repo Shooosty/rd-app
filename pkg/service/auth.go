@@ -7,13 +7,12 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/shooosty/rd-app"
 	"github.com/shooosty/rd-app/pkg/repository"
+	"os"
 	"time"
 )
 
 const (
-	salt       = "sdf34d143df617dsff"
-	signingKey = "sfhg^ksk2(sdfk*jfd%wg#wf"
-	tokenTTL   = 12 * time.Hour
+	tokenTTL = 12 * time.Hour
 )
 
 type tokenClaims struct {
@@ -44,6 +43,8 @@ func (s *AuthService) GetCurrentUser(username, password string) (rd_app.User, er
 }
 
 func (s *AuthService) GenerateToken(username, password string) (string, error) {
+	signingKey, _ := os.LookupEnv("SIGN_KEY")
+
 	user, err := s.repo.GetUser(username, generatePasswordHash(password))
 	if err != nil {
 		return "", err
@@ -61,6 +62,8 @@ func (s *AuthService) GenerateToken(username, password string) (string, error) {
 }
 
 func (s *AuthService) ParseToken(accessToken string) (int, error) {
+	signingKey, _ := os.LookupEnv("SIGN_KEY")
+
 	token, err := jwt.ParseWithClaims(accessToken, &tokenClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("invalid signing method")
@@ -81,6 +84,8 @@ func (s *AuthService) ParseToken(accessToken string) (int, error) {
 }
 
 func generatePasswordHash(password string) string {
+	salt, _ := os.LookupEnv("SALT")
+
 	hash := sha1.New()
 	hash.Write([]byte(password))
 

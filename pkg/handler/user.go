@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	rd_app "github.com/shooosty/rd-app"
 	"net/http"
+	"strconv"
 )
 
 type getAllUsersResponse struct {
@@ -47,13 +48,13 @@ func (h *Handler) getAllUsers(c *gin.Context) {
 // @Failure default {object} errorResponse
 // @Router /api/lists/:id [get]
 func (h *Handler) getUserById(c *gin.Context) {
-	userId, err := getUserId(c)
+	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
 		return
 	}
 
-	user, err := h.services.Users.GetById(userId)
+	user, err := h.services.Users.GetById(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -90,19 +91,13 @@ func (h *Handler) getUserById(c *gin.Context) {
 //}
 
 func (h *Handler) deleteUser(c *gin.Context) {
-	userId, err := getUserId(c)
+	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
 		return
 	}
 
-	//id, err := strconv.Atoi(c.Param("id"))
-	//if err != nil {
-	//	newErrorResponse(c, http.StatusBadRequest, "invalid id param")
-	//	return
-	//}
-
-	err = h.services.Users.Delete(userId)
+	err = h.services.Users.Delete(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

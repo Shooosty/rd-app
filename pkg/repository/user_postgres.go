@@ -17,7 +17,7 @@ func NewUserPostgres(db *sqlx.DB) *UserPostgres {
 func (r *UserPostgres) GetAll() ([]rd_app.User, error) {
 	var users []rd_app.User
 
-	query := fmt.Sprintf("SELECT * FROM %s", usersTable)
+	query := fmt.Sprintf("SELECT id, name, role, phone, email FROM %s", usersTable)
 	err := r.db.Select(&users, query)
 
 	return users, err

@@ -17,7 +17,7 @@ func NewUserPostgres(db *sqlx.DB) *UserPostgres {
 func (r *UserPostgres) GetAll() ([]rd_app.User, error) {
 	var users []rd_app.User
 
-	query := fmt.Sprintf("SELECT * FROM %s", usersTable)
+	query := fmt.Sprintf("SELECT id, name, role, phone, email FROM %s", usersTable)
 	err := r.db.Select(&users, query)
 
 	return users, err
@@ -26,14 +26,14 @@ func (r *UserPostgres) GetAll() ([]rd_app.User, error) {
 func (r *UserPostgres) GetById(userId int) (rd_app.User, error) {
 	var user rd_app.User
 
-	query := fmt.Sprintf("SELECT * FROM %s WHERE id = $1", usersTable)
+	query := fmt.Sprintf("SELECT id, name, role, phone, email* FROM %s WHERE id = $1", usersTable)
 	err := r.db.Get(&user, query, userId)
 
 	return user, err
 }
 
 func (r *UserPostgres) Delete(userId int) error {
-	query := fmt.Sprintf("DELETE * FROM %s WHERE id = $1", usersTable)
+	query := fmt.Sprintf("DELETE id, name, role, phone, email FROM %s WHERE id = $1", usersTable)
 	_, err := r.db.Exec(query, userId)
 
 	return err

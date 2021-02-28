@@ -66,13 +66,13 @@ func (r *UserPostgres) Update(userId int, input rd_app.UpdateUserInput) error {
 
 	setQuery := strings.Join(setValues, ", ")
 
-	query := fmt.Sprintf("UPDATE %s SET %s WHERE id = $%d",
-		setQuery, usersTable, userId)
+	query := fmt.Sprintf("UPDATE %s SET %s WHERE id = $1",
+		setQuery, usersTable)
 	args = append(args, userId)
 
 	logrus.Debugf("updateQuery: %s", query)
 	logrus.Debugf("args: %s", args)
 
-	_, err := r.db.Exec(query, args...)
+	_, err := r.db.Exec(query, userId)
 	return err
 }

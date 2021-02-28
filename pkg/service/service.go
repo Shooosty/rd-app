@@ -18,7 +18,7 @@ type Users interface {
 	GetAll() ([]rd_app.User, error)
 	GetById(userId int) (rd_app.User, error)
 	Delete(userId int) error
-	//Update(userId int, input rd_app.User) error
+	Update(userId int, input rd_app.UpdateUserInput) error
 }
 
 type Service struct {

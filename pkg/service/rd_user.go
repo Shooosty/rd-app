@@ -25,10 +25,10 @@ func (s *UserService) Delete(userId int) error {
 	return s.repo.Delete(userId)
 }
 
-//func (s *UserService) Update(userId, listId int, input rd_app.UpdateListInput) error {
-//	if err := input.Validate(); err != nil {
-//		return err
-//	}
-//
-//	return s.repo.Update(userId, listId, input)
-//}
+func (s *UserService) Update(userId int, input rd_app.UpdateUserInput) error {
+	if err := input.Validate(); err != nil {
+		return err
+	}
+
+	return s.repo.Update(userId, input)
+}

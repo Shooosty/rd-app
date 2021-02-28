@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	rd_app "github.com/shooosty/rd-app"
+	"github.com/sirupsen/logrus"
+	"strings"
 )
 
 type UserPostgres struct {
@@ -39,35 +41,41 @@ func (r *UserPostgres) Delete(userId int) error {
 	return err
 }
 
-//func (r *UserPostgres) Update(userId, listId int, input rd_app.UpdateListInput) error {
-//	setValues := make([]string, 0)
-//	args := make([]interface{}, 0)
-//	argId := 1
-//
-//	if input.Title != nil {
-//		setValues = append(setValues, fmt.Sprintf("title=$%d", argId))
-//		args = append(args, *input.Title)
-//		argId++
-//	}
-//
-//	if input.Description != nil {
-//		setValues = append(setValues, fmt.Sprintf("description=$%d", argId))
-//		args = append(args, *input.Description)
-//		argId++
-//	}
-//
-//	// title=$1
-//	// description=$1
-//	// title=$1, description=$2
-//	setQuery := strings.Join(setValues, ", ")
-//
-//	query := fmt.Sprintf("UPDATE %s tl SET %s FROM %s ul WHERE tl.id = ul.list_id AND ul.list_id=$%d AND ul.user_id=$%d",
-//		todoListsTable, setQuery, usersListsTable, argId, argId+1)
-//	args = append(args, listId, userId)
-//
-//	logrus.Debugf("updateQuery: %s", query)
-//	logrus.Debugf("args: %s", args)
-//
-//	_, err := r.db.Exec(query, args...)
-//	return err
-//}
+func (r *UserPostgres) Update(userId int, input rd_app.UpdateUserInput) error {
+	setValues := make([]string, 0)
+	args := make([]interface{}, 0)
+	argId := 1
+
+	if input.Name != nil {
+		setValues = append(setValues, fmt.Sprintf("name=$%d", argId))
+		args = append(args, *input.Name)
+		argId++
+	}
+
+	if input.Email != nil {
+		setValues = append(setValues, fmt.Sprintf("email=$%d", argId))
+		args = append(args, *input.Email)
+		argId++
+	}
+
+	if input.Phone != nil {
+		setValues = append(setValues, fmt.Sprintf("phone=$%d", argId))
+		args = append(args, *input.Phone)
+		argId++
+	}
+
+	// title=$1
+	// description=$1
+	// title=$1, description=$2
+	setQuery := strings.Join(setValues, ", ")
+
+	query := fmt.Sprintf("UPDATE %s tl SET %s FROM %s ul WHERE tl.id = ul.list_id AND ul.list_id=$%d AND ul.user_id=$%d",
+		setQuery, usersTable, argId, argId+1)
+	args = append(args, userId)
+
+	logrus.Debugf("updateQuery: %s", query)
+	logrus.Debugf("args: %s", args)
+
+	_, err := r.db.Exec(query, args...)
+	return err
+}

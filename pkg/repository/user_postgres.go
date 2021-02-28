@@ -45,20 +45,20 @@ func (r *UserPostgres) Update(userId int, input rd_app.UpdateUserInput) error {
 	setValues := make([]string, 0)
 
 	if input.Name != nil {
-		setValues = append(setValues, fmt.Sprintf("name=$2"))
+		setValues = append(setValues, fmt.Sprintf("name=$1"))
 	}
 
 	if input.Email != nil {
-		setValues = append(setValues, fmt.Sprintf("email=$3"))
+		setValues = append(setValues, fmt.Sprintf("email=$2"))
 	}
 
 	if input.Phone != nil {
-		setValues = append(setValues, fmt.Sprintf("phone=$4"))
+		setValues = append(setValues, fmt.Sprintf("phone=$3"))
 	}
 
 	setQuery := strings.Join(setValues, ", ")
 
-	query := fmt.Sprintf("UPDATE %s SET %s WHERE id = $1",
+	query := fmt.Sprintf("UPDATE %s SET %s WHERE id = ?",
 		usersTable, setQuery)
 
 	logrus.Debugf("updateQuery: %s", query)

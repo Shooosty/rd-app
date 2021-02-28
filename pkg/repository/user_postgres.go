@@ -66,7 +66,7 @@ func (r *UserPostgres) Update(userId int, input rd_app.UpdateUserInput) error {
 
 	setQuery := strings.Join(setValues, ", ")
 
-	query := fmt.Sprintf("UPDATE %s SET %s WHERE id = $1",
+	query := fmt.Sprintf("UPDATE %s FROM %s WHERE id = $1",
 		setQuery, usersTable)
 	args = append(args, userId)
 

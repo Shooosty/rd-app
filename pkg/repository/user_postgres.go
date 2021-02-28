@@ -64,13 +64,10 @@ func (r *UserPostgres) Update(userId int, input rd_app.UpdateUserInput) error {
 		argId++
 	}
 
-	// title=$1
-	// description=$1
-	// title=$1, description=$2
 	setQuery := strings.Join(setValues, ", ")
 
-	query := fmt.Sprintf("UPDATE %s tl SET %s FROM %s ul WHERE tl.id = ul.list_id AND ul.list_id=$%d AND ul.user_id=$%d",
-		setQuery, usersTable, argId, argId+1)
+	query := fmt.Sprintf("UPDATE %s FROM %s WHERE id = %s",
+		setQuery, usersTable, userId)
 	args = append(args, userId)
 
 	logrus.Debugf("updateQuery: %s", query)

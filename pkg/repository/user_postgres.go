@@ -45,15 +45,15 @@ func (r *UserPostgres) Update(userId int, input rd_app.UpdateUserInput) error {
 	setValues := make([]string, 0)
 
 	if input.Name != nil {
-		setValues = append(setValues, fmt.Sprintf("name=$1"))
+		setValues = append(setValues, fmt.Sprintf("name=$2"))
 	}
 
 	if input.Email != nil {
-		setValues = append(setValues, fmt.Sprintf("email=$2"))
+		setValues = append(setValues, fmt.Sprintf("email=$3"))
 	}
 
 	if input.Phone != nil {
-		setValues = append(setValues, fmt.Sprintf("phone=$3"))
+		setValues = append(setValues, fmt.Sprintf("phone=$4"))
 	}
 
 	setQuery := strings.Join(setValues, ", ")

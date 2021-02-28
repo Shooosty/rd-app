@@ -43,17 +43,25 @@ func (r *UserPostgres) Delete(userId int) error {
 
 func (r *UserPostgres) Update(userId int, input rd_app.UpdateUserInput) error {
 	setValues := make([]string, 0)
+	args := make([]interface{}, 0)
+	argId := 1
 
 	if input.Name != nil {
-		setValues = append(setValues, fmt.Sprintf("name=$%d"))
+		setValues = append(setValues, fmt.Sprintf("name=$%d", argId))
+		args = append(args, *input.Name)
+		argId++
 	}
 
 	if input.Email != nil {
-		setValues = append(setValues, fmt.Sprintf("email=$%d"))
+		setValues = append(setValues, fmt.Sprintf("email=$%d", argId))
+		args = append(args, *input.Email)
+		argId++
 	}
 
 	if input.Phone != nil {
-		setValues = append(setValues, fmt.Sprintf("phone=$%d"))
+		setValues = append(setValues, fmt.Sprintf("phone=$%d", argId))
+		args = append(args, *input.Phone)
+		argId++
 	}
 
 	setQuery := strings.Join(setValues, ", ")
@@ -62,7 +70,8 @@ func (r *UserPostgres) Update(userId int, input rd_app.UpdateUserInput) error {
 		usersTable, setQuery)
 
 	logrus.Debugf("updateQuery: %s", query)
+	logrus.Debugf("args: %s", args)
 
-	_, err := r.db.Exec(query, userId)
+	_, err := r.db.Exec(query, args...)
 	return err
 }

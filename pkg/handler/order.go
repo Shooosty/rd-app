@@ -7,8 +7,8 @@ import (
 	"strconv"
 )
 
-type getAllUsersResponse struct {
-	Data []models.User `json:"data"`
+type getAllOrdersResponse struct {
+	Data []models.Order `json:"data"`
 }
 
 // @Summary Get All Lists
@@ -23,15 +23,33 @@ type getAllUsersResponse struct {
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse
 // @Router /api/lists [get]
-func (h *Handler) getAllUsers(c *gin.Context) {
-	users, err := h.services.Users.GetAll()
+func (h *Handler) getAllOrders(c *gin.Context) {
+	orders, err := h.services.Orders.GetAll()
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, getAllUsersResponse{
-		Data: users,
+	c.JSON(http.StatusOK, getAllOrdersResponse{
+		Data: orders,
+	})
+}
+
+func (h *Handler) getAllForUserOrders(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
+		return
+	}
+
+	orders, err := h.services.Orders.GetAllForUser(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, getAllOrdersResponse{
+		Data: orders,
 	})
 }
 
@@ -47,36 +65,36 @@ func (h *Handler) getAllUsers(c *gin.Context) {
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse
 // @Router /api/lists/:id [get]
-func (h *Handler) getUserById(c *gin.Context) {
+func (h *Handler) getOrderById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
 		return
 	}
 
-	user, err := h.services.Users.GetById(id)
+	order, err := h.services.Orders.GetById(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, user)
+	c.JSON(http.StatusOK, order)
 }
 
-func (h *Handler) updateUser(c *gin.Context) {
+func (h *Handler) updateOrder(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
 		return
 	}
 
-	var input models.UpdateUserInput
+	var input models.UpdateOrderInput
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	if err := h.services.Users.Update(id, input); err != nil {
+	if err := h.services.Orders.Update(id, input); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -84,14 +102,14 @@ func (h *Handler) updateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, statusResponse{"ok"})
 }
 
-func (h *Handler) deleteUser(c *gin.Context) {
+func (h *Handler) deleteOrder(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
 		return
 	}
 
-	err = h.services.Users.Delete(id)
+	err = h.services.Orders.Delete(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

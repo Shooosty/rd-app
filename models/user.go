@@ -1,4 +1,4 @@
-package rd_app
+package models
 
 import "errors"
 

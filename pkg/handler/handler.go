@@ -45,5 +45,14 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		users.DELETE("/:id", h.deleteUser)
 	}
 
+	orders := router.Group("/orders")
+	{
+		orders.GET("/", h.getAllOrders)
+		orders.GET("/:id", h.getAllForUserOrders)
+		orders.GET("/:id", h.getOrderById)
+		orders.PUT("/:id", h.updateOrder)
+		orders.DELETE("/:id", h.deleteOrder)
+	}
+
 	return router
 }

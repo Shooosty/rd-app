@@ -1,34 +1,44 @@
 package service
 
 import (
-	"github.com/shooosty/rd-app"
+	"github.com/shooosty/rd-app/models"
 	"github.com/shooosty/rd-app/pkg/repository"
 )
 
 //go:generate mockgen -source=service.go -destination=mocks/mock.go
 
 type Authorization interface {
-	CreateUser(user rd_app.User) (int, error)
+	CreateUser(user models.User) (int, error)
 	GenerateToken(username, password string) (string, error)
-	GetCurrentUser(username, password string) (rd_app.User, error)
+	GetCurrentUser(username, password string) (models.User, error)
 	ParseToken(token string) (int, error)
 }
 
 type Users interface {
-	GetAll() ([]rd_app.User, error)
-	GetById(userId int) (rd_app.User, error)
+	GetAll() ([]models.User, error)
+	GetById(userId int) (models.User, error)
 	Delete(userId int) error
-	Update(userId int, input rd_app.UpdateUserInput) error
+	Update(userId int, input models.UpdateUserInput) error
+}
+
+type Orders interface {
+	GetAll() ([]models.Order, error)
+	GetAllForUser(userId int) ([]models.Order, error)
+	GetById(orderId int) (models.Order, error)
+	Delete(orderId int) error
+	Update(orderId int, input models.UpdateOrderInput) error
 }
 
 type Service struct {
 	Authorization
 	Users
+	Orders
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),
 		Users:         NewUserService(repos.Users),
+		Orders:        NewOrderService(repos.Orders),
 	}
 }

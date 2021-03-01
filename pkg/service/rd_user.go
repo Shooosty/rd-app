@@ -1,7 +1,7 @@
 package service
 
 import (
-	rd_app "github.com/shooosty/rd-app"
+	"github.com/shooosty/rd-app/models"
 	"github.com/shooosty/rd-app/pkg/repository"
 )
 
@@ -13,11 +13,11 @@ func NewUserService(repo repository.Users) *UserService {
 	return &UserService{repo: repo}
 }
 
-func (s *UserService) GetAll() ([]rd_app.User, error) {
+func (s *UserService) GetAll() ([]models.User, error) {
 	return s.repo.GetAll()
 }
 
-func (s *UserService) GetById(userId int) (rd_app.User, error) {
+func (s *UserService) GetById(userId int) (models.User, error) {
 	return s.repo.GetById(userId)
 }
 
@@ -25,7 +25,7 @@ func (s *UserService) Delete(userId int) error {
 	return s.repo.Delete(userId)
 }
 
-func (s *UserService) Update(userId int, input rd_app.UpdateUserInput) error {
+func (s *UserService) Update(userId int, input models.UpdateUserInput) error {
 	if err := input.Validate(); err != nil {
 		return err
 	}

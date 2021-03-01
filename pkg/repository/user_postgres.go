@@ -3,7 +3,7 @@ package repository
 import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
-	rd_app "github.com/shooosty/rd-app"
+	"github.com/shooosty/rd-app/models"
 	"github.com/sirupsen/logrus"
 	"strings"
 )
@@ -16,8 +16,27 @@ func NewUserPostgres(db *sqlx.DB) *UserPostgres {
 	return &UserPostgres{db: db}
 }
 
-func (r *UserPostgres) GetAll() ([]rd_app.User, error) {
-	var users []rd_app.User
+func (r *UserPostgres) Create(order models.Order) (int, error) {
+	tx, err := r.db.Begin()
+	if err != nil {
+		return 0, err
+	}
+
+	var orderId int
+	createOrderQuery := fmt.Sprintf("INSERT INTO %s (name, userId) values ($1, $2) RETURNING id", ordersTable)
+
+	row := tx.QueryRow(createOrderQuery, order.Name, order.UserId)
+	err = row.Scan(&orderId)
+	if err != nil {
+		_ = tx.Rollback()
+		return 0, err
+	}
+
+	return orderId, tx.Commit()
+}
+
+func (r *UserPostgres) GetAll() ([]models.User, error) {
+	var users []models.User
 
 	query := fmt.Sprintf("SELECT id, name, role, phone, email FROM %s", usersTable)
 	err := r.db.Select(&users, query)
@@ -25,8 +44,8 @@ func (r *UserPostgres) GetAll() ([]rd_app.User, error) {
 	return users, err
 }
 
-func (r *UserPostgres) GetById(userId int) (rd_app.User, error) {
-	var user rd_app.User
+func (r *UserPostgres) GetById(userId int) (models.User, error) {
+	var user models.User
 
 	query := fmt.Sprintf("SELECT id, name, role, phone, email FROM %s WHERE id = $1", usersTable)
 	err := r.db.Get(&user, query, userId)
@@ -41,7 +60,7 @@ func (r *UserPostgres) Delete(userId int) error {
 	return err
 }
 
-func (r *UserPostgres) Update(userId int, input rd_app.UpdateUserInput) error {
+func (r *UserPostgres) Update(userId int, input models.UpdateUserInput) error {
 	setValues := make([]string, 0)
 
 	if input.Name != nil {

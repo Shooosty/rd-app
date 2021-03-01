@@ -2,29 +2,39 @@ package repository
 
 import (
 	"github.com/jmoiron/sqlx"
-	"github.com/shooosty/rd-app"
+	"github.com/shooosty/rd-app/models"
 )
 
 type Authorization interface {
-	CreateUser(user rd_app.User) (int, error)
-	GetUser(username, password string) (rd_app.User, error)
+	CreateUser(user models.User) (int, error)
+	GetUser(username, password string) (models.User, error)
 }
 
 type Users interface {
-	GetAll() ([]rd_app.User, error)
-	GetById(userId int) (rd_app.User, error)
+	GetAll() ([]models.User, error)
+	GetById(userId int) (models.User, error)
 	Delete(userId int) error
-	Update(userId int, input rd_app.UpdateUserInput) error
+	Update(userId int, input models.UpdateUserInput) error
+}
+
+type Orders interface {
+	GetAll() ([]models.Order, error)
+	GetAllForUser(userId int) ([]models.Order, error)
+	GetById(orderId int) (models.Order, error)
+	Delete(orderId int) error
+	Update(orderId int, input models.UpdateOrderInput) error
 }
 
 type Repository struct {
 	Authorization
 	Users
+	Orders
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
 		Users:         NewUserPostgres(db),
+		Orders:        NewOrderPostgres(db),
 	}
 }

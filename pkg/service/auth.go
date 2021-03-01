@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/shooosty/rd-app"
+	"github.com/shooosty/rd-app/models"
 	"github.com/shooosty/rd-app/pkg/repository"
 	"os"
 	"time"
@@ -28,12 +28,12 @@ func NewAuthService(repo repository.Authorization) *AuthService {
 	return &AuthService{repo: repo}
 }
 
-func (s *AuthService) CreateUser(user rd_app.User) (int, error) {
+func (s *AuthService) CreateUser(user models.User) (int, error) {
 	user.Password = generatePasswordHash(user.Password)
 	return s.repo.CreateUser(user)
 }
 
-func (s *AuthService) GetCurrentUser(username, password string) (rd_app.User, error) {
+func (s *AuthService) GetCurrentUser(username, password string) (models.User, error) {
 	user, err := s.repo.GetUser(username, generatePasswordHash(password))
 	if err != nil {
 		return user, err

@@ -47,7 +47,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	orders := router.Group("/orders")
 	{
 		orders.GET("/", h.getAllOrders)
-		orders.GET("/:id", h.getAllForUserOrders)
 		orders.GET("/:id", h.getOrderById)
 		orders.POST("/", h.createOrder)
 		orders.PUT("/:id", h.updateOrder)

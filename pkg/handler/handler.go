@@ -20,10 +20,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.Default()
 
 	router.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"https://rd-cabinet-7mds4.ondigitalocean.app", "http://localhost:3000"},
-		AllowMethods: []string{"PUT", "PATCH", "GET", "POST", "OPTIONS"},
-		AllowHeaders: []string{"Origin", "Content-Length", "Accept-Encoding", "X-CSRF-Token",
-			"X-Requested-With", "Content-Type", "Accept", "Authorization"},
+		AllowOrigins:     []string{"https://rd-cabinet-7mds4.ondigitalocean.app", "http://localhost:3000"},
+		AllowMethods:     []string{"PUT", "PATCH", "GET", "POST", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "X-Requested-With", "Content-Type", "Accept", "Authorization"},
 		AllowCredentials: true,
 	}))
 

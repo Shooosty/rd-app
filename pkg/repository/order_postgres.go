@@ -47,7 +47,7 @@ func (r *OrderPostgres) Create(order models.Order) (int, error) {
 func (r *OrderPostgres) GetAllForUser(userId int) ([]models.Order, error) {
 	var orders []models.Order
 
-	query := fmt.Sprintf("SELECT id, name FROM %s WHERE user_id = $1", ordersTable)
+	query := fmt.Sprintf("SELECT id, name, user_id FROM %s WHERE user_id = $1", ordersTable)
 	err := r.db.Select(&orders, query, userId)
 
 	return orders, err
@@ -56,14 +56,14 @@ func (r *OrderPostgres) GetAllForUser(userId int) ([]models.Order, error) {
 func (r *OrderPostgres) GetById(orderId int) (models.Order, error) {
 	var order models.Order
 
-	query := fmt.Sprintf("SELECT id, name, role, phone, email FROM %s WHERE id = $1", ordersTable)
+	query := fmt.Sprintf("SELECT id, name, user_id FROM %s WHERE id = $1", ordersTable)
 	err := r.db.Get(&order, query, orderId)
 
 	return order, err
 }
 
 func (r *OrderPostgres) Delete(orderId int) error {
-	query := fmt.Sprintf("DELETE id, name, role, phone, email FROM %s WHERE id = $1", ordersTable)
+	query := fmt.Sprintf("DELETE id, name, user_id email FROM %s WHERE id = $1", ordersTable)
 	_, err := r.db.Exec(query, orderId)
 
 	return err

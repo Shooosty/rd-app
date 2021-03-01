@@ -4,7 +4,7 @@ import "errors"
 
 type Order struct {
 	Id     int    `json:"-" db:"id"`
-	UserId int    `json:"user_id" binding:"required"`
+	UserId int    `json:"user_id" db:"user_id" binding:"required"`
 	Name   string `json:"name" binding:"required"`
 }
 

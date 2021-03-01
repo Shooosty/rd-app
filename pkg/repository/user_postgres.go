@@ -16,25 +16,6 @@ func NewUserPostgres(db *sqlx.DB) *UserPostgres {
 	return &UserPostgres{db: db}
 }
 
-func (r *UserPostgres) Create(order models.Order) (int, error) {
-	tx, err := r.db.Begin()
-	if err != nil {
-		return 0, err
-	}
-
-	var orderId int
-	createOrderQuery := fmt.Sprintf("INSERT INTO %s (name, userId) values ($1, $2) RETURNING id", ordersTable)
-
-	row := tx.QueryRow(createOrderQuery, order.Name, order.UserId)
-	err = row.Scan(&orderId)
-	if err != nil {
-		_ = tx.Rollback()
-		return 0, err
-	}
-
-	return orderId, tx.Commit()
-}
-
 func (r *UserPostgres) GetAll() ([]models.User, error) {
 	var users []models.User
 

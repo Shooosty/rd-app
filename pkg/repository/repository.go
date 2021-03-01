@@ -19,6 +19,7 @@ type Users interface {
 
 type Orders interface {
 	GetAll() ([]models.Order, error)
+	Create(order models.Order) (int, error)
 	GetAllForUser(userId int) ([]models.Order, error)
 	GetById(orderId int) (models.Order, error)
 	Delete(orderId int) error

@@ -21,6 +21,10 @@ func (s *OrderService) GetAllForUser(userId int) ([]models.Order, error) {
 	return s.repo.GetAllForUser(userId)
 }
 
+func (s *OrderService) Create(order models.Order) (int, error) {
+	return s.repo.Create(order)
+}
+
 func (s *OrderService) GetById(orderId int) (models.Order, error) {
 	return s.repo.GetById(orderId)
 }

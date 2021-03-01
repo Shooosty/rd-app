@@ -25,6 +25,7 @@ type Orders interface {
 	GetAll() ([]models.Order, error)
 	GetAllForUser(userId int) ([]models.Order, error)
 	GetById(orderId int) (models.Order, error)
+	Create(order models.Order) (int, error)
 	Delete(orderId int) error
 	Update(orderId int, input models.UpdateOrderInput) error
 }

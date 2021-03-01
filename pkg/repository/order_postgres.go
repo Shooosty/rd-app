@@ -32,7 +32,7 @@ func (r *OrderPostgres) Create(order models.Order) (int, error) {
 	}
 
 	var orderId int
-	createOrderQuery := fmt.Sprintf("INSERT INTO %s (name, userId) values ($1, $2) RETURNING id", ordersTable)
+	createOrderQuery := fmt.Sprintf("INSERT INTO %s (name, user_id) values ($1, $2) RETURNING id", ordersTable)
 
 	row := tx.QueryRow(createOrderQuery, order.Name, order.UserId)
 	err = row.Scan(&orderId)

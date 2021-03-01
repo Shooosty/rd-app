@@ -19,7 +19,7 @@ func NewOrderPostgres(db *sqlx.DB) *OrderPostgres {
 func (r *OrderPostgres) GetAll() ([]models.Order, error) {
 	var orders []models.Order
 
-	query := fmt.Sprintf("SELECT id, name FROM %s", ordersTable)
+	query := fmt.Sprintf("SELECT id, name, user_id FROM %s", ordersTable)
 	err := r.db.Select(&orders, query)
 
 	return orders, err

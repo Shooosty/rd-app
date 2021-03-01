@@ -22,7 +22,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"https://rd-cabinet-7mds4.ondigitalocean.app", "http://localhost:3000"},
-		AllowMethods:     []string{"PUT", "PATCH", "GET", "POST", "OPTIONS", "DELETE"},
+		AllowMethods:     []string{"PUT", "PATCH", "GET", "POST", "OPTIONS", "DELETE", "HEAD"},
+		ExposeHeaders:    []string{"X-Next-Page", "X-Page", "X-Per-Page", "X-Prev-Page", "X-Total", "X-Total-Pages"},
 		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Accept", "Authorization"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,

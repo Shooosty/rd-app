@@ -20,15 +20,14 @@ func NewHandler(services *service.Service) *Handler {
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000", "https://rd-cabinet-7mds4.ondigitalocean.app", "https://rd-cabinet-7mds4.ondigitalocean.app/"},
-		AllowMethods:     []string{"PUT", "PATCH", "GET", "POST", "OPTIONS", "DELETE", "HEAD"},
-		ExposeHeaders:    []string{"X-Next-Page", "X-Page", "X-Per-Page", "X-Prev-Page", "X-Total", "X-Total-Pages"},
-		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Accept", "Authorization"},
+		AllowOrigins: []string{"http://localhost:3000", "https://rd-cabinet-7mds4.ondigitalocean.app",
+			"https://rd-cabinet-7mds4.ondigitalocean.app/"},
+		AllowMethods:  []string{"PUT", "PATCH", "GET", "POST", "OPTIONS", "DELETE", "HEAD"},
+		ExposeHeaders: []string{"X-Next-Page", "X-Page", "X-Per-Page", "X-Prev-Page", "X-Total", "X-Total-Pages"},
+		AllowHeaders: []string{"Origin", "Content-Length", "Content-Type", "Accept", "Authorization",
+			"Access-Control-Allow-Headers", "X-Requested-With", "Access-Control-Request-Method", "Access-Control-Request-Headers"},
 		AllowCredentials: true,
-		AllowOriginFunc: func(origin string) bool {
-			return origin == "https://github.com"
-		},
-		MaxAge: 12 * time.Hour,
+		MaxAge:           12 * time.Hour,
 	}))
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

@@ -38,7 +38,7 @@ func (r *UserPostgres) Delete(userId int) error {
 }
 
 func (r *UserPostgres) Update(userId int, input models.UpdateUserInput) error {
-	err := db.Table(usersTable).Where("id = ?", userId).Update(&input).Error
+	err := db.Table(usersTable).Where("id = ?", userId).Updates(&input).Error
 
 	return err
 }

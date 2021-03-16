@@ -48,12 +48,8 @@ func (r *UserPostgres) Update(userId int, input models.UpdateUserInput) error {
 		setValues = append(setValues, fmt.Sprintf("name=$1"))
 	}
 
-	if input.Email != nil {
-		setValues = append(setValues, fmt.Sprintf("email=$2"))
-	}
-
 	if input.Phone != nil {
-		setValues = append(setValues, fmt.Sprintf("phone=$3"))
+		setValues = append(setValues, fmt.Sprintf("phone=$2"))
 	}
 
 	setQuery := strings.Join(setValues, ", ")

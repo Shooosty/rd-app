@@ -1,14 +1,18 @@
 package models
 
-import "errors"
+import (
+	"errors"
+	"time"
+)
 
 type User struct {
-	Id       int    `json:"-" db:"id"`
-	Name     string `json:"name" binding:"required"`
-	Email    string `json:"email" binding:"required"`
-	Phone    string `json:"phone" binding:"required"`
-	Password string `json:"password" binding:"required"`
-	Role     string `json:"role" binding:"required"`
+	Id        int    `json:"-" db:"id"`
+	Name      string `json:"name" binding:"required"`
+	Email     string `json:"email" binding:"required"`
+	Phone     string `json:"phone" binding:"required"`
+	Password  string `json:"password" binding:"required"`
+	Role      string `json:"role" binding:"required"`
+	CreatedAt time.Time
 }
 
 type UpdateUserInput struct {
@@ -18,7 +22,7 @@ type UpdateUserInput struct {
 }
 
 func (i UpdateUserInput) Validate() error {
-	if i.Name == nil && i.Email == nil && i.Phone == nil {
+	if i.Name == nil && i.Phone == nil {
 		return errors.New("update structure has no values")
 	}
 

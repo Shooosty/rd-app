@@ -6,7 +6,7 @@ import (
 )
 
 type Order struct {
-	Id        int `json:"-" db:"id"`
+	Id        int `json:"id" db:"id"`
 	CreatedAt time.Time
 	UserId    int    `json:"user_id" db:"user_id" binding:"required"`
 	Name      string `json:"name" binding:"required"`

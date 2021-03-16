@@ -1,11 +1,15 @@
 package models
 
-import "errors"
+import (
+	"errors"
+	"time"
+)
 
 type Order struct {
-	Id     int    `json:"-" db:"id"`
-	UserId int    `json:"user_id" db:"user_id" binding:"required"`
-	Name   string `json:"name" binding:"required"`
+	Id        int `json:"-" db:"id"`
+	CreatedAt time.Time
+	UserId    int    `json:"user_id" db:"user_id" binding:"required"`
+	Name      string `json:"name" binding:"required"`
 }
 
 type UpdateOrderInput struct {

@@ -1,8 +1,1 @@
 port: "8080"
-
-db:
-  username: "doadmin"
-  host: "db-postgresql-ams3-rd-do-user-8693722-0.b.db.ondigitalocean.com"
-  port: "25060"
-  dbname: "defaultdb"
-  sslmode: "require"

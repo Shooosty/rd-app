@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/jmoiron/sqlx"
+	"github.com/jinzhu/gorm"
 	"github.com/shooosty/rd-app/models"
 )
 
@@ -32,7 +32,7 @@ type Repository struct {
 	Orders
 }
 
-func NewRepository(db *sqlx.DB) *Repository {
+func NewRepository(db *gorm.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
 		Users:         NewUserPostgres(db),

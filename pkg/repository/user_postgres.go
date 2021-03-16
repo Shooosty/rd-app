@@ -1,26 +1,22 @@
 package repository
 
 import (
-	"fmt"
-	"github.com/jmoiron/sqlx"
+	"github.com/jinzhu/gorm"
 	"github.com/shooosty/rd-app/models"
-	"github.com/sirupsen/logrus"
-	"strings"
 )
 
 type UserPostgres struct {
-	db *sqlx.DB
+	db *gorm.DB
 }
 
-func NewUserPostgres(db *sqlx.DB) *UserPostgres {
+func NewUserPostgres(db *gorm.DB) *UserPostgres {
 	return &UserPostgres{db: db}
 }
 
 func (r *UserPostgres) GetAll() ([]models.User, error) {
 	var users []models.User
 
-	query := fmt.Sprintf("SELECT id, name, role, phone, email FROM %s", usersTable)
-	err := r.db.Select(&users, query)
+	err := db.Table(usersTable).Find(&users).Error
 
 	return users, err
 }
@@ -28,37 +24,21 @@ func (r *UserPostgres) GetAll() ([]models.User, error) {
 func (r *UserPostgres) GetById(userId int) (models.User, error) {
 	var user models.User
 
-	query := fmt.Sprintf("SELECT id, name, role, phone, email FROM %s WHERE id = $1", usersTable)
-	err := r.db.Get(&user, query, userId)
+	err := db.Table(usersTable).Where("id = ?", userId).Find(&user).Error
 
 	return user, err
 }
 
 func (r *UserPostgres) Delete(userId int) error {
-	query := fmt.Sprintf("DELETE id, name, role, phone, email FROM %s WHERE id = $1", usersTable)
-	_, err := r.db.Exec(query, userId)
+	users := make([]*Users, 0)
+
+	err := db.Table(usersTable).Where("id = ?", userId).Delete(&users).Error
 
 	return err
 }
 
 func (r *UserPostgres) Update(userId int, input models.UpdateUserInput) error {
-	setValues := make([]string, 0)
+	err := db.Table(usersTable).Where("id = ?", userId).Update(&input).Error
 
-	if input.Name != nil {
-		setValues = append(setValues, fmt.Sprintf("name=$1"))
-	}
-
-	if input.Phone != nil {
-		setValues = append(setValues, fmt.Sprintf("phone=$2"))
-	}
-
-	setQuery := strings.Join(setValues, ", ")
-
-	query := fmt.Sprintf("UPDATE %s SET %s WHERE id = %d",
-		usersTable, setQuery)
-
-	logrus.Debugf("updateQuery: %s", query)
-
-	_, err := r.db.Exec(query, userId)
 	return err
 }

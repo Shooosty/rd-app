@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"github.com/jinzhu/gorm"
 	"github.com/shooosty/rd-app"
 	"github.com/shooosty/rd-app/pkg/handler"
 	"github.com/shooosty/rd-app/pkg/repository"
@@ -22,19 +23,7 @@ func main() {
 		logrus.Fatalf("error initializing configs: %s", err.Error())
 	}
 
-	pass, _ := os.LookupEnv("DB_PASSWORD")
-
-	db, err := repository.NewPostgresDB(repository.Config{
-		Host:     viper.GetString("db.host"),
-		Port:     viper.GetString("db.port"),
-		Username: viper.GetString("db.username"),
-		DBName:   viper.GetString("db.dbname"),
-		SSLMode:  viper.GetString("db.sslmode"),
-		Password: pass,
-	})
-	if err != nil {
-		logrus.Fatalf("failed to initialize db: %s", err.Error())
-	}
+	var db *gorm.DB
 
 	repos := repository.NewRepository(db)
 	services := service.NewService(repos)

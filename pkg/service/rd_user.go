@@ -29,6 +29,5 @@ func (s *UserService) Update(userId string, input models.UpdateUserInput) error 
 	if err := input.Validate(); err != nil {
 		return err
 	}
-
 	return s.repo.Update(userId, input)
 }

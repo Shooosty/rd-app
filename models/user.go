@@ -8,16 +8,15 @@ import (
 )
 
 type User struct {
-	ID           string     `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
-	CreatedAt    time.Time  `json:"created_at"`
-	UpdatedAt    time.Time  `json:"update_at"`
-	DeletedAt    *time.Time `sql:"index" json:"deleted_at"`
-	Name         string     `json:"name" binding:"required"`
-	Email        string     `json:"email" binding:"required"`
-	Phone        string     `json:"phone" binding:"required"`
-	Password     string     `json:"password" sql:"-" binding:"required"`
-	PasswordHash string     `sql:"password_hash"`
-	Role         string     `json:"role" binding:"required"`
+	ID           string    `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
+	CreatedAt    time.Time `json:"created_at"`
+	UpdatedAt    time.Time `json:"update_at"`
+	Name         string    `json:"name" binding:"required"`
+	Email        string    `json:"email" binding:"required"`
+	Phone        string    `json:"phone" binding:"required"`
+	Password     string    `json:"password" sql:"-" binding:"required"`
+	PasswordHash string    `sql:"password_hash"`
+	Role         string    `json:"role" binding:"required"`
 }
 
 func (user *User) BeforeCreate(scope *gorm.Scope) error {

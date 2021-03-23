@@ -8,12 +8,11 @@ import (
 )
 
 type Order struct {
-	ID        string     `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
-	CreatedAt time.Time  `json:"created_at"`
-	UpdatedAt time.Time  `json:"update_at"`
-	DeletedAt *time.Time `sql:"index" json:"deleted_at"`
-	UserId    int        `json:"user_id" db:"user_id" binding:"required"`
-	Name      string     `json:"name" binding:"required"`
+	ID        string    `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"update_at"`
+	UserId    int       `json:"user_id" db:"user_id" binding:"required"`
+	Name      string    `json:"name" binding:"required"`
 }
 
 func (order *Order) BeforeCreate(scope *gorm.Scope) error {

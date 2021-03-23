@@ -13,17 +13,23 @@ func NewAuthPostgres(db *gorm.DB) *AuthPostgres {
 	return &AuthPostgres{db: db}
 }
 
-func (r *AuthPostgres) CreateUser(user models.User) (int, error) {
-	var id int
+func (r *AuthPostgres) CreateUser(user models.User) (string, error) {
+	type Result struct {
+		ID    string
+		Name  string
+		Email string
+	}
 
-	err := db.Table(usersTable).Create(&user).Error
+	var result Result
 
-	return id, err
+	newUser := models.User{Name: user.Name, Email: user.Email, PasswordHash: user.Password, Role: user.Role, Phone: user.Phone}
+	err := db.Table(usersTable).Create(&newUser).Scan(&result).Error
+
+	return result.ID, err
 }
 
 func (r *AuthPostgres) GetUser(email, password string) (models.User, error) {
 	var user models.User
-
 	err := db.Table(usersTable).Where("email = ? AND password_hash = ?", email, password).Find(&user).Error
 
 	return user, err

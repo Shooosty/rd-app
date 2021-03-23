@@ -2,14 +2,23 @@ package models
 
 import (
 	"errors"
+	"github.com/jinzhu/gorm"
+	uuid "github.com/satori/go.uuid"
 	"time"
 )
 
 type Order struct {
-	Id        int `json:"id" db:"id"`
-	CreatedAt time.Time
-	UserId    int    `json:"user_id" db:"user_id" binding:"required"`
-	Name      string `json:"name" binding:"required"`
+	ID        string     `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
+	CreatedAt time.Time  `json:"created_at"`
+	UpdatedAt time.Time  `json:"update_at"`
+	DeletedAt *time.Time `sql:"index" json:"deleted_at"`
+	UserId    int        `json:"user_id" db:"user_id" binding:"required"`
+	Name      string     `json:"name" binding:"required"`
+}
+
+func (order *Order) BeforeCreate(scope *gorm.Scope) error {
+	_ = scope.SetColumn("ID", uuid.NewV4().String())
+	return nil
 }
 
 type UpdateOrderInput struct {

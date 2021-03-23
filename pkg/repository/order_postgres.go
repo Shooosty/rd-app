@@ -16,33 +16,39 @@ func NewOrderPostgres(db *gorm.DB) *OrderPostgres {
 func (r *OrderPostgres) GetAll() ([]models.Order, error) {
 	var orders []models.Order
 	err := db.Table(ordersTable).Find(&orders).Error
+
 	return orders, err
 }
 
-func (r *OrderPostgres) Create(order models.Order) (int, error) {
+func (r *OrderPostgres) Create(order models.Order) (string, error) {
 	err := db.Table(ordersTable).Create(&order).Error
-	return order.Id, err
+
+	return order.ID, err
 }
 
-func (r *OrderPostgres) GetAllForUser(userId int) ([]models.Order, error) {
+func (r *OrderPostgres) GetAllForUser(userId string) ([]models.Order, error) {
 	var orders []models.Order
 	err := db.Table(ordersTable).Where("user_id = ?", userId).Find(&orders).Error
+
 	return orders, err
 }
 
-func (r *OrderPostgres) GetById(orderId int) (models.Order, error) {
+func (r *OrderPostgres) GetById(orderId string) (models.Order, error) {
 	var order models.Order
 	err := db.Table(ordersTable).Where("id = ?", orderId).Find(&order).Error
+
 	return order, err
 }
 
-func (r *OrderPostgres) Delete(orderId int) error {
+func (r *OrderPostgres) Delete(orderId string) error {
 	orders := make([]*Orders, 0)
 	err := db.Table(ordersTable).Where("id = ?", orderId).Delete(&orders).Error
+
 	return err
 }
 
-func (r *OrderPostgres) Update(orderId int, input models.UpdateOrderInput) error {
-	err := db.Table(ordersTable).Where("id = ?", orderId).Update(&input).Error
+func (r *OrderPostgres) Update(orderId string, input models.UpdateOrderInput) error {
+	err := db.Table(ordersTable).Where("id = ?", orderId).Updates(&input).Error
+
 	return err
 }

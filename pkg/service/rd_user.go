@@ -17,15 +17,15 @@ func (s *UserService) GetAll() ([]models.User, error) {
 	return s.repo.GetAll()
 }
 
-func (s *UserService) GetById(userId int) (models.User, error) {
+func (s *UserService) GetById(userId string) (models.User, error) {
 	return s.repo.GetById(userId)
 }
 
-func (s *UserService) Delete(userId int) error {
+func (s *UserService) Delete(userId string) error {
 	return s.repo.Delete(userId)
 }
 
-func (s *UserService) Update(userId int, input models.UpdateUserInput) error {
+func (s *UserService) Update(userId string, input models.UpdateUserInput) error {
 	if err := input.Validate(); err != nil {
 		return err
 	}

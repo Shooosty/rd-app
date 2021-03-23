@@ -2,17 +2,27 @@ package models
 
 import (
 	"errors"
+	"github.com/jinzhu/gorm"
+	uuid "github.com/satori/go.uuid"
 	"time"
 )
 
 type User struct {
-	Id        int    `json:"id" db:"id"`
-	Name      string `json:"name" binding:"required"`
-	Email     string `json:"email" binding:"required"`
-	Phone     string `json:"phone" binding:"required"`
-	Password  string `json:"password" binding:"required"`
-	Role      string `json:"role" binding:"required"`
-	CreatedAt time.Time
+	ID           string     `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
+	CreatedAt    time.Time  `json:"created_at"`
+	UpdatedAt    time.Time  `json:"update_at"`
+	DeletedAt    *time.Time `sql:"index" json:"deleted_at"`
+	Name         string     `json:"name" binding:"required"`
+	Email        string     `json:"email" binding:"required"`
+	Phone        string     `json:"phone" binding:"required"`
+	Password     string     `json:"password" sql:"-" binding:"required"`
+	PasswordHash string     `sql:"password_hash"`
+	Role         string     `json:"role" binding:"required"`
+}
+
+func (user *User) BeforeCreate(scope *gorm.Scope) error {
+	_ = scope.SetColumn("ID", uuid.NewV4().String())
+	return nil
 }
 
 type UpdateUserInput struct {

@@ -4,11 +4,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/shooosty/rd-app/models"
 	"net/http"
-	"strconv"
 )
 
 type getAllUsersResponse struct {
 	Data []models.User `json:"data"`
+}
+
+type getUserResponse struct {
+	Data models.User `json:"data"`
 }
 
 // @Summary Get All Lists
@@ -48,11 +51,7 @@ func (h *Handler) getAllUsers(c *gin.Context) {
 // @Failure default {object} errorResponse
 // @Router /api/lists/:id [get]
 func (h *Handler) getUserById(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
-		return
-	}
+	id := c.Param("id")
 
 	user, err := h.services.Users.GetById(id)
 	if err != nil {
@@ -60,15 +59,13 @@ func (h *Handler) getUserById(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, user)
+	c.JSON(http.StatusOK, getUserResponse{
+		Data: user,
+	})
 }
 
 func (h *Handler) updateUser(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
-		return
-	}
+	id := c.Param("id")
 
 	var input models.UpdateUserInput
 	if err := c.BindJSON(&input); err != nil {
@@ -85,13 +82,9 @@ func (h *Handler) updateUser(c *gin.Context) {
 }
 
 func (h *Handler) deleteUser(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
-		return
-	}
+	id := c.Param("id")
 
-	err = h.services.Users.Delete(id)
+	err := h.services.Users.Delete(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

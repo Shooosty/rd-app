@@ -8,26 +8,26 @@ import (
 //go:generate mockgen -source=service.go -destination=mocks/mock.go
 
 type Authorization interface {
-	CreateUser(user models.User) (int, error)
+	CreateUser(user models.User) (string, error)
 	GenerateToken(username, password string) (string, error)
 	GetCurrentUser(username, password string) (models.User, error)
-	ParseToken(token string) (int, error)
+	ParseToken(token string) (string, error)
 }
 
 type Users interface {
 	GetAll() ([]models.User, error)
-	GetById(userId int) (models.User, error)
-	Delete(userId int) error
-	Update(userId int, input models.UpdateUserInput) error
+	GetById(userId string) (models.User, error)
+	Delete(userId string) error
+	Update(userId string, input models.UpdateUserInput) error
 }
 
 type Orders interface {
 	GetAll() ([]models.Order, error)
-	GetAllForUser(userId int) ([]models.Order, error)
-	GetById(orderId int) (models.Order, error)
-	Create(order models.Order) (int, error)
-	Delete(orderId int) error
-	Update(orderId int, input models.UpdateOrderInput) error
+	GetAllForUser(userId string) ([]models.Order, error)
+	GetById(orderId string) (models.Order, error)
+	Create(order models.Order) (string, error)
+	Delete(orderId string) error
+	Update(orderId string, input models.UpdateOrderInput) error
 }
 
 type Service struct {

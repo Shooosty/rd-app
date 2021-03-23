@@ -4,11 +4,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/shooosty/rd-app/models"
 	"net/http"
-	"strconv"
 )
 
 type getAllOrdersResponse struct {
 	Data []models.Order `json:"data"`
+}
+
+type getOrderResponse struct {
+	Data models.Order `json:"data"`
 }
 
 // @Summary Get All Lists
@@ -54,11 +57,7 @@ func (h *Handler) createOrder(c *gin.Context) {
 }
 
 func (h *Handler) getAllForUserOrders(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
-		return
-	}
+	id := c.Param("id")
 
 	orders, err := h.services.Orders.GetAllForUser(id)
 	if err != nil {
@@ -84,11 +83,7 @@ func (h *Handler) getAllForUserOrders(c *gin.Context) {
 // @Failure default {object} errorResponse
 // @Router /api/lists/:id [get]
 func (h *Handler) getOrderById(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
-		return
-	}
+	id := c.Param("id")
 
 	order, err := h.services.Orders.GetById(id)
 	if err != nil {
@@ -96,15 +91,13 @@ func (h *Handler) getOrderById(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, order)
+	c.JSON(http.StatusOK, getOrderResponse{
+		Data: order,
+	})
 }
 
 func (h *Handler) updateOrder(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
-		return
-	}
+	id := c.Param("id")
 
 	var input models.UpdateOrderInput
 	if err := c.BindJSON(&input); err != nil {
@@ -121,13 +114,9 @@ func (h *Handler) updateOrder(c *gin.Context) {
 }
 
 func (h *Handler) deleteOrder(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
-		return
-	}
+	id := c.Param("id")
 
-	err = h.services.Orders.Delete(id)
+	err := h.services.Orders.Delete(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

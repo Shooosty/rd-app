@@ -2,13 +2,11 @@ package models
 
 import (
 	"errors"
-	"github.com/jinzhu/gorm"
-	uuid "github.com/satori/go.uuid"
 	"time"
 )
 
 type User struct {
-	ID           string    `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
+	ID           string    `sql:"type:uuid;primary_key"`
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"update_at"`
 	Name         string    `json:"name" binding:"required"`
@@ -19,10 +17,10 @@ type User struct {
 	Role         string    `json:"role" binding:"required"`
 }
 
-func (user *User) BeforeCreate(scope *gorm.Scope) error {
-	_ = scope.SetColumn("ID", uuid.NewV4().String())
-	return nil
-}
+//func (user *User) BeforeCreate(scope *gorm.Scope) error {
+//	_ = scope.SetColumn("ID", uuid.NewV4().String())
+//	return nil
+//}
 
 type UpdateUserInput struct {
 	Name  *string `json:"name"`

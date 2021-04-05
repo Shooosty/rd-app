@@ -17,7 +17,6 @@ type Order struct {
 	Status      string    `json:"status"`
 	Owner       string    `json:"owner"`
 	Contract    string    `json:"contract"`
-	Number      int       `sql:"serial;unique" json:"number"`
 	Datetime    string    `json:"datetime"`
 }
 

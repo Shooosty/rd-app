@@ -21,6 +21,14 @@ func (s *OrderService) GetAllForUser(userId string) ([]models.Order, error) {
 	return s.repo.GetAllForUser(userId)
 }
 
+func (s *OrderService) GetAllForDesigner(designerId string) ([]models.Order, error) {
+	return s.repo.GetAllForUser(designerId)
+}
+
+func (s *OrderService) GetAllForPhotographer(photographerId string) ([]models.Order, error) {
+	return s.repo.GetAllForUser(photographerId)
+}
+
 func (s *OrderService) Create(order models.Order) (string, error) {
 	return s.repo.Create(order)
 }

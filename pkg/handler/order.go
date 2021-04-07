@@ -14,18 +14,6 @@ type getOrderResponse struct {
 	Data models.Order `json:"data"`
 }
 
-// @Summary Get All Lists
-// @Security ApiKeyAuth
-// @Tags lists
-// @Description get all lists
-// @ID get-all-lists
-// @Accept  json
-// @Produce  json
-// @Success 200 {object} getAllListsResponse
-// @Failure 400,404 {object} errorResponse
-// @Failure 500 {object} errorResponse
-// @Failure default {object} errorResponse
-// @Router /api/lists [get]
 func (h *Handler) getAllOrders(c *gin.Context) {
 	orders, err := h.services.Orders.GetAll()
 	if err != nil {
@@ -70,18 +58,34 @@ func (h *Handler) getAllForUserOrders(c *gin.Context) {
 	})
 }
 
-// @Summary Get List By Id
-// @Security ApiKeyAuth
-// @Tags lists
-// @Description get list by id
-// @ID get-list-by-id
-// @Accept  json
-// @Produce  json
-// @Success 200 {object} rd_app.User
-// @Failure 400,404 {object} errorResponse
-// @Failure 500 {object} errorResponse
-// @Failure default {object} errorResponse
-// @Router /api/lists/:id [get]
+func (h *Handler) getAllForPhotographerOrders(c *gin.Context) {
+	id := c.Param("photographer_id")
+
+	orders, err := h.services.Orders.GetAllForPhotographer(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, getAllOrdersResponse{
+		Data: orders,
+	})
+}
+
+func (h *Handler) getAllForDesignerOrders(c *gin.Context) {
+	id := c.Param("designer_id")
+
+	orders, err := h.services.Orders.GetAllForDesigner(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, getAllOrdersResponse{
+		Data: orders,
+	})
+}
+
 func (h *Handler) getOrderById(c *gin.Context) {
 	id := c.Param("id")
 

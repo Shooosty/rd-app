@@ -21,6 +21,8 @@ type Orders interface {
 	GetAll() ([]models.Order, error)
 	Create(order models.Order) (string, error)
 	GetAllForUser(userId string) ([]models.Order, error)
+	GetAllForPhotographer(photographerId string) ([]models.Order, error)
+	GetAllForDesigner(designerId string) ([]models.Order, error)
 	GetById(orderId string) (models.Order, error)
 	Delete(orderId string) error
 	Update(orderId string, input models.UpdateOrderInput) error

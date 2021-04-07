@@ -33,6 +33,20 @@ func (r *OrderPostgres) GetAllForUser(userId string) ([]models.Order, error) {
 	return orders, err
 }
 
+func (r *OrderPostgres) GetAllForPhotographer(photographerId string) ([]models.Order, error) {
+	var orders []models.Order
+	err := db.Table(ordersTable).Where("photographer_id = ?", photographerId).Find(&orders).Error
+
+	return orders, err
+}
+
+func (r *OrderPostgres) GetAllForDesigner(designerId string) ([]models.Order, error) {
+	var orders []models.Order
+	err := db.Table(ordersTable).Where("designer_id = ?", designerId).Find(&orders).Error
+
+	return orders, err
+}
+
 func (r *OrderPostgres) GetById(orderId string) (models.Order, error) {
 	var order models.Order
 	err := db.Table(ordersTable).Where("id = ?", orderId).Find(&order).Error

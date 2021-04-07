@@ -42,6 +42,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		users.GET("/", h.getAllUsers)
 		users.GET("/:id", h.getUserById)
+		users.GET("/:id/orders", h.getAllForUserOrders)
 		users.PUT("/:id", h.updateUser)
 		users.DELETE("/:id", h.deleteUser)
 	}
@@ -53,6 +54,16 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		orders.POST("/", h.createOrder)
 		orders.PUT("/:id", h.updateOrder)
 		orders.DELETE("/:id", h.deleteOrder)
+	}
+
+	photographers := router.Group("/photographers")
+	{
+		photographers.GET("/:id/orders", h.getAllForPhotographerOrders)
+	}
+
+	designers := router.Group("/designers")
+	{
+		designers.GET("/:id/orders", h.getAllForDesignerOrders)
 	}
 
 	return router

@@ -59,7 +59,7 @@ func (h *Handler) getAllForUserOrders(c *gin.Context) {
 }
 
 func (h *Handler) getAllForPhotographerOrders(c *gin.Context) {
-	id := c.Param("photographer_id")
+	id := c.Param("id")
 
 	orders, err := h.services.Orders.GetAllForPhotographer(id)
 	if err != nil {
@@ -73,7 +73,7 @@ func (h *Handler) getAllForPhotographerOrders(c *gin.Context) {
 }
 
 func (h *Handler) getAllForDesignerOrders(c *gin.Context) {
-	id := c.Param("designer_id")
+	id := c.Param("id")
 
 	orders, err := h.services.Orders.GetAllForDesigner(id)
 	if err != nil {

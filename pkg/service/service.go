@@ -9,6 +9,7 @@ import (
 
 type Authorization interface {
 	CreateUser(user models.User) (string, error)
+	CreateEmployer(user models.User) (string, error)
 	GenerateToken(username, password string) (string, error)
 	GetCurrentUser(username, password string) (models.User, error)
 	ParseToken(token string) (string, error)

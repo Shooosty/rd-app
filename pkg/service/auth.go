@@ -7,6 +7,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/shooosty/rd-app/models"
 	"github.com/shooosty/rd-app/pkg/repository"
+	"math/rand"
 	"os"
 	"time"
 )
@@ -32,6 +33,14 @@ func (s *AuthService) CreateUser(user models.User) (string, error) {
 	user.Password = generatePasswordHash(user.Password)
 
 	return s.repo.CreateUser(user)
+}
+
+func (s *AuthService) CreateEmployer(user models.User) (string, error) {
+	password := generatePassword()
+	SendPasswordToEmployer(password, user.Name, user.Email)
+	user.Password = generatePasswordHash(password)
+
+	return s.repo.CreateEmployer(user)
 }
 
 func (s *AuthService) GetCurrentUser(username, password string) (models.User, error) {
@@ -91,4 +100,32 @@ func generatePasswordHash(password string) string {
 	hash.Write([]byte(password))
 
 	return fmt.Sprintf("%x", hash.Sum([]byte(salt)))
+}
+
+func generatePassword() string {
+	rand.Seed(time.Now().UnixNano())
+	digits := "0123456789"
+	specials := "~=+%^*/()[]{}/!@#$?|"
+	all := "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+		"abcdefghijklmnopqrstuvwxyz" +
+		digits + specials
+	length := 10
+	buf := make([]byte, length)
+	buf[0] = digits[rand.Intn(len(digits))]
+	buf[1] = specials[rand.Intn(len(specials))]
+	for i := 2; i < length; i++ {
+		buf[i] = all[rand.Intn(len(all))]
+	}
+	rand.Shuffle(len(buf), func(i, j int) {
+		buf[i], buf[j] = buf[j], buf[i]
+	})
+	str := string(buf)
+
+	return str
+}
+
+func SendPasswordToEmployer(password string, name string, email string) {
+	text := password
+	html := "<p> Ура! Оно работает! </p>"
+	SendMail(text, html, name, email)
 }

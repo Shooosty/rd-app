@@ -92,7 +92,7 @@ func (h *Handler) signIn(c *gin.Context) {
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse
 // @Router /auth/sign-up [post]
-func (h *Handler) SignUpEmployer(c *gin.Context) {
+func (h *Handler) SignUpEmployee(c *gin.Context) {
 	var input models.User
 
 	if err := c.BindJSON(&input); err != nil {
@@ -100,7 +100,7 @@ func (h *Handler) SignUpEmployer(c *gin.Context) {
 		return
 	}
 
-	id, err := h.services.Authorization.CreateEmployer(input)
+	id, err := h.services.Authorization.CreateEmployee(input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

@@ -28,7 +28,7 @@ func (r *AuthPostgres) CreateUser(user models.User) (string, error) {
 	return result.ID, err
 }
 
-func (r *AuthPostgres) CreateEmployer(user models.User) (string, error) {
+func (r *AuthPostgres) CreateEmployee(user models.User) (string, error) {
 	type Result struct {
 		ID    string
 		Name  string

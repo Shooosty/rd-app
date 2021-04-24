@@ -35,9 +35,9 @@ func (s *AuthService) CreateUser(user models.User) (string, error) {
 	return s.repo.CreateUser(user)
 }
 
-func (s *AuthService) CreateEmployer(user models.User) (string, error) {
+func (s *AuthService) CreateEmployee(user models.User) (string, error) {
 	password := generatePassword()
-	SendPasswordToEmployer(password, user.Name, user.Email)
+	SendPasswordToEmployee(password, user.Name, user.Email)
 	user.Password = generatePasswordHash(password)
 
 	return s.repo.CreateEmployer(user)
@@ -124,7 +124,7 @@ func generatePassword() string {
 	return str
 }
 
-func SendPasswordToEmployer(password string, name string, email string) {
+func SendPasswordToEmployee(password string, name string, email string) {
 	text := password
 	html := "<p> Ура! Оно работает! </p>"
 	SendMail(text, html, name, email)

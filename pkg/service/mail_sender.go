@@ -36,7 +36,7 @@ func SendMail(text string, html string, name string, email string) {
 
 	from := mailersend.From{
 		Name:  "RHINODESIGN",
-		Email: "rhinodesign@mail.ru",
+		Email: "app.rhinodesign.ru",
 	}
 
 	recipients := []mailersend.Recipient{

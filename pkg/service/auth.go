@@ -40,7 +40,7 @@ func (s *AuthService) CreateEmployee(user models.User) (string, error) {
 	SendPasswordToEmployee(password, user.Name, user.Email)
 	user.Password = generatePasswordHash(password)
 
-	return s.repo.CreateEmployer(user)
+	return s.repo.CreateEmployee(user)
 }
 
 func (s *AuthService) GetCurrentUser(username, password string) (models.User, error) {

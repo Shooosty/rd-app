@@ -48,7 +48,7 @@ func SendMail(text string, html string, name string, email string) {
 
 	variables := []mailersend.Variables{
 		{
-			Email: "your@client.com",
+			Email: email,
 			Substitutions: []mailersend.Substitution{
 				{
 					Var:   "foo",

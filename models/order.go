@@ -9,16 +9,16 @@ import (
 
 type Order struct {
 	ID             string    `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
-	CreatedAt      time.Time `json:"created_at"`
-	UpdatedAt      time.Time `json:"update_at"`
-	UserId         string    `json:"user_id"`
+	CreatedAt      time.Time `json:"createdAt"`
+	UpdatedAt      time.Time `json:"updateAt"`
+	UserId         string    `json:"userId"`
 	Type           string    `json:"type"`
 	Address        string    `json:"address"`
 	Description    string    `json:"description"`
 	Status         string    `json:"status"`
 	Owner          string    `json:"owner"`
-	DesignerId     string    `json:"designer_id"`
-	PhotographerId string    `json:"photographer_id"`
+	DesignerId     string    `json:"designerId"`
+	PhotographerId string    `json:"photographerId"`
 	Contract       string    `json:"contract"`
 	Datetime       string    `json:"datetime"`
 }

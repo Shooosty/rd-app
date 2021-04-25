@@ -9,13 +9,13 @@ import (
 
 type User struct {
 	ID           string    `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
-	CreatedAt    time.Time `json:"created_at"`
-	UpdatedAt    time.Time `json:"update_at"`
+	CreatedAt    time.Time `json:"createdAt"`
+	UpdatedAt    time.Time `json:"updateAt"`
 	Name         string    `json:"name" binding:"required"`
 	Email        string    `json:"email" binding:"required"`
 	Phone        string    `json:"phone" binding:"required"`
 	Password     string    `json:"password" sql:"-"`
-	PasswordHash string    `sql:"password_hash"`
+	PasswordHash string    `sql:"passwordHash"`
 	Role         string    `json:"role" binding:"required"`
 }
 

@@ -46,19 +46,19 @@ func SendMail(text string, html string, name string, email string) {
 		},
 	}
 
-	//variables := []mailersend.Variables{
-	//	{
-	//		Email: "your@client.com",
-	//		Substitutions: []mailersend.Substitution{
-	//			{
-	//				Var:   "foo",
-	//				Value: "bar",
-	//			},
-	//		},
-	//	},
-	//}
-	//
-	//tags := []string{"foo", "bar"}
+	variables := []mailersend.Variables{
+		{
+			Email: "your@client.com",
+			Substitutions: []mailersend.Substitution{
+				{
+					Var:   "foo",
+					Value: "bar",
+				},
+			},
+		},
+	}
+
+	tags := []string{"foo", "bar"}
 
 	message := ms.NewMessage()
 
@@ -67,10 +67,10 @@ func SendMail(text string, html string, name string, email string) {
 	message.SetSubject(subject)
 	message.SetHTML(html)
 	message.SetText(text)
-	//message.SetTemplateID("testtemplateid")
-	//message.SetSubstitutions(variables)
-	//
-	//message.SetTags(tags)
+	message.SetTemplateID("testtemplateid")
+	message.SetSubstitutions(variables)
+
+	message.SetTags(tags)
 
 	res, _ := ms.Send(ctx, message)
 

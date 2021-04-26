@@ -127,5 +127,5 @@ func generatePassword() string {
 func SendPasswordToEmployee(password string, name string, email string) {
 	text := password
 	html := "<p> Ура! Оно работает! </p>"
-	SendMail(text, html, name, email)
+	_ = SendMail(text, html, name, email)
 }

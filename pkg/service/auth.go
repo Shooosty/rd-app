@@ -125,7 +125,7 @@ func generatePassword() string {
 }
 
 func SendPasswordToEmployee(password string, name string, email string) {
-	subject := "Регистрация в личном кабинете Rhinodesign"
+	subject := "Регистрация в личном кабинете"
 	text := "Ваш пароль для входа в кабинет: " + password
 	html := "<b>" + name + "," + "</b>" + "<p>" + "Ваш пароль для входа в кабинет: " + password + "<p>" + "</br>" +
 		"<p> Рекомендуем сменить пароль при первом входе в кабинет! </p>"

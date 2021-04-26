@@ -125,7 +125,8 @@ func generatePassword() string {
 }
 
 func SendPasswordToEmployee(password string, name string, email string) {
-	text := password
-	html := "<p> Ура! Оно работает! </p>"
-	_ = SendMail(text, html, name, email)
+	subject := "регистрацая в личном кабинете Rhinodesign"
+	text := "dsdkdsfksdf41"
+	html := "<p> Рекомендуем сменить пароль при первом входе в кабинет! </p>"
+	_ = SendMail(subject, text, html, name, email)
 }

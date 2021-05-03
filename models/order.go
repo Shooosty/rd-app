@@ -19,7 +19,7 @@ type Order struct {
 	Status         string         `json:"status"`
 	Owner          string         `json:"owner"`
 	DesignerId     string         `json:"designerId"`
-	PeopleIds      pq.StringArray `sql:"type:string[]" json:"people"`
+	PeopleIds      pq.StringArray `sql:"type:text[]" json:"people"`
 	PhotographerId string         `json:"photographerId"`
 	Contract       string         `json:"contract"`
 	Datetime       string         `json:"datetime"`

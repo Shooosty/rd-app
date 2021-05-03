@@ -9,6 +9,7 @@ import (
 )
 
 type Order struct {
+	gorm.Model
 	ID             string         `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
 	CreatedAt      time.Time      `json:"createdAt"`
 	UpdatedAt      time.Time      `json:"updateAt"`

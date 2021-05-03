@@ -13,7 +13,7 @@ var db *gorm.DB
 const (
 	usersTable   = "users"
 	ordersTable  = "orders"
-	personsTable = "person"
+	personsTable = "persons"
 )
 
 func init() {
@@ -34,5 +34,5 @@ func init() {
 	db = conn
 
 	//Миграция базы данных
-	db.Debug().AutoMigrate(&models.User{}, &models.Order{})
+	db.Debug().AutoMigrate(&models.User{}, &models.Order{}, &models.Person{})
 }

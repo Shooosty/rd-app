@@ -44,7 +44,7 @@ func UploadFileToS3(s *session.Session, file multipart.File, fileHeader *multipa
 }
 
 func uploadFile(c *gin.Context) {
-	maxSize := int64(40000000) // 5mb max
+	maxSize := int64(400000000) // 50mb max
 
 	err := c.Request.ParseMultipartForm(maxSize)
 	if err != nil {
@@ -64,8 +64,8 @@ func uploadFile(c *gin.Context) {
 	s, err := session.NewSession(&aws.Config{
 		Region: aws.String(AWS_S3_REGION),
 		Credentials: credentials.NewStaticCredentials(
-			"AKIAJIT2DKCFLB2A55OA",
-			"neH0dkLmx0mWBcYULovti1ZGiNCKe/XZ313K5KE6",
+			"AKIAZ4EXIBF2T6T7UB64",
+			"qqBiCHLMG7Nn9rGaIueZwnNxyBwiOGMw0AdK0UUn",
 			""),
 	})
 	if err != nil {

@@ -65,6 +65,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		persons.DELETE("/:id", h.deletePerson)
 	}
 
+	files := router.Group("/files")
+	{
+		files.POST("/", uploadFile)
+	}
+
 	photographers := router.Group("/photographers")
 	{
 		photographers.GET("/:id/orders", h.getAllForPhotographerOrders)

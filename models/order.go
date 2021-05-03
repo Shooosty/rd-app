@@ -21,6 +21,7 @@ type Order struct {
 	PhotographerId string    `json:"photographerId"`
 	Contract       string    `json:"contract"`
 	Datetime       string    `json:"datetime"`
+	PeopleIds      []string  `json:"people"`
 }
 
 func (order *Order) BeforeCreate(scope *gorm.Scope) error {
@@ -29,11 +30,11 @@ func (order *Order) BeforeCreate(scope *gorm.Scope) error {
 }
 
 type UpdateOrderInput struct {
-	Name *string `json:"name"`
+	Address *string `json:"address"`
 }
 
 func (i UpdateOrderInput) Validate() error {
-	if i.Name == nil {
+	if i.Address == nil {
 		return errors.New("update structure has no values")
 	}
 	return nil

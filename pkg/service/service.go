@@ -33,10 +33,18 @@ type Orders interface {
 	Update(orderId string, input models.UpdateOrderInput) error
 }
 
+type Persons interface {
+	GetAll() ([]models.Person, error)
+	Create(person models.Person) (string, error)
+	Delete(personId string) error
+	Update(personId string, input models.UpdatePersonInput) error
+}
+
 type Service struct {
 	Authorization
 	Users
 	Orders
+	Persons
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -44,5 +52,6 @@ func NewService(repos *repository.Repository) *Service {
 		Authorization: NewAuthService(repos.Authorization),
 		Users:         NewUserService(repos.Users),
 		Orders:        NewOrderService(repos.Orders),
+		Persons:       NewPersonService(repos.Persons),
 	}
 }

@@ -11,8 +11,9 @@ import (
 var db *gorm.DB
 
 const (
-	usersTable  = "users"
-	ordersTable = "orders"
+	usersTable   = "users"
+	ordersTable  = "orders"
+	personsTable = "person"
 )
 
 func init() {

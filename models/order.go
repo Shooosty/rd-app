@@ -17,8 +17,8 @@ type Order struct {
 	Address        string         `json:"address"`
 	Description    string         `json:"description"`
 	Owner          string         `json:"owner"`
-	Status         string         `json:"status"`
 	DesignerId     string         `json:"designerId"`
+	Status         string         `json:"status"`
 	PeopleIds      pq.StringArray `sql:"type:text[]" json:"people"`
 	PhotographerId string         `json:"photographerId"`
 	Contract       string         `json:"contract"`

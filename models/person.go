@@ -8,7 +8,8 @@ import (
 )
 
 type Person struct {
-	ID          string    `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
+	gorm.Model
+	ID          string    `gorm:"type:uuid;primaryKey;default:uuid_generate_v4()"`
 	CreatedAt   time.Time `json:"createdAt"`
 	UpdatedAt   time.Time `json:"updateAt"`
 	Url         string    `json:"url"`

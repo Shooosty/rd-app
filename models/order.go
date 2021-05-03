@@ -9,7 +9,8 @@ import (
 )
 
 type Order struct {
-	ID             string         `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
+	gorm.Model
+	ID             string         `gorm:"type:uuid;primaryKey;default:uuid_generate_v4()"`
 	CreatedAt      time.Time      `json:"createdAt"`
 	UpdatedAt      time.Time      `json:"updateAt"`
 	UserId         string         `json:"userId"`
@@ -19,10 +20,10 @@ type Order struct {
 	Status         string         `json:"status"`
 	Owner          string         `json:"owner"`
 	DesignerId     string         `json:"designerId"`
+	PeopleIds      pq.StringArray `gorm:"type:string[]" json:"people"`
 	PhotographerId string         `json:"photographerId"`
 	Contract       string         `json:"contract"`
 	Datetime       string         `json:"datetime"`
-	PeopleIds      pq.StringArray `sql:"type:string[]" json:"people"`
 }
 
 func (order *Order) BeforeCreate(scope *gorm.Scope) error {

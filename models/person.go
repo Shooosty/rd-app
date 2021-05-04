@@ -12,9 +12,9 @@ type Person struct {
 	CreatedAt   time.Time `json:"createdAt"`
 	UpdatedAt   time.Time `json:"updateAt"`
 	Description string    `json:"description"`
-	Url         string    `json:"url"`
 	Name        string    `json:"name"`
 	Surname     string    `json:"surname"`
+	Url         string    `json:"url"`
 	MiddleName  string    `json:"middleName"`
 }
 

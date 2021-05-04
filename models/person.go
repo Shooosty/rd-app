@@ -11,10 +11,10 @@ type Person struct {
 	ID          string    `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
 	CreatedAt   time.Time `json:"createdAt"`
 	UpdatedAt   time.Time `json:"updateAt"`
-	Url         string    `json:"url"`
 	Name        string    `json:"name"`
 	Surname     string    `json:"surname"`
 	MiddleName  string    `json:"middleName"`
+	Url         string    `json:"url"`
 	Description string    `json:"description"`
 }
 

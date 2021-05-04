@@ -105,7 +105,7 @@ func generatePasswordHash(password string) string {
 func generatePassword() string {
 	rand.Seed(time.Now().UnixNano())
 	digits := "0123456789"
-	specials := "~=+%^*/()[]{}/!@#$?|"
+	specials := "=+%*()!@#$?"
 	all := "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
 		"abcdefghijklmnopqrstuvwxyz" +
 		digits + specials

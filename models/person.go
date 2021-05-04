@@ -18,7 +18,7 @@ type Person struct {
 	Description string    `json:"description"`
 }
 
-func (people *Person) BeforeCreate(scope *gorm.Scope) error {
+func (person *Person) BeforeCreate(scope *gorm.Scope) error {
 	_ = scope.SetColumn("ID", uuid.NewV4().String())
 	return nil
 }

@@ -31,11 +31,23 @@ func (order *Order) BeforeCreate(scope *gorm.Scope) error {
 }
 
 type UpdateOrderInput struct {
-	Address *string `json:"address"`
+	Address        *string         `json:"address"`
+	Status         *string         `json:"status"`
+	Owner          *string         `json:"owner"`
+	UserId         *string         `json:"userId"`
+	DesignerId     *string         `json:"designerId"`
+	PhotographerId *string         `json:"photographerId"`
+	PeopleIds      *pq.StringArray `sql:"type:text[]" json:"people"`
+	Contract       *string         `json:"contract"`
+	Datetime       *string         `json:"datetime"`
+	Description    *string         `json:"description"`
 }
 
 func (i UpdateOrderInput) Validate() error {
-	if i.Address == nil {
+	if i.Address == nil && i.Contract == nil && i.Status == nil &&
+		i.Owner == nil && i.UserId == nil && i.DesignerId == nil &&
+		i.PhotographerId == nil && i.PeopleIds == nil &&
+		i.Description == nil && i.Datetime == nil {
 		return errors.New("update structure has no values")
 	}
 	return nil

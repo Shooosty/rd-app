@@ -35,6 +35,7 @@ type Orders interface {
 
 type Persons interface {
 	GetAll() ([]models.Person, error)
+	GetAllByOrderId(orderId string) ([]models.Person, error)
 	Create(person models.Person) (string, error)
 	Delete(personId string) error
 	Update(personId string, input models.UpdatePersonInput) error

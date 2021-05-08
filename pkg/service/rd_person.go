@@ -17,6 +17,10 @@ func (s *PersonService) GetAll() ([]models.Person, error) {
 	return s.repo.GetAll()
 }
 
+func (s *PersonService) GetAllByOrderId(orderId string) ([]models.Person, error) {
+	return s.repo.GetAllByOrderId(orderId)
+}
+
 func (s *PersonService) Create(person models.Person) (string, error) {
 	return s.repo.Create(person)
 }

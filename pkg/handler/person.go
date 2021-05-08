@@ -22,6 +22,20 @@ func (h *Handler) getAllPersons(c *gin.Context) {
 	})
 }
 
+func (h *Handler) getAllByOrderId(c *gin.Context) {
+	id := c.Param("id")
+
+	persons, err := h.services.Persons.GetAllByOrderId(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, getAllPersonsResponse{
+		Data: persons,
+	})
+}
+
 func (h *Handler) createPerson(c *gin.Context) {
 	var input models.Person
 	if err := c.BindJSON(&input); err != nil {

@@ -20,6 +20,13 @@ func (r *PersonPostgres) GetAll() ([]models.Person, error) {
 	return persons, err
 }
 
+func (r *PersonPostgres) GetAllByOrderId(orderId string) ([]models.Person, error) {
+	var persons []models.Person
+	err := db.Table(ordersTable).Where("order_id = ?", orderId).Find(&persons).Error
+
+	return persons, err
+}
+
 func (r *PersonPostgres) Create(person models.Person) (string, error) {
 	err := db.Table(personsTable).Create(&person).Error
 

@@ -11,8 +11,8 @@ type Contract struct {
 	ID           string    `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
 	CreatedAt    time.Time `json:"createdAt"`
 	UpdatedAt    time.Time `json:"updateAt"`
-	Url          string    `json:"url"`
 	Size         int       `json:"size"`
+	Url          string    `json:"url"`
 	OriginalName string    `json:"originalName"`
 }
 

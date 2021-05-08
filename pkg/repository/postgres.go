@@ -34,5 +34,5 @@ func init() {
 	db = conn
 
 	//Миграция базы данных
-	db.Debug().AutoMigrate(&models.User{}, &models.Order{}, &models.Person{})
+	db.Debug().AutoMigrate(&models.User{}, &models.Order{}, &models.Person{}, &models.Photo{}, &models.Contract{})
 }

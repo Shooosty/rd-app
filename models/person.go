@@ -3,19 +3,20 @@ package models
 import (
 	"errors"
 	"github.com/jinzhu/gorm"
+	"github.com/lib/pq"
 	uuid "github.com/satori/go.uuid"
 	"time"
 )
 
 type Person struct {
-	ID          string    `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
-	CreatedAt   time.Time `json:"createdAt"`
-	UpdatedAt   time.Time `json:"updateAt"`
-	Description string    `json:"description"`
-	Name        string    `json:"name"`
-	Surname     string    `json:"surname"`
-	Url         string    `json:"url"`
-	MiddleName  string    `json:"middleName"`
+	ID          string          `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
+	CreatedAt   time.Time       `json:"createdAt"`
+	UpdatedAt   time.Time       `json:"updateAt"`
+	Description string          `json:"description"`
+	Name        string          `json:"name"`
+	Surname     string          `json:"surname"`
+	Photos      *pq.StringArray `sql:"type:text[]" json:"photos"`
+	MiddleName  string          `json:"middleName"`
 }
 
 func (person *Person) BeforeCreate(scope *gorm.Scope) error {

@@ -22,7 +22,7 @@ func (r *PersonPostgres) GetAll() ([]models.Person, error) {
 
 func (r *PersonPostgres) GetAllByOrderId(orderId string) ([]models.Person, error) {
 	var persons []models.Person
-	err := db.Table(ordersTable).Where("order_id = ?", orderId).Find(&persons).Error
+	err := db.Table(personsTable).Where("order_id = ?", orderId).Find(&persons).Error
 
 	return persons, err
 }

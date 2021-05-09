@@ -44,7 +44,7 @@ func UploadFileToS3(s *session.Session, file multipart.File, fileHeader *multipa
 }
 
 func uploadFile(c *gin.Context) {
-	maxSize := int64(400000000) // 50mb max
+	maxSize := int64(40000000) // 5mb max
 
 	err := c.Request.ParseMultipartForm(maxSize)
 	if err != nil {

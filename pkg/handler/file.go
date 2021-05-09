@@ -53,7 +53,7 @@ func uploadFile(c *gin.Context) {
 		logrus.Print("Image size is ok")
 	}
 
-	file, header, err := c.Request.FormFile("photo")
+	file, header, err := c.Request.FormFile("file")
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Could not get uploaded file")

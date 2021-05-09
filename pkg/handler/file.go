@@ -17,7 +17,7 @@ import (
 
 const (
 	AWS_S3_REGION = "eu-west-3"
-	AWS_S3_BUCKET = "rhinodesign-api-s3"
+	AWS_S3_BUCKET = "rhinodesign"
 )
 
 func UploadFileToS3(s *session.Session, file multipart.File, fileHeader *multipart.FileHeader) (string, error) {

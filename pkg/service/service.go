@@ -41,16 +41,11 @@ type Persons interface {
 	Update(personId string, input models.UpdatePersonInput) error
 }
 
-type Photos interface {
-	Create(photo models.Photo) (string, error)
-}
-
 type Service struct {
 	Authorization
 	Users
 	Orders
 	Persons
-	Photos
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -59,6 +54,5 @@ func NewService(repos *repository.Repository) *Service {
 		Users:         NewUserService(repos.Users),
 		Orders:        NewOrderService(repos.Orders),
 		Persons:       NewPersonService(repos.Persons),
-		Photos:        NewPhotoService(repos.Photos),
 	}
 }

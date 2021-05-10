@@ -37,16 +37,11 @@ type Persons interface {
 	Update(personId string, input models.UpdatePersonInput) error
 }
 
-type Photos interface {
-	Create(photo models.Photo) (string, error)
-}
-
 type Repository struct {
 	Authorization
 	Users
 	Orders
 	Persons
-	Photos
 }
 
 func NewRepository(db *gorm.DB) *Repository {
@@ -55,6 +50,5 @@ func NewRepository(db *gorm.DB) *Repository {
 		Users:         NewUserPostgres(db),
 		Orders:        NewOrderPostgres(db),
 		Persons:       NewPersonPostgres(db),
-		Photos:        NewPhotoPostgres(db),
 	}
 }

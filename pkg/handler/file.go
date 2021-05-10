@@ -82,7 +82,7 @@ func uploadFile(c *gin.Context) {
 		return
 	}
 
-	data := "https://renti-api-s3.s3.eu-west-3.amazonaws.com/" + fileName
+	data := "https://rhinodesign.s3.eu-west-3.amazonaws.com/" + fileName
 
 	c.JSON(http.StatusOK, File{
 		Url: data,

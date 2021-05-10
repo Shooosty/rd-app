@@ -9,20 +9,19 @@ import (
 )
 
 type Order struct {
-	ID             string         `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
-	CreatedAt      time.Time      `json:"createdAt"`
-	UpdatedAt      time.Time      `json:"updateAt"`
-	UserId         string         `json:"userId"`
-	Type           string         `json:"type"`
-	Address        string         `json:"address"`
-	Description    string         `json:"description"`
-	Owner          string         `json:"owner"`
-	DesignerId     string         `json:"designerId"`
-	Status         string         `json:"status"`
-	PeopleIds      pq.StringArray `sql:"type:text[]" json:"people"`
-	PhotographerId string         `json:"photographerId"`
-	Contract       string         `json:"contract"`
-	Datetime       string         `json:"datetime"`
+	ID             string    `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
+	CreatedAt      time.Time `json:"createdAt"`
+	UpdatedAt      time.Time `json:"updateAt"`
+	UserId         string    `json:"userId"`
+	Type           string    `json:"type"`
+	Address        string    `json:"address"`
+	Description    string    `json:"description"`
+	Owner          string    `json:"owner"`
+	DesignerId     string    `json:"designerId"`
+	Status         string    `json:"status"`
+	PhotographerId string    `json:"photographerId"`
+	Contract       string    `json:"contract"`
+	Datetime       string    `json:"datetime"`
 }
 
 func (order *Order) BeforeCreate(scope *gorm.Scope) error {
@@ -46,7 +45,7 @@ type UpdateOrderInput struct {
 func (i UpdateOrderInput) Validate() error {
 	if i.Address == nil && i.Contract == nil && i.Status == nil &&
 		i.Owner == nil && i.UserId == nil && i.DesignerId == nil &&
-		i.PhotographerId == nil && i.PeopleIds == nil &&
+		i.PhotographerId == nil &&
 		i.Description == nil && i.Datetime == nil {
 		return errors.New("update structure has no values")
 	}

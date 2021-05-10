@@ -66,6 +66,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		persons.DELETE("/:id", h.deletePerson)
 	}
 
+	photos := router.Group("/photos")
+	{
+		photos.POST("/", h.createPhoto)
+	}
+
 	files := router.Group("/files")
 	{
 		files.POST("/", uploadFile)

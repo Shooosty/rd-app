@@ -2,23 +2,26 @@ package handler
 
 import (
 	"bytes"
-	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
-	"mime/multipart"
-	"net/http"
-	"path/filepath"
-
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/gin-gonic/gin"
 	"github.com/globalsign/mgo/bson"
+	"github.com/sirupsen/logrus"
+	"mime/multipart"
+	"net/http"
+	"path/filepath"
 )
 
 const (
 	AWS_S3_REGION = "eu-west-3"
 	AWS_S3_BUCKET = "rhinodesign"
 )
+
+type File struct {
+	Url string `json:"url"`
+}
 
 func UploadFileToS3(s *session.Session, file multipart.File, fileHeader *multipart.FileHeader) (string, error) {
 
@@ -80,7 +83,8 @@ func uploadFile(c *gin.Context) {
 	}
 
 	data := "https://renti-api-s3.s3.eu-west-3.amazonaws.com/" + fileName
-	c.JSON(http.StatusOK, gin.H{
-		"filepath": data,
+
+	c.JSON(http.StatusOK, File{
+		Url: data,
 	})
 }

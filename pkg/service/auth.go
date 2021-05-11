@@ -42,10 +42,11 @@ func (s *AuthService) CreateEmployee(user models.User) (string, error) {
 	return s.repo.CreateEmployee(user, generatedPassword)
 }
 
-func (s *AuthService) ResetPassword(email string) error {
-	pass := generatePassword()
+func (s *AuthService) ResetPassword(email, password string) error {
+	generatedPassword := generatePassword()
+	password = generatePasswordHash(generatedPassword)
 
-	return s.repo.ResetPassword(email, generatePasswordHash(pass))
+	return s.repo.ResetPassword(email, password)
 }
 
 func (s *AuthService) ChangePassword(email, password, newPassword string) error {

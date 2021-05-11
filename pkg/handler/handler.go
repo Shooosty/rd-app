@@ -81,5 +81,10 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		designers.GET("/:id/orders", h.getAllForDesignerOrders)
 	}
 
+	mail := router.Group("/mail")
+	{
+		mail.POST("/new-order", h.sendNewOrderMessage)
+	}
+
 	return router
 }

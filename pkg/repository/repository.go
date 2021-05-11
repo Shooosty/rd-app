@@ -9,6 +9,8 @@ type Authorization interface {
 	CreateUser(user models.User) (string, error)
 	CreateEmployee(user models.User) (string, error)
 	GetUser(username, password string) (models.User, error)
+	ResetPassword(email, password string) error
+	ChangePassword(email, password, newPassword string) error
 }
 
 type Users interface {

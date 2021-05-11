@@ -6,6 +6,21 @@ import (
 	"net/http"
 )
 
+type signInInput struct {
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
+
+type changePasswordInput struct {
+	Email       string `json:"email" binding:"required"`
+	Password    string `json:"password" binding:"required"`
+	NewPassword string `json:"newPassword" binding:"required"`
+}
+
+type resetPasswordInput struct {
+	Email string `json:"email" binding:"required"`
+}
+
 // @Summary SignUp
 // @Tags auth
 // @Description create account
@@ -35,11 +50,6 @@ func (h *Handler) signUp(c *gin.Context) {
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"id": id,
 	})
-}
-
-type signInInput struct {
-	Email    string `json:"email" binding:"required"`
-	Password string `json:"password" binding:"required"`
 }
 
 // @Summary SignIn
@@ -92,7 +102,7 @@ func (h *Handler) signIn(c *gin.Context) {
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse
 // @Router /auth/sign-up [post]
-func (h *Handler) SignUpEmployee(c *gin.Context) {
+func (h *Handler) signUpEmployee(c *gin.Context) {
 	var input models.User
 
 	if err := c.BindJSON(&input); err != nil {
@@ -108,5 +118,43 @@ func (h *Handler) SignUpEmployee(c *gin.Context) {
 
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"id": id,
+	})
+}
+
+func (h *Handler) changePassword(c *gin.Context) {
+	var input changePasswordInput
+
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
+		return
+	}
+
+	err := h.services.Authorization.ChangePassword(input.Email, input.Password, input.NewPassword)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{
+		Status: "ok",
+	})
+}
+
+func (h *Handler) resetPassword(c *gin.Context) {
+	var input resetPasswordInput
+
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
+		return
+	}
+
+	err := h.services.Authorization.ResetPassword(input.Email)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{
+		Status: "ok",
 	})
 }

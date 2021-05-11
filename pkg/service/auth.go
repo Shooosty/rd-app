@@ -37,10 +37,20 @@ func (s *AuthService) CreateUser(user models.User) (string, error) {
 
 func (s *AuthService) CreateEmployee(user models.User) (string, error) {
 	password := generatePassword()
-	SendPasswordToEmployee(password, user.Name, user.Email)
 	user.Password = generatePasswordHash(password)
 
 	return s.repo.CreateEmployee(user)
+}
+
+func (s *AuthService) ResetPassword(email string) error {
+	pass := generatePassword()
+
+	return s.repo.ResetPassword(email, generatePasswordHash(pass))
+}
+
+func (s *AuthService) ChangePassword(email, password, newPassword string) error {
+
+	return s.repo.ChangePassword(email, password, generatePasswordHash(newPassword))
 }
 
 func (s *AuthService) GetCurrentUser(username, password string) (models.User, error) {
@@ -122,12 +132,4 @@ func generatePassword() string {
 	str := string(buf)
 
 	return str
-}
-
-func SendPasswordToEmployee(password string, name string, email string) {
-	subject := "Регистрация в личном кабинете"
-	text := "Ваш пароль для входа в кабинет: " + password
-	html := "<b>" + name + "," + "</b>" + "<p>" + "Ваш пароль для входа в кабинет: " + password + "<p>" + "</br>" +
-		"<p> Рекомендуем сменить пароль при первом входе в кабинет! </p>"
-	_ = SendMail(subject, text, html, name, email)
 }

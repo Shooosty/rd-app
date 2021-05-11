@@ -35,8 +35,10 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	auth := router.Group("/auth")
 	{
 		auth.POST("/sign-up", h.signUp)
-		auth.POST("/sign-up-employee", h.SignUpEmployee)
+		auth.POST("/sign-up-employee", h.signUpEmployee)
 		auth.POST("/sign-in", h.signIn)
+		auth.POST("/reset-password", h.resetPassword)
+		auth.POST("/change-password", h.changePassword)
 	}
 
 	users := router.Group("/users")

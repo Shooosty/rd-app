@@ -13,6 +13,8 @@ type Authorization interface {
 	GenerateToken(username, password string) (string, error)
 	GetCurrentUser(username, password string) (models.User, error)
 	ParseToken(token string) (string, error)
+	ResetPassword(email string) error
+	ChangePassword(email, password, newPassword string) error
 }
 
 type Users interface {

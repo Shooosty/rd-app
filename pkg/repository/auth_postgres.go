@@ -28,7 +28,7 @@ func (r *AuthPostgres) CreateUser(user models.User) (string, error) {
 	return result.ID, err
 }
 
-func (r *AuthPostgres) CreateEmployee(user models.User) (string, error) {
+func (r *AuthPostgres) CreateEmployee(user models.User, generatedPassword string) (string, error) {
 	type Result struct {
 		ID    string
 		Name  string
@@ -41,7 +41,7 @@ func (r *AuthPostgres) CreateEmployee(user models.User) (string, error) {
 	err := db.Table(usersTable).Create(&newUser).Scan(&result).Error
 
 	if err == nil {
-		SendPasswordToEmployee(user.Password, user.Name, user.Email)
+		SendPasswordToEmployee(generatedPassword, user.Name, user.Email)
 	}
 
 	return result.ID, err

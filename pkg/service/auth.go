@@ -36,10 +36,10 @@ func (s *AuthService) CreateUser(user models.User) (string, error) {
 }
 
 func (s *AuthService) CreateEmployee(user models.User) (string, error) {
-	password := generatePassword()
-	user.Password = generatePasswordHash(password)
+	generatedPassword := generatePassword()
+	user.Password = generatePasswordHash(generatedPassword)
 
-	return s.repo.CreateEmployee(user)
+	return s.repo.CreateEmployee(user, generatedPassword)
 }
 
 func (s *AuthService) ResetPassword(email string) error {

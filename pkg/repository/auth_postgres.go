@@ -54,7 +54,7 @@ func (r *AuthPostgres) ResetPassword(email, password string) error {
 	err := db.Table(usersTable).Where("email = ?", email).Updates(&user.PasswordHash).Error
 
 	if err == nil {
-		SendPasswordToEmployee(user.Password, user.Name, user.Email)
+		SendRestoredPassword(user.Password, user.Email)
 	}
 
 	return err
@@ -78,12 +78,4 @@ func (r *AuthPostgres) GetUser(email, password string) (models.User, error) {
 	err := db.Table(usersTable).Where("email = ? AND password_hash = ?", email, password).Find(&user).Error
 
 	return user, err
-}
-
-func SendPasswordToEmployee(password string, name string, email string) {
-	subject := "Регистрация в личном кабинете"
-	text := "Ваш пароль для входа в кабинет: " + password
-	html := "<b>" + name + "," + "</b>" + "<p>" + "Ваш пароль для входа в кабинет: " + password + "<p>" + "</br>" +
-		"<p> Рекомендуем сменить пароль при первом входе в кабинет! </p>"
-	_ = SendMail(subject, text, html, name, email)
 }

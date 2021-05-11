@@ -61,3 +61,20 @@ func SendMail(subject string, text string, html string, name string, email strin
 
 	return err
 }
+
+func SendPasswordToEmployee(password string, name string, email string) {
+	subject := "Регистрация в личном кабинете"
+	text := "Ваш пароль для входа в кабинет: " + password
+	html := "<b>" + name + "," + "</b>" + "<p>" + "Ваш пароль для входа в кабинет: " + password + "<p>" + "</br>" +
+		"<p> Рекомендуем сменить пароль при первом входе в кабинет! </p>"
+	_ = SendMail(subject, text, html, name, email)
+}
+
+func SendRestoredPassword(password string, email string) {
+	name := "Уважаемый пользователь"
+	subject := "Восстановление пароля"
+	text := "Ваш пароль для входа в кабинет: " + password
+	html := "<b>" + name + "," + "</b>" + "<p>" + "Ваш пароль для входа в кабинет: " + password + "<p>" + "</br>" +
+		"<p> Рекомендуем сменить пароль при первом входе в кабинет! </p>"
+	_ = SendMail(subject, text, name, html, email)
+}

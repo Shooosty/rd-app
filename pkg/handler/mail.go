@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/shooosty/rd-app/pkg/service"
+	"github.com/shooosty/rd-app/pkg/repository"
 	"net/http"
 )
 
@@ -23,7 +23,7 @@ func (h *Handler) sendNewOrderMessage(c *gin.Context) {
 	text := "У вас новый заказ на платформе lk.rhinodesign.ru"
 	html := "<b>" + input.Name + "," + "</b>" + "<p>" + "У вас новый заказ на платформе lk.rhinodesign.ru" + "<p>" + "</br>"
 
-	_ = service.SendMail(subject, text, html, input.Name, input.Email)
+	_ = repository.SendMail(subject, text, html, input.Name, input.Email)
 
 	c.JSON(http.StatusOK, statusResponse{
 		Status: "ok",

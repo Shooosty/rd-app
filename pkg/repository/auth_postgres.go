@@ -3,7 +3,6 @@ package repository
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/shooosty/rd-app/models"
-	"github.com/shooosty/rd-app/pkg/service"
 )
 
 type AuthPostgres struct {
@@ -86,5 +85,5 @@ func SendPasswordToEmployee(password string, name string, email string) {
 	text := "Ваш пароль для входа в кабинет: " + password
 	html := "<b>" + name + "," + "</b>" + "<p>" + "Ваш пароль для входа в кабинет: " + password + "<p>" + "</br>" +
 		"<p> Рекомендуем сменить пароль при первом входе в кабинет! </p>"
-	_ = service.SendMail(subject, text, html, name, email)
+	_ = SendMail(subject, text, html, name, email)
 }

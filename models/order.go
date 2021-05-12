@@ -3,7 +3,6 @@ package models
 import (
 	"errors"
 	"github.com/jinzhu/gorm"
-	"github.com/lib/pq"
 	uuid "github.com/satori/go.uuid"
 	"time"
 )
@@ -13,7 +12,7 @@ type Order struct {
 	CreatedAt      time.Time `json:"createdAt"`
 	UpdatedAt      time.Time `json:"updateAt"`
 	UserId         string    `json:"userId"`
-	Type           string    `json:"type"`
+	Number         int64     `json:"number"`
 	Address        string    `json:"address"`
 	Description    string    `json:"description"`
 	Owner          string    `json:"owner"`
@@ -30,16 +29,15 @@ func (order *Order) BeforeCreate(scope *gorm.Scope) error {
 }
 
 type UpdateOrderInput struct {
-	Address        *string         `json:"address"`
-	Status         *string         `json:"status"`
-	Owner          *string         `json:"owner"`
-	UserId         *string         `json:"userId"`
-	DesignerId     *string         `json:"designerId"`
-	PhotographerId *string         `json:"photographerId"`
-	PeopleIds      *pq.StringArray `sql:"type:text[]" json:"people"`
-	Contract       *string         `json:"contract"`
-	Datetime       *string         `json:"datetime"`
-	Description    *string         `json:"description"`
+	Address        *string `json:"address"`
+	Status         *string `json:"status"`
+	Owner          *string `json:"owner"`
+	UserId         *string `json:"userId"`
+	DesignerId     *string `json:"designerId"`
+	PhotographerId *string `json:"photographerId"`
+	Contract       *string `json:"contract"`
+	Datetime       *string `json:"datetime"`
+	Description    *string `json:"description"`
 }
 
 func (i UpdateOrderInput) Validate() error {

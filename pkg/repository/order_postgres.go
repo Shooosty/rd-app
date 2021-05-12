@@ -23,17 +23,14 @@ func (r *OrderPostgres) GetAll() ([]models.Order, error) {
 func (r *OrderPostgres) Create(order models.Order) (string, error) {
 	err := db.Table(ordersTable).Create(&order).Error
 	if err != nil {
-		var userEmail string
-		_ = db.Table(usersTable).Select("email").Where("id = ?", order.UserId).Find(&userEmail)
-		SendNewOrderCreated(userEmail)
+		user, _ := r.GetUserById(order.UserId)
+		SendNewOrderCreated(user.Email)
 
-		var photographerEmail string
-		_ = db.Table(usersTable).Select("email").Where("id = ?", order.PhotographerId).Find(&photographerEmail)
-		SendNewOrderCreated(photographerEmail)
+		photographer, _ := r.GetUserById(order.PhotographerId)
+		SendNewOrderCreated(photographer.Email)
 
-		var designerEmail string
-		_ = db.Table(usersTable).Select("email").Where("id = ?", order.DesignerId).Find(&designerEmail)
-		SendNewOrderCreated(designerEmail)
+		designer, _ := r.GetUserById(order.DesignerId)
+		SendNewOrderCreated(designer.Email)
 	}
 
 	return order.ID, err
@@ -78,4 +75,11 @@ func (r *OrderPostgres) Update(orderId string, input models.UpdateOrderInput) er
 	err := db.Table(ordersTable).Where("id = ?", orderId).Updates(&input).Error
 
 	return err
+}
+
+func (r *OrderPostgres) GetUserById(userId string) (models.User, error) {
+	var user models.User
+	err := db.Table(usersTable).Where("id = ?", userId).Find(&user).Error
+
+	return user, err
 }

@@ -29,6 +29,7 @@ type Orders interface {
 	GetById(orderId string) (models.Order, error)
 	Delete(orderId string) error
 	Update(orderId string, input models.UpdateOrderInput) error
+	GetUserById(userId string) (models.User, error)
 }
 
 type Persons interface {

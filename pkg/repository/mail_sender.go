@@ -71,10 +71,10 @@ func SendPasswordToEmployee(password string, name string, email string) {
 }
 
 func SendRestoredPassword(password string, email string) {
-	name := "Уважаемый пользователь"
 	subject := "Восстановление пароля"
 	text := "Ваш пароль для входа в кабинет: " + password
-	html := "<b>" + name + "," + "</b>" + "<p>" + "Ваш пароль для входа в кабинет: " + password + "<p>" + "</br>" +
+	html := "<b>" + "Уважаемый пользователь" + "," + "</b>" + "<p>" + "Ваш пароль для входа в кабинет: " + password + "<p>" + "</br>" +
 		"<p> Рекомендуем сменить пароль при первом входе в кабинет! </p>"
-	_ = SendMail(subject, text, name, html, email)
+	name := "Уважаемый пользователь"
+	_ = SendMail(subject, text, html, name, email)
 }

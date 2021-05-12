@@ -59,14 +59,6 @@ func (r *AuthPostgres) ResetPassword(input models.ResetPasswordInput, newPasswor
 	return err
 }
 
-func (r *AuthPostgres) ChangePassword(input models.ChangePasswordInput) error {
-	updatedUser := models.User{PasswordHash: input.NewPassword}
-
-	err := db.Table(usersTable).Where("email = ? AND password_hash = ?", input.Email, input.Password).Updates(&updatedUser).Error
-
-	return err
-}
-
 func (r *AuthPostgres) GetUser(email, password string) (models.User, error) {
 	var user models.User
 	err := db.Table(usersTable).Where("email = ? AND password_hash = ?", email, password).Find(&user).Error

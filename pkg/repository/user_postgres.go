@@ -39,3 +39,11 @@ func (r *UserPostgres) Update(userId string, input models.UpdateUserInput) error
 
 	return err
 }
+
+func (r *UserPostgres) ChangePassword(userId string, input models.ChangePasswordInput) error {
+	updatedUser := models.User{PasswordHash: input.NewPassword}
+
+	err := db.Table(usersTable).Where("id = ? AND password_hash = ?", userId, input.Password).Updates(&updatedUser).Error
+
+	return err
+}

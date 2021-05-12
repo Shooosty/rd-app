@@ -48,12 +48,6 @@ func (s *AuthService) ResetPassword(input models.ResetPasswordInput) error {
 	return s.repo.ResetPassword(input, generatePasswordHash(generatedPassword), generatedPassword)
 }
 
-func (s *AuthService) ChangePassword(input models.ChangePasswordInput) error {
-	input.NewPassword = generatePasswordHash(input.NewPassword)
-
-	return s.repo.ChangePassword(input)
-}
-
 func (s *AuthService) GetCurrentUser(username, password string) (models.User, error) {
 	user, err := s.repo.GetUser(username, generatePasswordHash(password))
 	if err != nil {

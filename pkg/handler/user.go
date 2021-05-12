@@ -81,6 +81,26 @@ func (h *Handler) updateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, statusResponse{"ok"})
 }
 
+func (h *Handler) changePassword(c *gin.Context) {
+	id := c.Param("id")
+	var input models.ChangePasswordInput
+
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
+		return
+	}
+
+	err := h.services.Users.ChangePassword(id, input)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{
+		Status: "ok",
+	})
+}
+
 func (h *Handler) deleteUser(c *gin.Context) {
 	id := c.Param("id")
 

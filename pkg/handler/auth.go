@@ -111,25 +111,6 @@ func (h *Handler) signUpEmployee(c *gin.Context) {
 	})
 }
 
-func (h *Handler) changePassword(c *gin.Context) {
-	var input models.ChangePasswordInput
-
-	if err := c.BindJSON(&input); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
-		return
-	}
-
-	err := h.services.Authorization.ChangePassword(input)
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	c.JSON(http.StatusOK, statusResponse{
-		Status: "ok",
-	})
-}
-
 func (h *Handler) resetPassword(c *gin.Context) {
 	var input models.ResetPasswordInput
 

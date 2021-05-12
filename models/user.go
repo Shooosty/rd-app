@@ -30,7 +30,6 @@ type UpdateUserInput struct {
 }
 
 type ChangePasswordInput struct {
-	Email       string `json:"email" binding:"required"`
 	Password    string `json:"password" binding:"required"`
 	NewPassword string `json:"newPassword" binding:"required"`
 }

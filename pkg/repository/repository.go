@@ -10,7 +10,6 @@ type Authorization interface {
 	CreateEmployee(user models.User, generatedPassword string) (string, error)
 	GetUser(username, password string) (models.User, error)
 	ResetPassword(input models.ResetPasswordInput, newPassword string, generatedPassword string) error
-	ChangePassword(input models.ChangePasswordInput) error
 }
 
 type Users interface {
@@ -18,6 +17,7 @@ type Users interface {
 	GetById(userId string) (models.User, error)
 	Delete(userId string) error
 	Update(userId string, input models.UpdateUserInput) error
+	ChangePassword(userId string, input models.ChangePasswordInput) error
 }
 
 type Orders interface {

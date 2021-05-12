@@ -22,7 +22,7 @@ func (r *OrderPostgres) GetAll() ([]models.Order, error) {
 
 func (r *OrderPostgres) Create(order models.Order) (string, error) {
 	err := db.Table(ordersTable).Create(&order).Error
-	if err != nil {
+	if err == nil {
 		user, _ := r.GetUserById(order.UserId)
 		SendNewOrderCreated(user.Email)
 

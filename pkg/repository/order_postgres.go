@@ -22,6 +22,19 @@ func (r *OrderPostgres) GetAll() ([]models.Order, error) {
 
 func (r *OrderPostgres) Create(order models.Order) (string, error) {
 	err := db.Table(ordersTable).Create(&order).Error
+	if err != nil {
+		var userEmail string
+		_ = db.Table(usersTable).Select("email").Where("id = ?", order.UserId).Find(&userEmail)
+		SendNewOrderCreated(userEmail)
+
+		var photographerEmail string
+		_ = db.Table(usersTable).Select("email").Where("id = ?", order.PhotographerId).Find(&photographerEmail)
+		SendNewOrderCreated(photographerEmail)
+
+		var designerEmail string
+		_ = db.Table(usersTable).Select("email").Where("id = ?", order.DesignerId).Find(&designerEmail)
+		SendNewOrderCreated(designerEmail)
+	}
 
 	return order.ID, err
 }

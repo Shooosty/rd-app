@@ -78,3 +78,11 @@ func SendRestoredPassword(password string, email string) {
 	name := "Уважаемый пользователь"
 	_ = SendMail(subject, text, html, name, email)
 }
+
+func SendNewOrderCreated(email string) {
+	subject := "Новый заказ"
+	text := "У вас новый заказ"
+	html := "<b>" + "Уважаемый пользователь" + "," + "</b>" + "У вас новый заказ на платформе lk.rhinodesign.ru" + "<p>" + "</br>"
+	name := "Уважаемый пользователь"
+	_ = SendMail(subject, text, html, name, email)
+}

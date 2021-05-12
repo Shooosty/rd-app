@@ -12,7 +12,7 @@ type Order struct {
 	CreatedAt      time.Time `json:"createdAt"`
 	UpdatedAt      time.Time `json:"updateAt"`
 	UserId         string    `json:"userId"`
-	Number         uint      `json:"number"`
+	Number         int       `json:"number"`
 	Address        string    `json:"address"`
 	Description    string    `json:"description"`
 	Owner          string    `json:"owner"`

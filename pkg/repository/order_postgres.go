@@ -24,13 +24,13 @@ func (r *OrderPostgres) Create(order models.Order) (string, error) {
 	err := db.Table(ordersTable).Create(&order).Error
 	if err == nil {
 		user, _ := r.GetUserById(order.UserId)
-		SendNewOrderCreated(user.Email)
+		SendNewOrderCreatedToClient(user.Email)
 
 		photographer, _ := r.GetUserById(order.PhotographerId)
-		SendNewOrderCreated(photographer.Email)
+		SendNewOrderCreatedToEmployee(photographer.Email)
 
 		designer, _ := r.GetUserById(order.DesignerId)
-		SendNewOrderCreated(designer.Email)
+		SendNewOrderCreatedToEmployee(designer.Email)
 	}
 
 	return order.ID, err

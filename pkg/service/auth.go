@@ -42,16 +42,16 @@ func (s *AuthService) CreateEmployee(user models.User) (string, error) {
 	return s.repo.CreateEmployee(user, generatedPassword)
 }
 
-func (s *AuthService) ResetPassword(email, password string) error {
+func (s *AuthService) ResetPassword(input models.ResetPasswordInput) error {
 	generatedPassword := generatePassword()
-	password = generatePasswordHash(generatedPassword)
 
-	return s.repo.ResetPassword(email, password)
+	return s.repo.ResetPassword(input, generatePasswordHash(generatedPassword), generatedPassword)
 }
 
-func (s *AuthService) ChangePassword(email, password, newPassword string) error {
+func (s *AuthService) ChangePassword(input models.ChangePasswordInput) error {
+	input.NewPassword = generatePasswordHash(input.NewPassword)
 
-	return s.repo.ChangePassword(email, password, generatePasswordHash(newPassword))
+	return s.repo.ChangePassword(input)
 }
 
 func (s *AuthService) GetCurrentUser(username, password string) (models.User, error) {

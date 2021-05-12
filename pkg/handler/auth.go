@@ -11,16 +11,6 @@ type signInInput struct {
 	Password string `json:"password" binding:"required"`
 }
 
-type changePasswordInput struct {
-	Email       string `json:"email" binding:"required"`
-	Password    string `json:"password" binding:"required"`
-	NewPassword string `json:"newPassword" binding:"required"`
-}
-
-type resetPasswordInput struct {
-	Email string `json:"email" binding:"required"`
-}
-
 // @Summary SignUp
 // @Tags auth
 // @Description create account
@@ -122,14 +112,14 @@ func (h *Handler) signUpEmployee(c *gin.Context) {
 }
 
 func (h *Handler) changePassword(c *gin.Context) {
-	var input changePasswordInput
+	var input models.ChangePasswordInput
 
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
 		return
 	}
 
-	err := h.services.Authorization.ChangePassword(input.Email, input.Password, input.NewPassword)
+	err := h.services.Authorization.ChangePassword(input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -141,14 +131,14 @@ func (h *Handler) changePassword(c *gin.Context) {
 }
 
 func (h *Handler) resetPassword(c *gin.Context) {
-	var input resetPasswordInput
+	var input models.ResetPasswordInput
 
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
 		return
 	}
 
-	err := h.services.Authorization.ResetPassword(input.Email)
+	err := h.services.Authorization.ResetPassword(input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

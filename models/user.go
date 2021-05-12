@@ -29,6 +29,16 @@ type UpdateUserInput struct {
 	Phone *string `json:"phone"`
 }
 
+type ChangePasswordInput struct {
+	Email       string `json:"email" binding:"required"`
+	Password    string `json:"password" binding:"required"`
+	NewPassword string `json:"newPassword" binding:"required"`
+}
+
+type ResetPasswordInput struct {
+	Email string `json:"email" binding:"required"`
+}
+
 func (i UpdateUserInput) Validate() error {
 	if i.Name == nil && i.Phone == nil {
 		return errors.New("update structure has no values")

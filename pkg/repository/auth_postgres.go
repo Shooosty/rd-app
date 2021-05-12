@@ -47,28 +47,22 @@ func (r *AuthPostgres) CreateEmployee(user models.User, generatedPassword string
 	return result.ID, err
 }
 
-func (r *AuthPostgres) ResetPassword(email, password string) error {
-	var user models.User
-	user.PasswordHash = password
+func (r *AuthPostgres) ResetPassword(input models.ResetPasswordInput, newPassword string, generatedPassword string) error {
+	updatedUser := models.User{PasswordHash: newPassword}
 
-	err := db.Table(usersTable).Where("email = ?", email).Updates(&user.PasswordHash).Error
+	err := db.Table(usersTable).Where("email = ?", input.Email).Updates(&updatedUser).Error
 
 	if err == nil {
-		SendRestoredPassword(user.Password, user.Email)
+		SendRestoredPassword(generatedPassword, input.Email)
 	}
 
 	return err
 }
 
-func (r *AuthPostgres) ChangePassword(email, password, newPassword string) error {
-	var user models.User
-	user.PasswordHash = newPassword
+func (r *AuthPostgres) ChangePassword(input models.ChangePasswordInput) error {
+	updatedUser := models.User{PasswordHash: input.NewPassword}
 
-	err := db.Table(usersTable).Where("email = ? AND password_hash = ?", email, password).Updates(&user.PasswordHash).Error
-
-	if err == nil {
-		SendPasswordToEmployee(user.Password, user.Name, user.Email)
-	}
+	err := db.Table(usersTable).Where("email = ? AND password_hash = ?", input.Email, input.Password).Updates(&updatedUser).Error
 
 	return err
 }

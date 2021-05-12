@@ -12,7 +12,7 @@ type Order struct {
 	CreatedAt      time.Time `json:"createdAt"`
 	UpdatedAt      time.Time `json:"updateAt"`
 	UserId         string    `json:"userId"`
-	Number         int64     `json:"number"`
+	Number         int64     `gorm:"primaryKey;autoIncrement:true" json:"number"`
 	Address        string    `json:"address"`
 	Description    string    `json:"description"`
 	Owner          string    `json:"owner"`

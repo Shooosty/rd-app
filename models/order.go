@@ -12,7 +12,6 @@ type Order struct {
 	CreatedAt      time.Time `json:"createdAt"`
 	UpdatedAt      time.Time `json:"updateAt"`
 	UserId         string    `json:"userId"`
-	Number         int       `sql:"type:serial" json:"number"`
 	Address        string    `json:"address"`
 	Description    string    `json:"description"`
 	Owner          string    `json:"owner"`

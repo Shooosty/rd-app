@@ -33,6 +33,7 @@ func (s *UserService) Update(userId string, input models.UpdateUserInput) error 
 }
 
 func (s *UserService) ChangePassword(userId string, input models.ChangePasswordInput) error {
+	input.Password = generatePasswordHash(input.Password)
 	input.NewPassword = generatePasswordHash(input.NewPassword)
 
 	return s.repo.ChangePassword(userId, input)

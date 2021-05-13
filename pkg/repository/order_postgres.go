@@ -45,14 +45,14 @@ func (r *OrderPostgres) GetAllForUser(userId string) ([]models.Order, error) {
 
 func (r *OrderPostgres) GetAllForPhotographer(photographerId string) ([]models.Order, error) {
 	var orders []models.Order
-	err := db.Table(ordersTable).Where("photographer_id = ?", photographerId).Find(&orders).Error
+	err := db.Table(ordersTable).Where("photographer_id = ? AND owner = photographer", photographerId).Find(&orders).Error
 
 	return orders, err
 }
 
 func (r *OrderPostgres) GetAllForDesigner(designerId string) ([]models.Order, error) {
 	var orders []models.Order
-	err := db.Table(ordersTable).Where("designer_id = ?", designerId).Find(&orders).Error
+	err := db.Table(ordersTable).Where("designer_id = ? AND owner = designer", designerId).Find(&orders).Error
 
 	return orders, err
 }

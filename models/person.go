@@ -16,6 +16,7 @@ type Person struct {
 	Description string          `json:"description"`
 	Name        string          `json:"name"`
 	Surname     string          `json:"surname"`
+	Type        string          `json:"type"`
 	Photos      *pq.StringArray `sql:"type:text[]" json:"photos"`
 	MiddleName  string          `json:"middleName"`
 }

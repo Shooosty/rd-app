@@ -117,6 +117,7 @@ func downloadFile(c *gin.Context) {
 	}
 
 	downloader := s3manager.NewDownloader(s)
+
 	_, err = downloader.Download(f, &s3.GetObjectInput{
 		Bucket: aws.String(AWS_S3_BUCKET),
 		Key:    aws.String(name.FileName),
@@ -125,4 +126,6 @@ func downloadFile(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, "Could not download file")
 		return
 	}
+
+	c.JSON(http.StatusOK, f)
 }

@@ -25,6 +25,10 @@ type File struct {
 	Url string `json:"url"`
 }
 
+type Name struct {
+	FileName string `json:"fileName"`
+}
+
 func UploadFileToS3(s *session.Session, file multipart.File, fileHeader *multipart.FileHeader) (string, error) {
 
 	size := fileHeader.Size
@@ -92,8 +96,8 @@ func uploadFile(c *gin.Context) {
 }
 
 func downloadFile(c *gin.Context) {
-	var fileName string
-	if err := c.BindJSON(&fileName); err != nil {
+	var name Name
+	if err := c.BindJSON(&name); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -106,7 +110,7 @@ func downloadFile(c *gin.Context) {
 			""),
 	})
 
-	f, err := os.Create(fileName)
+	f, err := os.Create(name.FileName)
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Could not download file")
 		return
@@ -115,7 +119,7 @@ func downloadFile(c *gin.Context) {
 	downloader := s3manager.NewDownloader(s)
 	_, err = downloader.Download(f, &s3.GetObjectInput{
 		Bucket: aws.String(AWS_S3_BUCKET),
-		Key:    aws.String(fileName),
+		Key:    aws.String(name.FileName),
 	})
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Could not download file")

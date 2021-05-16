@@ -6,11 +6,13 @@ import (
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/gin-gonic/gin"
 	"github.com/globalsign/mgo/bson"
 	"github.com/sirupsen/logrus"
 	"mime/multipart"
 	"net/http"
+	"os"
 	"path/filepath"
 )
 
@@ -87,4 +89,36 @@ func uploadFile(c *gin.Context) {
 	c.JSON(http.StatusOK, File{
 		Url: data,
 	})
+}
+
+func downloadFile(c *gin.Context) {
+	var fileName string
+	if err := c.BindJSON(&fileName); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	s, err := session.NewSession(&aws.Config{
+		Region: aws.String(AWS_S3_REGION),
+		Credentials: credentials.NewStaticCredentials(
+			"AKIAZ4EXIBF2T6T7UB64",
+			"qqBiCHLMG7Nn9rGaIueZwnNxyBwiOGMw0AdK0UUn",
+			""),
+	})
+
+	f, err := os.Create(fileName)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "Could not download file")
+		return
+	}
+
+	downloader := s3manager.NewDownloader(s)
+	_, err = downloader.Download(f, &s3.GetObjectInput{
+		Bucket: aws.String(AWS_S3_BUCKET),
+		Key:    aws.String(fileName),
+	})
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "Could not download file")
+		return
+	}
 }

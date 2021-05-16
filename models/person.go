@@ -17,7 +17,7 @@ type Person struct {
 	Name        string    `json:"name"`
 	Surname     string    `json:"surname"`
 	Type        string    `json:"type"`
-	Photos      Photos    `sql:"type:text[]" json:"photos"`
+	Photos      Photos    `json:"photos"`
 	MiddleName  string    `json:"middleName"`
 }
 

@@ -3,7 +3,6 @@ package models
 import (
 	"errors"
 	"github.com/jinzhu/gorm"
-	"github.com/jinzhu/gorm/dialects/postgres"
 	uuid "github.com/satori/go.uuid"
 	"time"
 )
@@ -34,12 +33,12 @@ type Photos struct {
 }
 
 type UpdatePersonInput struct {
-	Name        *string         `json:"name"`
-	Surname     *string         `json:"surname"`
-	MiddleName  *string         `json:"middleName"`
-	Type        *string         `json:"type"`
-	Description *string         `json:"description"`
-	Photos      *postgres.Jsonb `json:"photos"`
+	Name        *string   `json:"name"`
+	Surname     *string   `json:"surname"`
+	MiddleName  *string   `json:"middleName"`
+	Type        *string   `json:"type"`
+	Description *string   `json:"description"`
+	Photos      *[]Photos `json:"photos"`
 }
 
 func (i UpdatePersonInput) Validate() error {

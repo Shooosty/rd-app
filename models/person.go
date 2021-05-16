@@ -16,7 +16,7 @@ type Person struct {
 	Name        string    `json:"name"`
 	Surname     string    `json:"surname"`
 	Type        string    `json:"type"`
-	Photos      []Photos  `sql:"type:jsonb[]" json:"photos"`
+	Photos      []string  `sql:"type:text[]" json:"photos"`
 	MiddleName  string    `json:"middleName"`
 }
 
@@ -25,20 +25,13 @@ func (person *Person) BeforeCreate(scope *gorm.Scope) error {
 	return nil
 }
 
-type Photos struct {
-	Name string `json:"name"`
-	Size int    `json:"size"`
-	Type string `json:"type"`
-	Url  string `json:"url"`
-}
-
 type UpdatePersonInput struct {
 	Name        *string   `json:"name"`
 	Surname     *string   `json:"surname"`
 	MiddleName  *string   `json:"middleName"`
 	Type        *string   `json:"type"`
 	Description *string   `json:"description"`
-	Photos      *[]Photos `json:"photos"`
+	Photos      *[]string `json:"photos"`
 }
 
 func (i UpdatePersonInput) Validate() error {

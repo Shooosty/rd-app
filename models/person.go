@@ -27,7 +27,7 @@ func (person *Person) BeforeCreate(scope *gorm.Scope) error {
 
 type Photos struct {
 	Name string `json:"name"`
-	Size string `json:"size"`
+	Size int    `json:"size"`
 	Type string `json:"type"`
 	Url  string `json:"url"`
 }

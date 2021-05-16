@@ -95,11 +95,11 @@ func uploadFile(c *gin.Context) {
 	})
 }
 
-func downloadFile(c *gin.Context) {
+func downloadFile(c *gin.Context) *os.File {
 	var name Name
 	if err := c.BindJSON(&name); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
-		return
+		return nil
 	}
 
 	s, err := session.NewSession(&aws.Config{
@@ -110,22 +110,22 @@ func downloadFile(c *gin.Context) {
 			""),
 	})
 
-	f, err := os.Create(name.FileName)
+	file, err := os.Create(name.FileName)
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Could not download file")
-		return
+		return nil
 	}
 
 	downloader := s3manager.NewDownloader(s)
 
-	_, err = downloader.Download(f, &s3.GetObjectInput{
+	_, err = downloader.Download(file, &s3.GetObjectInput{
 		Bucket: aws.String(AWS_S3_BUCKET),
 		Key:    aws.String(name.FileName),
 	})
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Could not download file")
-		return
+		return nil
 	}
 
-	c.JSON(http.StatusOK, f)
+	return file
 }

@@ -71,7 +71,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	files := router.Group("/files")
 	{
 		files.POST("/", uploadFile)
-		files.POST("/download", downloadFile)
+		//files.POST("/download", downloadFile)
 	}
 
 	photographers := router.Group("/photographers")

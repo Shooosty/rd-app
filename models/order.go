@@ -9,7 +9,7 @@ import (
 
 type Order struct {
 	ID             string    `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
-	Number         uint      `sql:"type:serial"`
+	Number         uint      `sql:"type:serial" json:"number"`
 	CreatedAt      time.Time `json:"createdAt"`
 	UpdatedAt      time.Time `json:"updateAt"`
 	UserId         string    `json:"userId"`
@@ -41,7 +41,7 @@ type UpdateOrderInput struct {
 }
 
 func (i UpdateOrderInput) Validate() error {
-	if i.Address == nil && i.Contract == nil && i.Status == nil &&
+	if i.Address == nil && i.Status == nil &&
 		i.Owner == nil && i.UserId == nil && i.DesignerId == nil &&
 		i.PhotographerId == nil &&
 		i.Description == nil && i.Datetime == nil {

@@ -17,8 +17,8 @@ type Order struct {
 	Description    string    `json:"description"`
 	Owner          string    `json:"owner"`
 	DesignerId     string    `json:"designerId"`
-	Status         string    `json:"status"`
 	PhotographerId string    `json:"photographerId"`
+	Status         string    `json:"status"`
 	Contract       string    `json:"contract"`
 	Datetime       string    `json:"datetime"`
 }

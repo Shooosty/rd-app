@@ -9,7 +9,7 @@ import (
 
 type Order struct {
 	ID             string    `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
-	Number         int       `sql:"type:serial" json:"number"`
+	Number         uint64    `gorm:"primaryKey;autoIncrement:true" json:"number"`
 	CreatedAt      time.Time `json:"createdAt"`
 	UpdatedAt      time.Time `json:"updateAt"`
 	UserId         string    `json:"userId"`

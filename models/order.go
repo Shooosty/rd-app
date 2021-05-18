@@ -18,8 +18,8 @@ type Order struct {
 	Owner          string    `json:"owner"`
 	DesignerId     string    `json:"designerId"`
 	PhotographerId string    `json:"photographerId"`
-	Status         string    `json:"status"`
 	Contract       string    `json:"contract"`
+	Status         string    `json:"status"`
 	Datetime       string    `json:"datetime"`
 }
 

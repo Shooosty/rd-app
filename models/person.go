@@ -17,7 +17,7 @@ type Person struct {
 	Name        string    `json:"name"`
 	Surname     string    `json:"surname"`
 	Type        string    `json:"type"`
-	Photos      Photo     `json:"photos"`
+	Photos      Photo     `gorm:"embedded" json:"photos"`
 	//Photos      pq.StringArray `sql:"type:text[]" json:"photos"`
 	MiddleName string `json:"middleName"`
 }

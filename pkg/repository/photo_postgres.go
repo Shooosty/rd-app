@@ -22,7 +22,7 @@ func (r *PhotoPostgres) GetAll() ([]models.Photo, error) {
 
 func (r *PhotoPostgres) GetAllByPersonId(personId string) ([]models.Photo, error) {
 	var photos []models.Photo
-	err := db.Table(photosTable).Where("order_id = ?", personId).Find(&photos).Error
+	err := db.Table(photosTable).Where("person_id = ?", personId).Find(&photos).Error
 
 	return photos, err
 }

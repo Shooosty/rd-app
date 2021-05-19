@@ -43,11 +43,19 @@ type Persons interface {
 	Update(personId string, input models.UpdatePersonInput) error
 }
 
+type Photos interface {
+	GetAll() ([]models.Photo, error)
+	GetAllByPersonId(personId string) ([]models.Photo, error)
+	Create(photo models.Photo) (string, error)
+	Delete(photoId string) error
+}
+
 type Service struct {
 	Authorization
 	Users
 	Orders
 	Persons
+	Photos
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -55,6 +63,7 @@ func NewService(repos *repository.Repository) *Service {
 		Authorization: NewAuthService(repos.Authorization),
 		Users:         NewUserService(repos.Users),
 		Orders:        NewOrderService(repos.Orders),
+		Photos:        NewPhotoService(repos.Photos),
 		Persons:       NewPersonService(repos.Persons),
 	}
 }

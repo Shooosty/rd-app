@@ -71,6 +71,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	photos := router.Group("/photos")
 	{
 		photos.GET("/", h.getAllPhotos)
+		photos.GET("/:id", h.getPhotoById)
 		photos.POST("/", h.createPhoto)
 		photos.DELETE("/:id", h.deletePhoto)
 	}

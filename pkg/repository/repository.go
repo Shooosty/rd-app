@@ -43,6 +43,7 @@ type Persons interface {
 type Photos interface {
 	GetAll() ([]models.Photo, error)
 	Create(photo models.Photo) (string, error)
+	GetById(photoId string) (models.Photo, error)
 	Delete(photoId string) error
 }
 

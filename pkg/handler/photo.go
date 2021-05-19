@@ -14,6 +14,10 @@ type getAllPhotosResponse struct {
 	Data []models.Photo `json:"data"`
 }
 
+type getPhotoResponse struct {
+	Data models.Photo `json:"data"`
+}
+
 func (h *Handler) getAllPhotos(c *gin.Context) {
 	photos, err := h.services.Photos.GetAll()
 	if err != nil {
@@ -23,6 +27,20 @@ func (h *Handler) getAllPhotos(c *gin.Context) {
 
 	c.JSON(http.StatusOK, getAllPhotosResponse{
 		Data: photos,
+	})
+}
+
+func (h *Handler) getPhotoById(c *gin.Context) {
+	id := c.Param("id")
+
+	photo, err := h.services.Photos.GetById(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, getPhotoResponse{
+		Data: photo,
 	})
 }
 

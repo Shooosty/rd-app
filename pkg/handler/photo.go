@@ -85,7 +85,7 @@ func (h *Handler) createPhoto(c *gin.Context) {
 
 	input.Name = originalName
 	input.Url = url
-	input.Size = size
+	input.Size = size / 1024
 	input.PersonID = personId
 
 	id, err := h.services.Photos.Create(input)

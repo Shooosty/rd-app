@@ -10,7 +10,7 @@ type Photo struct {
 	PersonID string `json:"personId"`
 	Name     string `json:"name"`
 	Url      string `json:"url"`
-	Size     int64  `json:"surname"`
+	Size     int64  `json:"size"`
 	Type     string `json:"type"`
 }
 

@@ -26,23 +26,7 @@ func (h *Handler) getAllPhotos(c *gin.Context) {
 	})
 }
 
-func (h *Handler) getAllByPersonId(c *gin.Context) {
-	id := c.Param("id")
-
-	photos, err := h.services.Photos.GetAllByPersonId(id)
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	c.JSON(http.StatusOK, getAllPhotosResponse{
-		Data: photos,
-	})
-}
-
 func (h *Handler) createPhoto(c *gin.Context) {
-	personId := c.Param("id")
-
 	var input models.Photo
 
 	maxSize := int64(40000000) // 5mb max
@@ -86,7 +70,6 @@ func (h *Handler) createPhoto(c *gin.Context) {
 	input.Name = originalName
 	input.Url = url
 	input.Size = size / 1024
-	input.PersonID = personId
 
 	id, err := h.services.Photos.Create(input)
 	if err != nil {

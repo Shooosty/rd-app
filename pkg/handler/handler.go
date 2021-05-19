@@ -63,7 +63,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	persons := router.Group("/persons")
 	{
 		persons.GET("/", h.getAllPersons)
-		persons.GET("/:id/photos", h.getAllByPersonId)
 		persons.POST("/", h.createPerson)
 		persons.PUT("/:id", h.updatePerson)
 		persons.DELETE("/:id", h.deletePerson)
@@ -72,7 +71,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	photos := router.Group("/photos")
 	{
 		photos.GET("/", h.getAllPhotos)
-		photos.POST("/:id", h.createPhoto)
+		photos.POST("/", h.createPhoto)
 		photos.DELETE("/:id", h.deletePhoto)
 	}
 

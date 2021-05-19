@@ -6,12 +6,11 @@ import (
 )
 
 type Photo struct {
-	ID       string `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
-	PersonID string `json:"personId"`
-	Name     string `json:"name"`
-	Url      string `json:"url"`
-	Size     int64  `json:"size"`
-	Type     string `json:"type"`
+	ID   string `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
+	Name string `json:"name"`
+	Url  string `json:"url"`
+	Size int64  `json:"size"`
+	Type string `json:"type"`
 }
 
 func (person *Photo) BeforeCreate(scope *gorm.Scope) error {

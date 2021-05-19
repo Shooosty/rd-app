@@ -8,6 +8,7 @@ import (
 type Contract struct {
 	ID   string `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
 	Name string `json:"name"`
+	Url  string `json:"url"`
 	Size string `json:"surname"`
 	Type string `json:"type"`
 }

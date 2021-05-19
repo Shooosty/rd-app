@@ -41,6 +41,8 @@ func (h *Handler) getAllByPersonId(c *gin.Context) {
 }
 
 func (h *Handler) createPhoto(c *gin.Context) {
+	personId := c.Param("id")
+
 	var input models.Photo
 
 	maxSize := int64(40000000) // 5mb max
@@ -84,6 +86,7 @@ func (h *Handler) createPhoto(c *gin.Context) {
 	input.Name = originalName
 	input.Url = url
 	input.Size = size
+	input.PersonID = personId
 
 	id, err := h.services.Photos.Create(input)
 	if err != nil {

@@ -72,7 +72,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	photos := router.Group("/photos")
 	{
 		photos.GET("/", h.getAllPhotos)
-		photos.POST("/", h.createPhoto)
+		photos.POST("/:id", h.createPhoto)
 		photos.DELETE("/:id", h.deletePhoto)
 	}
 

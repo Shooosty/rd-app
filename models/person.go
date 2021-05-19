@@ -9,17 +9,16 @@ import (
 )
 
 type Person struct {
-	ID          string    `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
-	OrderId     string    `json:"orderId"`
-	CreatedAt   time.Time `json:"createdAt"`
-	UpdatedAt   time.Time `json:"updateAt"`
-	Description string    `json:"description"`
-	Name        string    `json:"name"`
-	Surname     string    `json:"surname"`
-	Type        string    `json:"type"`
-	Photos      Photo     `gorm:"embedded" json:"photos"`
-	//Photos      pq.StringArray `sql:"type:text[]" json:"photos"`
-	MiddleName string `json:"middleName"`
+	ID          string         `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
+	OrderId     string         `json:"orderId"`
+	CreatedAt   time.Time      `json:"createdAt"`
+	UpdatedAt   time.Time      `json:"updateAt"`
+	Description string         `json:"description"`
+	Name        string         `json:"name"`
+	Surname     string         `json:"surname"`
+	Type        string         `json:"type"`
+	PhotosIds   pq.StringArray `sql:"type:text[]" json:"photoIds"`
+	MiddleName  string         `json:"middleName"`
 }
 
 func (person *Person) BeforeCreate(scope *gorm.Scope) error {

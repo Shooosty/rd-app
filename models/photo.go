@@ -8,7 +8,7 @@ import (
 type Photo struct {
 	ID   string `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
 	Name string `json:"name"`
-	Size string `json:"surname"`
+	Size int    `json:"surname"`
 	Type string `json:"type"`
 }
 

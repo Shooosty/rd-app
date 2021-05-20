@@ -21,6 +21,10 @@ func (s *PhotoService) GetById(photoId string) (models.Photo, error) {
 	return s.repo.GetById(photoId)
 }
 
+func (s *PhotoService) getAllPhotosByPersonId(personId string) ([]models.Photo, error) {
+	return s.repo.GetAllPhotosByPersonId(personId)
+}
+
 func (s *PhotoService) Create(photo models.Photo) (string, error) {
 	return s.repo.Create(photo)
 }

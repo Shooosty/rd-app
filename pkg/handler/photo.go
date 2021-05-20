@@ -44,6 +44,20 @@ func (h *Handler) getPhotoById(c *gin.Context) {
 	})
 }
 
+func (h *Handler) getAllPhotosByPersonId(c *gin.Context) {
+	id := c.Param("id")
+
+	photos, err := h.services.Photos.GetAllPhotosByPersonId(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, getAllPhotosResponse{
+		Data: photos,
+	})
+}
+
 func (h *Handler) createPhoto(c *gin.Context) {
 	var input models.Photo
 

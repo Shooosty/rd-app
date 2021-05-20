@@ -21,7 +21,7 @@ func (s *PhotoService) GetById(photoId string) (models.Photo, error) {
 	return s.repo.GetById(photoId)
 }
 
-func (s *PhotoService) getAllPhotosByPersonId(personId string) ([]models.Photo, error) {
+func (s *PhotoService) GetAllPhotosByPersonId(personId string) ([]models.Photo, error) {
 	return s.repo.GetAllPhotosByPersonId(personId)
 }
 

@@ -27,7 +27,7 @@ func (r *PhotoPostgres) GetById(photoId string) (models.Photo, error) {
 	return photo, err
 }
 
-func (r *PhotoPostgres) getAllPhotosByPersonId(personId string) ([]models.Photo, error) {
+func (r *PhotoPostgres) GetAllPhotosByPersonId(personId string) ([]models.Photo, error) {
 	var photos []models.Photo
 	err := db.Table(photosTable).Where("person_id = ?", personId).Find(&photos).Error
 

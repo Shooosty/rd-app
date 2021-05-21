@@ -77,6 +77,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		photos.DELETE("/:id", h.deletePhoto)
 	}
 
+	contract := router.Group("/contracts")
+	{
+		contract.POST("/", h.createContract)
+	}
+
 	photographers := router.Group("/photographers")
 	{
 		photographers.GET("/:id/orders", h.getAllForPhotographerOrders)

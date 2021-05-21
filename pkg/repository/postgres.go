@@ -11,11 +11,10 @@ import (
 var db *gorm.DB
 
 const (
-	usersTable     = "users"
-	ordersTable    = "orders"
-	personsTable   = "persons"
-	photosTable    = "photos"
-	contractsTable = "contracts"
+	usersTable   = "users"
+	ordersTable  = "orders"
+	personsTable = "persons"
+	photosTable  = "photos"
 )
 
 func init() {
@@ -36,5 +35,5 @@ func init() {
 	db = conn
 
 	//Миграция баз данных
-	db.Debug().AutoMigrate(&models.User{}, &models.Order{}, &models.Person{}, &models.Photo{}, &models.Contract{})
+	db.Debug().AutoMigrate(&models.User{}, &models.Order{}, &models.Person{}, &models.Photo{})
 }

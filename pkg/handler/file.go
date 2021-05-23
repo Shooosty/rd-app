@@ -26,13 +26,15 @@ func UploadFileToS3(s *session.Session, file multipart.File, fileHeader *multipa
 	tempFileName := bson.NewObjectId().Hex() + filepath.Ext(originalName)
 
 	_, err := s3.New(s).PutObject(&s3.PutObjectInput{
-		Bucket:        aws.String(AWS_S3_BUCKET),
-		Key:           aws.String(tempFileName),
-		ACL:           aws.String("public-read"),
-		Body:          bytes.NewReader(buffer),
-		ContentLength: aws.Int64(size),
-		ContentType:   aws.String(http.DetectContentType(buffer)),
+		Bucket:             aws.String(AWS_S3_BUCKET),
+		Key:                aws.String(tempFileName),
+		ACL:                aws.String("public-read"),
+		Body:               bytes.NewReader(buffer),
+		ContentLength:      aws.Int64(size),
+		ContentType:        aws.String(http.DetectContentType(buffer)),
+		ContentDisposition: aws.String("attachment"),
 	})
+
 	if err != nil {
 		return "", "", 0, err
 	}

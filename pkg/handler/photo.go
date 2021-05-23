@@ -99,7 +99,7 @@ func (h *Handler) createPhoto(c *gin.Context) {
 		return
 	}
 
-	url := "https://rhinodesign.s3.eu-west-3.amazonaws.com/" + fileName
+	url := "https://www.rhinodesign.s3.eu-west-3.amazonaws.com/" + fileName
 
 	input.Name = originalName
 	input.Url = url

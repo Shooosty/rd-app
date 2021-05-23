@@ -41,25 +41,3 @@ func UploadFileToS3(s *session.Session, file multipart.File, fileHeader *multipa
 
 	return tempFileName, originalName, size, err
 }
-
-//func downloadFile(name Name) *os.File {
-//
-//	s, _ := session.NewSession(&aws.Config{
-//		Region: aws.String(AWS_S3_REGION),
-//		Credentials: credentials.NewStaticCredentials(
-//			"AKIAZ4EXIBF2T6T7UB64",
-//			"qqBiCHLMG7Nn9rGaIueZwnNxyBwiOGMw0AdK0UUn",
-//			""),
-//	})
-//
-//	file, _ := os.Create(name.FileName)
-//
-//	downloader := s3manager.NewDownloader(s)
-//
-//	_, _ = downloader.Download(file, &s3.GetObjectInput{
-//		Bucket: aws.String(AWS_S3_BUCKET),
-//		Key:    aws.String(name.FileName),
-//	})
-//
-//	return file
-//}

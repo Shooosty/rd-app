@@ -40,61 +40,64 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		auth.POST("/reset-password", h.resetPassword)
 	}
 
-	users := router.Group("/users")
+	api := router.Group("/api", h.userIdentity)
 	{
-		users.GET("/", h.getAllUsers)
-		users.GET("/:id", h.getUserById)
-		users.GET("/:id/orders", h.getAllForUserOrders)
-		users.PUT("/:id", h.updateUser)
-		users.PUT("/:id/change-password", h.changePassword)
-		users.DELETE("/:id", h.deleteUser)
-	}
+		users := api.Group("/users")
+		{
+			users.GET("/", h.getAllUsers)
+			users.GET("/:id", h.getUserById)
+			users.GET("/:id/orders", h.getAllForUserOrders)
+			users.PUT("/:id", h.updateUser)
+			users.PUT("/:id/change-password", h.changePassword)
+			users.DELETE("/:id", h.deleteUser)
+		}
 
-	orders := router.Group("/orders")
-	{
-		orders.GET("/", h.getAllOrders)
-		orders.GET("/:id", h.getOrderById)
-		orders.GET("/:id/persons", h.getAllByOrderId)
-		orders.POST("/", h.createOrder)
-		orders.PUT("/:id", h.updateOrder)
-		orders.DELETE("/:id", h.deleteOrder)
-	}
+		orders := api.Group("/orders")
+		{
+			orders.GET("/", h.getAllOrders)
+			orders.GET("/:id", h.getOrderById)
+			orders.GET("/:id/persons", h.getAllByOrderId)
+			orders.POST("/", h.createOrder)
+			orders.PUT("/:id", h.updateOrder)
+			orders.DELETE("/:id", h.deleteOrder)
+		}
 
-	persons := router.Group("/persons")
-	{
-		persons.GET("/", h.getAllPersons)
-		persons.GET("/:id/photos", h.getAllPhotosByPersonId)
-		persons.POST("/", h.createPerson)
-		persons.PUT("/:id", h.updatePerson)
-		persons.DELETE("/:id", h.deletePerson)
-	}
+		persons := api.Group("/persons")
+		{
+			persons.GET("/", h.getAllPersons)
+			persons.GET("/:id/photos", h.getAllPhotosByPersonId)
+			persons.POST("/", h.createPerson)
+			persons.PUT("/:id", h.updatePerson)
+			persons.DELETE("/:id", h.deletePerson)
+		}
 
-	photos := router.Group("/photos")
-	{
-		photos.GET("/", h.getAllPhotos)
-		photos.GET("/:id", h.getPhotoById)
-		photos.POST("/:id", h.createPhoto)
-		photos.DELETE("/:id", h.deletePhoto)
-	}
+		photos := api.Group("/photos")
+		{
+			photos.GET("/", h.getAllPhotos)
+			photos.GET("/:id", h.getPhotoById)
+			photos.POST("/:id", h.createPhoto)
+			photos.DELETE("/:id", h.deletePhoto)
+		}
 
-	contract := router.Group("/contracts")
-	{
-		contract.POST("/", h.createContract)
-	}
+		contract := api.Group("/contracts")
+		{
+			contract.POST("/", h.createContract)
+		}
 
-	photographers := router.Group("/photographers")
-	{
-		photographers.GET("/:id/orders", h.getAllForPhotographerOrders)
-	}
+		photographers := api.Group("/photographers")
+		{
+			photographers.GET("/:id/orders", h.getAllForPhotographerOrders)
+		}
 
-	designers := router.Group("/designers")
-	{
-		designers.GET("/:id/orders", h.getAllForDesignerOrders)
-	}
+		designers := api.Group("/designers")
+		{
+			designers.GET("/:id/orders", h.getAllForDesignerOrders)
+		}
 
-	mail := router.Group("/mail")
-	{
-		mail.POST("/new-order", h.sendNewOrderMessage)
+		mail := api.Group("/mail")
+		{
+			mail.POST("/new-order", h.sendNewOrderMessage)
+		}
 	}
 
 	return router

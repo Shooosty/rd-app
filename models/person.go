@@ -17,6 +17,7 @@ type Person struct {
 	Surname     string    `json:"surname"`
 	Type        string    `json:"type"`
 	MiddleName  string    `json:"middleName"`
+	PhotosCount int       `json:"photosCount"`
 }
 
 func (person *Person) BeforeCreate(scope *gorm.Scope) error {
@@ -30,11 +31,13 @@ type UpdatePersonInput struct {
 	MiddleName  *string `json:"middleName"`
 	Type        *string `json:"type"`
 	Description *string `json:"description"`
+	PhotosCount *int    `json:"photosCount"`
 }
 
 func (i UpdatePersonInput) Validate() error {
 	if i.Name == nil && i.Description == nil &&
-		i.MiddleName == nil && i.Surname == nil && i.Type == nil {
+		i.MiddleName == nil && i.Surname == nil &&
+		i.Type == nil && i.PhotosCount == nil {
 		return errors.New("update structure has no values")
 	}
 	return nil

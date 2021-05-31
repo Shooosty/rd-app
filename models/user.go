@@ -12,6 +12,7 @@ type User struct {
 	CreatedAt    time.Time `json:"createdAt"`
 	UpdatedAt    time.Time `json:"updateAt"`
 	Name         string    `json:"name" binding:"required"`
+	Surname      string    `json:"surname" binding:"required"`
 	Email        string    `json:"email" binding:"required"`
 	Phone        string    `json:"phone" binding:"required"`
 	Password     string    `json:"password" sql:"-"`
@@ -25,8 +26,9 @@ func (user *User) BeforeCreate(scope *gorm.Scope) error {
 }
 
 type UpdateUserInput struct {
-	Name  *string `json:"name"`
-	Phone *string `json:"phone"`
+	Name    *string `json:"name"`
+	Surname *string `json:"surname"`
+	Phone   *string `json:"phone"`
 }
 
 type ChangePasswordInput struct {
@@ -39,7 +41,7 @@ type ResetPasswordInput struct {
 }
 
 func (i UpdateUserInput) Validate() error {
-	if i.Name == nil && i.Phone == nil {
+	if i.Name == nil && i.Surname == nil && i.Phone == nil {
 		return errors.New("update structure has no values")
 	}
 

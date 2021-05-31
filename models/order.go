@@ -31,7 +31,7 @@ func (order *Order) BeforeCreate(scope *gorm.Scope) error {
 type UpdateOrderInput struct {
 	Address        *string `json:"address"`
 	Status         *string `json:"status"`
-	Number         *int    `json:"number"`
+	Number         *string `json:"number"`
 	Owner          *string `json:"owner"`
 	UserId         *string `json:"userId"`
 	DesignerId     *string `json:"designerId"`

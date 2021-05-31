@@ -16,6 +16,7 @@ type Person struct {
 	Name        string    `json:"name"`
 	Surname     string    `json:"surname"`
 	Type        string    `json:"type"`
+	Position    string    `json:"position"`
 	MiddleName  string    `json:"middleName"`
 	PhotosCount int       `json:"photosCount"`
 }
@@ -29,6 +30,7 @@ type UpdatePersonInput struct {
 	Name        *string `json:"name"`
 	Surname     *string `json:"surname"`
 	MiddleName  *string `json:"middleName"`
+	Position    *string `json:"position"`
 	Type        *string `json:"type"`
 	Description *string `json:"description"`
 	PhotosCount *int    `json:"photosCount"`
@@ -36,6 +38,7 @@ type UpdatePersonInput struct {
 
 func (i UpdatePersonInput) Validate() error {
 	if i.Name == nil && i.Description == nil &&
+		i.Position == nil &&
 		i.MiddleName == nil && i.Surname == nil &&
 		i.Type == nil && i.PhotosCount == nil {
 		return errors.New("update structure has no values")

@@ -9,7 +9,7 @@ import (
 
 type Order struct {
 	ID             string    `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
-	Number         int       `gorm:"primary_key" json:"number"`
+	Number         int       `json:"number"`
 	CreatedAt      time.Time `json:"createdAt"`
 	UpdatedAt      time.Time `json:"updateAt"`
 	UserId         string    `json:"userId"`
@@ -31,6 +31,7 @@ func (order *Order) BeforeCreate(scope *gorm.Scope) error {
 type UpdateOrderInput struct {
 	Address        *string `json:"address"`
 	Status         *string `json:"status"`
+	Number         *int    `json:"number"`
 	Owner          *string `json:"owner"`
 	UserId         *string `json:"userId"`
 	DesignerId     *string `json:"designerId"`
@@ -43,7 +44,7 @@ type UpdateOrderInput struct {
 func (i UpdateOrderInput) Validate() error {
 	if i.Address == nil && i.Status == nil &&
 		i.Owner == nil && i.UserId == nil && i.DesignerId == nil &&
-		i.PhotographerId == nil &&
+		i.PhotographerId == nil && i.Number == nil &&
 		i.Description == nil && i.Datetime == nil {
 		return errors.New("update structure has no values")
 	}

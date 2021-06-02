@@ -11,7 +11,7 @@ import (
 type Order struct {
 	ID             string         `sql:"type:uuid;primary_key;default:uuid_generate_v4()"`
 	Number         string         `json:"number"`
-	Sections       pq.StringArray `json:"sections"`
+	Sections       pq.StringArray `sql:"type: text[]" json:"sections"`
 	CreatedAt      time.Time      `json:"createdAt"`
 	UpdatedAt      time.Time      `json:"updateAt"`
 	UserId         string         `json:"userId"`

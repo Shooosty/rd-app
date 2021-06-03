@@ -7,8 +7,10 @@ import (
 	"net/http"
 )
 
-func (h *Handler) getAllBitrixOrders(c *gin.Context) {
-	resp, err := http.Get("https://rosfotoproekt.bitrix24.ru/rest/3872/cno5mh8afndjmbcw/crm.deal.list.json")
+func (h *Handler) getBitrixOrderByUserId(c *gin.Context) {
+	id := c.Param("id")
+
+	resp, err := http.Get("https://rosfotoproekt.bitrix24.ru/rest/3872/cno5mh8afndjmbcw/crm.deal.list.json?filter[CONTACT_ID]=" + id)
 	if err != nil {
 		log.Fatalln(err)
 	}

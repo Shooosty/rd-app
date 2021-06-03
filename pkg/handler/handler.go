@@ -81,7 +81,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 		bitrix := api.Group("/bitrix")
 		{
-			bitrix.GET("/", h.getAllBitrixOrders)
+			bitrix.GET("/:id", h.getBitrixOrderByUserId)
 			bitrix.GET("/:email", h.getBitrixUserByEmail)
 		}
 

@@ -20,14 +20,9 @@ func (h *Handler) getBitrixOrderByUserId(c *gin.Context) {
 		log.Fatalln(err)
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
 	var data Order
 
-	result := json.Unmarshal(body, &data)
+	result := json.NewDecoder(resp.Body).Decode(&data)
 
 	c.JSON(http.StatusOK, result)
 }

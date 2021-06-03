@@ -15,7 +15,6 @@ func (h *Handler) getAllBitrixOrders(c *gin.Context) {
 	data := resp.Body
 
 	c.JSON(200, gin.H{
-		"data":  data,
-		"data2": resp,
+		"data": data,
 	})
 }

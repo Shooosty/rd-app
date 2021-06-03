@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"log"
@@ -15,9 +16,9 @@ func (h *Handler) getAllBitrixOrders(c *gin.Context) {
 
 	strBody, err := ioutil.ReadAll(resp.Body)
 
-	log.Println(string(strBody))
+	data, err := json.Marshal(strBody)
 
 	c.JSON(http.StatusOK, map[string]interface{}{
-		"data": string(strBody),
+		"data": data,
 	})
 }

@@ -79,6 +79,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			photos.DELETE("/:id", h.deletePhoto)
 		}
 
+		bitrix := api.Group("/bitrix")
+		{
+			bitrix.GET("/", h.getAllBitrixOrders)
+		}
+
 		contract := api.Group("/contracts")
 		{
 			contract.POST("/", h.createContract)

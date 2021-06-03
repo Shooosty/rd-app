@@ -13,9 +13,7 @@ func (h *Handler) getAllBitrixOrders(c *gin.Context) {
 		log.Fatalln(err)
 	}
 
-	var result map[string]interface{}
-
-	data := json.NewDecoder(resp.Body).Decode(&result)
+	data := json.NewDecoder(resp.Body)
 
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"data": data,

@@ -22,9 +22,7 @@ func (h *Handler) getBitrixOrderByUserId(c *gin.Context) {
 
 	sb := string(body)
 
-	c.JSON(http.StatusOK, gin.H{
-		"data": sb,
-	})
+	c.JSON(http.StatusOK, sb)
 }
 
 func (h *Handler) getBitrixUserByEmail(c *gin.Context) {
@@ -42,7 +40,5 @@ func (h *Handler) getBitrixUserByEmail(c *gin.Context) {
 
 	sb := string(body)
 
-	c.JSON(http.StatusOK, gin.H{
-		"data": sb,
-	})
+	c.JSON(http.StatusOK, sb)
 }

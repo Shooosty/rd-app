@@ -20,7 +20,7 @@ func (h *Handler) getBitrixOrderByUserId(c *gin.Context) {
 		log.Fatalln(err)
 	}
 
-	sb := string(body)
+	sb := body
 
 	c.JSON(http.StatusOK, sb)
 }
@@ -38,7 +38,7 @@ func (h *Handler) getBitrixUserByEmail(c *gin.Context) {
 		log.Fatalln(err)
 	}
 
-	sb := string(body)
+	sb := body
 
 	c.JSON(http.StatusOK, sb)
 }

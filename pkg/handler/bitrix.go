@@ -1,11 +1,16 @@
 package handler
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"log"
 	"net/http"
 )
+
+type Order struct {
+	ID int
+}
 
 func (h *Handler) getBitrixOrderByUserId(c *gin.Context) {
 	id := c.Param("id")
@@ -20,9 +25,11 @@ func (h *Handler) getBitrixOrderByUserId(c *gin.Context) {
 		log.Fatalln(err)
 	}
 
-	sb := body
+	var data Order
 
-	c.JSON(http.StatusOK, sb)
+	result := json.Unmarshal(body, &data)
+
+	c.JSON(http.StatusOK, result)
 }
 
 func (h *Handler) getBitrixUserByEmail(c *gin.Context) {

@@ -19,7 +19,6 @@ type Order struct {
 	Description         string         `json:"description"`
 	DesignerDescription string         `json:"designerDescription"`
 	InitialDescription  string         `json:"initialDescription"`
-	Owner               string         `json:"owner"`
 	DesignerId          string         `json:"designerId"`
 	PhotographerId      string         `json:"photographerId"`
 	ManagerId           string         `json:"managerId"`
@@ -39,7 +38,6 @@ type UpdateOrderInput struct {
 	Status              *string `json:"status"`
 	Address             *string `json:"address"`
 	Number              *string `json:"number"`
-	Owner               *string `json:"owner"`
 	UserId              *string `json:"userId"`
 	DesignerId          *string `json:"designerId"`
 	ManagerId           *string `json:"managerId"`
@@ -55,7 +53,7 @@ type UpdateOrderInput struct {
 
 func (i UpdateOrderInput) Validate() error {
 	if i.Address == nil && i.Status == nil &&
-		i.Owner == nil && i.UserId == nil && i.DesignerId == nil &&
+		i.UserId == nil && i.DesignerId == nil &&
 		i.ManagerId == nil && i.Layout == nil && i.AttachmentContract == nil &&
 		i.PhotographerId == nil && i.Number == nil && i.InitialDescription == nil &&
 		i.DesignerDescription == nil &&

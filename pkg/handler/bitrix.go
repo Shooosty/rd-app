@@ -8,7 +8,7 @@ import (
 )
 
 func (h *Handler) getAllBitrixOrders(c *gin.Context) {
-	resp, err := http.Get("https://rosfotoproekt.bitrix24.ru/rest/3872/l00jxlvjy0aamuom/crm.deal.list.json")
+	resp, err := http.Get("https://rosfotoproekt.bitrix24.ru/rest/3872/x7ursz41tqy4gblr/crm.deal.list.json")
 	if err != nil {
 		log.Fatalln(err)
 	}

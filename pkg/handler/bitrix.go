@@ -13,13 +13,9 @@ func (h *Handler) getAllBitrixOrders(c *gin.Context) {
 		log.Fatalln(err)
 	}
 
-	body := resp.Body
-
 	strBody, err := ioutil.ReadAll(resp.Body)
 
-	log.Println(string(strBody))
-
 	c.JSON(http.StatusOK, gin.H{
-		"data": body,
+		"data": string(strBody),
 	})
 }

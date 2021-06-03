@@ -8,9 +8,8 @@ import (
 )
 
 type order struct {
-	ID      int
-	StageId int
-	Title   string
+	ID    int
+	TITLE string
 }
 
 func (h *Handler) getAllBitrixOrders(c *gin.Context) {

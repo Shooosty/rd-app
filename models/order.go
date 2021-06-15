@@ -20,6 +20,7 @@ type Order struct {
 	DesignerDescription string         `json:"designerDescription"`
 	InitialDescription  string         `json:"initialDescription"`
 	DesignerId          string         `json:"designerId"`
+	Design              string         `json:"design"`
 	PhotographerId      string         `json:"photographerId"`
 	ManagerId           string         `json:"managerId"`
 	Status              string         `json:"status"`
@@ -40,6 +41,7 @@ type UpdateOrderInput struct {
 	Number              *string `json:"number"`
 	UserId              *string `json:"userId"`
 	DesignerId          *string `json:"designerId"`
+	Design              *string `json:"design"`
 	ManagerId           *string `json:"managerId"`
 	PhotographerId      *string `json:"photographerId"`
 	Contract            *string `json:"contract"`
@@ -56,7 +58,7 @@ func (i UpdateOrderInput) Validate() error {
 		i.UserId == nil && i.DesignerId == nil &&
 		i.ManagerId == nil && i.Layout == nil && i.AttachmentContract == nil &&
 		i.PhotographerId == nil && i.Number == nil && i.InitialDescription == nil &&
-		i.DesignerDescription == nil &&
+		i.DesignerDescription == nil && i.Design == nil &&
 		i.Description == nil && i.Datetime == nil {
 		return errors.New("update structure has no values")
 	}

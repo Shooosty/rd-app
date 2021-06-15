@@ -27,7 +27,7 @@ type Order struct {
 	Contract            string         `json:"contract"`
 	AttachmentContract  string         `json:"attachmentContract"`
 	Layout              string         `json:"layout"`
-	Datetime            string         `json:"datetime"`
+	DateTimes           pq.StringArray `sql:"type: text[]" json:"dateTimes"`
 }
 
 func (order *Order) BeforeCreate(scope *gorm.Scope) error {
@@ -36,21 +36,21 @@ func (order *Order) BeforeCreate(scope *gorm.Scope) error {
 }
 
 type UpdateOrderInput struct {
-	Status              *string `json:"status"`
-	Address             *string `json:"address"`
-	Number              *string `json:"number"`
-	UserId              *string `json:"userId"`
-	DesignerId          *string `json:"designerId"`
-	Design              *string `json:"design"`
-	ManagerId           *string `json:"managerId"`
-	PhotographerId      *string `json:"photographerId"`
-	Contract            *string `json:"contract"`
-	AttachmentContract  *string `json:"attachmentContract"`
-	Layout              *string `json:"layout"`
-	Datetime            *string `json:"datetime"`
-	InitialDescription  *string `json:"initialDescription"`
-	DesignerDescription *string `json:"designerDescription"`
-	Description         *string `json:"description"`
+	Status              *string         `json:"status"`
+	Address             *string         `json:"address"`
+	Number              *string         `json:"number"`
+	UserId              *string         `json:"userId"`
+	DesignerId          *string         `json:"designerId"`
+	Design              *string         `json:"design"`
+	DateTimes           *pq.StringArray `json:"dateTimes"`
+	ManagerId           *string         `json:"managerId"`
+	PhotographerId      *string         `json:"photographerId"`
+	Contract            *string         `json:"contract"`
+	AttachmentContract  *string         `json:"attachmentContract"`
+	Layout              *string         `json:"layout"`
+	InitialDescription  *string         `json:"initialDescription"`
+	DesignerDescription *string         `json:"designerDescription"`
+	Description         *string         `json:"description"`
 }
 
 func (i UpdateOrderInput) Validate() error {
@@ -58,8 +58,8 @@ func (i UpdateOrderInput) Validate() error {
 		i.UserId == nil && i.DesignerId == nil &&
 		i.ManagerId == nil && i.Layout == nil && i.AttachmentContract == nil &&
 		i.PhotographerId == nil && i.Number == nil && i.InitialDescription == nil &&
-		i.DesignerDescription == nil && i.Design == nil &&
-		i.Description == nil && i.Datetime == nil {
+		i.DesignerDescription == nil && i.Design == nil && i.DateTimes == nil &&
+		i.Description == nil {
 		return errors.New("update structure has no values")
 	}
 	return nil

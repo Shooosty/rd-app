@@ -27,6 +27,7 @@ type Order struct {
 	Contract            string         `json:"contract"`
 	AttachmentContract  string         `json:"attachmentContract"`
 	Layout              string         `json:"layout"`
+	LayoutFormDate      string         `json:"layoutFormDate"`
 	DateTimes           pq.StringArray `sql:"type: text[]" json:"dateTimes"`
 }
 
@@ -48,6 +49,7 @@ type UpdateOrderInput struct {
 	Contract            *string         `json:"contract"`
 	AttachmentContract  *string         `json:"attachmentContract"`
 	Layout              *string         `json:"layout"`
+	LayoutFormDate      *string         `json:"layoutFormDate"`
 	InitialDescription  *string         `json:"initialDescription"`
 	DesignerDescription *string         `json:"designerDescription"`
 	Description         *string         `json:"description"`
@@ -59,7 +61,7 @@ func (i UpdateOrderInput) Validate() error {
 		i.ManagerId == nil && i.Layout == nil && i.AttachmentContract == nil &&
 		i.PhotographerId == nil && i.Number == nil && i.InitialDescription == nil &&
 		i.DesignerDescription == nil && i.Design == nil && i.DateTimes == nil &&
-		i.Description == nil {
+		i.Description == nil && i.LayoutFormDate == nil {
 		return errors.New("update structure has no values")
 	}
 	return nil

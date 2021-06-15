@@ -27,6 +27,7 @@ type Order struct {
 	Contract            string         `json:"contract"`
 	AttachmentContract  string         `json:"attachmentContract"`
 	Layout              string         `json:"layout"`
+	FormDate            string         `json:"formDate"`
 	LayoutFormDate      string         `json:"layoutFormDate"`
 	DateTimes           pq.StringArray `sql:"type: text[]" json:"dateTimes"`
 }

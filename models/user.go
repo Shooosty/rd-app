@@ -32,7 +32,7 @@ type UpdateUserInput struct {
 }
 
 type ChangePasswordInput struct {
-	Password     string `json:"password"`
+	Password     string `json:"password" sql:"-"`
 	PasswordHash string `json:"newPassword"`
 }
 

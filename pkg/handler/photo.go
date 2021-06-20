@@ -73,7 +73,8 @@ func (h *Handler) getAllPhotosByOrderId(c *gin.Context) {
 }
 
 func (h *Handler) createPhoto(c *gin.Context) {
-	personId := c.Param("id")
+	personId := c.Param("personId")
+	orderId := c.Param("orderId")
 
 	var input models.Photo
 
@@ -119,6 +120,7 @@ func (h *Handler) createPhoto(c *gin.Context) {
 	input.Url = url
 	input.Size = size / 1024
 	input.PersonId = personId
+	input.OrderId = orderId
 	input.Type = "image/*"
 
 	id, err := h.services.Photos.Create(input)

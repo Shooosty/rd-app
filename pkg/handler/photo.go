@@ -58,6 +58,20 @@ func (h *Handler) getAllPhotosByPersonId(c *gin.Context) {
 	})
 }
 
+func (h *Handler) getAllPhotosByOrderId(c *gin.Context) {
+	id := c.Param("id")
+
+	photos, err := h.services.Photos.GetAllPhotosByOrderId(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, getAllPhotosResponse{
+		Data: photos,
+	})
+}
+
 func (h *Handler) createPhoto(c *gin.Context) {
 	personId := c.Param("id")
 

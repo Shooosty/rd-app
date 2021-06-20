@@ -34,6 +34,13 @@ func (r *PhotoPostgres) GetAllPhotosByPersonId(personId string) ([]models.Photo,
 	return photos, err
 }
 
+func (r *PhotoPostgres) GetAllPhotosByOrderId(orderId string) ([]models.Photo, error) {
+	var photos []models.Photo
+	err := db.Table(photosTable).Where("order_id = ?", orderId).Find(&photos).Error
+
+	return photos, err
+}
+
 func (r *PhotoPostgres) Create(photo models.Photo) (string, error) {
 	err := db.Table(photosTable).Create(&photo).Error
 

@@ -45,6 +45,7 @@ type Photos interface {
 	Create(photo models.Photo) (string, error)
 	GetById(photoId string) (models.Photo, error)
 	GetAllPhotosByPersonId(personId string) ([]models.Photo, error)
+	GetAllPhotosByOrderId(orderId string) ([]models.Photo, error)
 	Delete(photoId string) error
 }
 

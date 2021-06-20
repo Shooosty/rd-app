@@ -80,9 +80,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			photos.DELETE("/:id", h.deletePhoto)
 		}
 
-		contract := api.Group("/contracts")
+		files := api.Group("/files")
 		{
-			contract.POST("/", h.createContract)
+			files.POST("/", h.createFile)
 		}
 
 		photographers := api.Group("/photographers")

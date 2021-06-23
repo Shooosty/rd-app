@@ -45,7 +45,7 @@ func (r *UserPostgres) ChangePassword(userId string, input models.ChangePassword
 	err := db.Table(usersTable).Where("id = ? AND password_hash = ?", userId, input.Password).Find(&user).Error
 
 	if err == nil {
-		db.Table(usersTable).Where("id = ? AND password_hash = ?", userId, input.Password).Update(&input)
+		db.Table(usersTable).Where("id = ? AND password_hash = ?", userId, input.Password).Updates(&input)
 	}
 
 	return err

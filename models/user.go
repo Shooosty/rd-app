@@ -32,8 +32,8 @@ type UpdateUserInput struct {
 }
 
 type ChangePasswordInput struct {
-	Password    string `json:"password" sql:"-"`
-	NewPassword string `json:"newPassword" sql:"passwordHash"`
+	Password     string `json:"password" sql:"-"`
+	PasswordHash string `json:"newPassword" sql:"passwordHash"`
 }
 
 type ResetPasswordInput struct {

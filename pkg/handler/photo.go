@@ -102,6 +102,7 @@ func (h *Handler) createPhoto(c *gin.Context) {
 			"qqBiCHLMG7Nn9rGaIueZwnNxyBwiOGMw0AdK0UUn",
 			""),
 	})
+
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Could not upload file")
 		return
@@ -117,6 +118,7 @@ func (h *Handler) createPhoto(c *gin.Context) {
 	url := "https://rhinodesign.s3.eu-west-3.amazonaws.com/" + fileName
 
 	input.Name = originalName
+	input.NameS3 = fileName
 	input.Url = url
 	input.Size = size / 1024
 	input.PersonId = personId
@@ -138,6 +140,28 @@ func (h *Handler) deletePhoto(c *gin.Context) {
 	id := c.Param("id")
 
 	err := h.services.Photos.Delete(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{
+		Status: "ok",
+	})
+}
+
+func (h *Handler) deletePhotoOnS3(c *gin.Context) {
+	fileName := c.Param("fileName")
+
+	s, err := session.NewSession(&aws.Config{
+		Region: aws.String(AWS_S3_REGION),
+		Credentials: credentials.NewStaticCredentials(
+			"AKIAZ4EXIBF2T6T7UB64",
+			"qqBiCHLMG7Nn9rGaIueZwnNxyBwiOGMw0AdK0UUn",
+			""),
+	})
+
+	err = DeleteFileFromS3(s, fileName)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

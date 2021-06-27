@@ -41,3 +41,16 @@ func UploadFileToS3(s *session.Session, file multipart.File, fileHeader *multipa
 
 	return tempFileName, originalName, size, err
 }
+
+func DeleteFileFromS3(s *session.Session, fileName string) error {
+	_, err := s3.New(s).DeleteObject(&s3.DeleteObjectInput{
+		Bucket: aws.String(AWS_S3_BUCKET),
+		Key:    aws.String(fileName),
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return err
+}

@@ -83,7 +83,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		files := api.Group("/files")
 		{
 			files.POST("/", h.createFile)
-			files.DELETE("/:fileName", h.deletePhotoOnS3)
+			files.POST("/:fileName", h.deletePhotoOnS3)
+			files.POST("/delete", h.deleteAllItems)
 		}
 
 		photographers := api.Group("/photographers")

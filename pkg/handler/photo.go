@@ -171,3 +171,23 @@ func (h *Handler) deletePhotoOnS3(c *gin.Context) {
 		Status: "ok",
 	})
 }
+
+func (h *Handler) deleteAllItems(c *gin.Context) {
+	s, err := session.NewSession(&aws.Config{
+		Region: aws.String(AWS_S3_REGION),
+		Credentials: credentials.NewStaticCredentials(
+			"AKIAZ4EXIBF2T6T7UB64",
+			"qqBiCHLMG7Nn9rGaIueZwnNxyBwiOGMw0AdK0UUn",
+			""),
+	})
+
+	err = DeleteAllItems(s)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{
+		Status: "ok",
+	})
+}

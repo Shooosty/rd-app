@@ -5,6 +5,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/globalsign/mgo/bson"
 	"mime/multipart"
 	"net/http"
@@ -47,6 +48,20 @@ func DeleteFileFromS3(s *session.Session, fileName string) error {
 		Bucket: aws.String(AWS_S3_BUCKET),
 		Key:    aws.String(fileName),
 	})
+
+	if err != nil {
+		return err
+	}
+
+	return err
+}
+
+func DeleteAllItems(s *session.Session) error {
+	iter := s3manager.NewDeleteListIterator(s3.New(s), &s3.ListObjectsInput{
+		Bucket: aws.String(AWS_S3_BUCKET),
+	})
+
+	err := s3manager.NewBatchDeleteWithClient(s3.New(s)).Delete(aws.BackgroundContext(), iter)
 
 	if err != nil {
 		return err

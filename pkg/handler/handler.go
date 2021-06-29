@@ -84,7 +84,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		{
 			files.POST("/", h.createFile)
 			files.POST("/:fileName", h.deletePhotoOnS3)
-			files.POST("/delete", h.deleteAllItems)
+		}
+
+		s3 := api.Group("/s3")
+		{
+			s3.POST("/delete", h.deleteAllItems)
 		}
 
 		photographers := api.Group("/photographers")

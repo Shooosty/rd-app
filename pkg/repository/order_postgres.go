@@ -73,8 +73,7 @@ func (r *OrderPostgres) Update(orderId string, input models.UpdateOrderInput) er
 
 	order, _ := r.GetById(orderId)
 	user, _ := r.GetUserById(order.UserId)
-	SendUpdateOrderToClient(user.Email, order.Status)
-
+	SendUpdateOrderToClient(user.Email, localizeStatuses(order.Status))
 	return err
 }
 
@@ -83,4 +82,32 @@ func (r *OrderPostgres) GetUserById(userId string) (models.User, error) {
 	err := db.Table(usersTable).Where("id = ?", userId).Find(&user).Error
 
 	return user, err
+}
+
+func localizeStatuses(status string) (localizeStatus string) {
+	switch status {
+	case "photoDateApproved":
+		return "Cъемка назначена"
+	case "needAnotherPhotoDate":
+		return "Назначить доп съемку"
+	case "anotherPhotoDateApproved":
+		return "Доп съемка назначена"
+	case "photoDateChecked":
+		return "Съемка проведена"
+	case "onTheFormation":
+		return "На формировании"
+	case "onDesign":
+		return "В отделе дизайна"
+	case "onTheClientApprove":
+		return "На сверке у клиента"
+	case "onEdits":
+		return "Заказ на правках"
+	case "onProduction":
+		return "В производствe"
+	case "done":
+		return "Заказ готов"
+	case "closed":
+		return "Заказ закрыт"
+	}
+	return
 }

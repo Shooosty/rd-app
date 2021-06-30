@@ -15,14 +15,15 @@ func NewAuthPostgres(db *gorm.DB) *AuthPostgres {
 
 func (r *AuthPostgres) CreateUser(user models.User) (string, error) {
 	type Result struct {
-		ID    string
-		Name  string
-		Email string
+		ID      string
+		Name    string
+		Surname string
+		Email   string
 	}
 
 	var result Result
 
-	newUser := models.User{Name: user.Name, Email: user.Email, PasswordHash: user.Password, Role: user.Role, Phone: user.Phone}
+	newUser := models.User{Name: user.Name, Surname: user.Surname, Email: user.Email, PasswordHash: user.Password, Role: user.Role, Phone: user.Phone}
 	err := db.Table(usersTable).Create(&newUser).Scan(&result).Error
 
 	return result.ID, err
@@ -30,14 +31,15 @@ func (r *AuthPostgres) CreateUser(user models.User) (string, error) {
 
 func (r *AuthPostgres) CreateEmployee(user models.User, generatedPassword string) (string, error) {
 	type Result struct {
-		ID    string
-		Name  string
-		Email string
+		ID      string
+		Name    string
+		Surname string
+		Email   string
 	}
 
 	var result Result
 
-	newUser := models.User{Name: user.Name, Email: user.Email, PasswordHash: user.Password, Role: user.Role, Phone: user.Phone}
+	newUser := models.User{Name: user.Name, Surname: user.Surname, Email: user.Email, PasswordHash: user.Password, Role: user.Role, Phone: user.Phone}
 	err := db.Table(usersTable).Create(&newUser).Scan(&result).Error
 
 	if err == nil {

@@ -87,6 +87,14 @@ func SendNewOrderCreatedToEmployee(email string) {
 	_ = SendMail(subject, text, html, name, email)
 }
 
+func SendUpdateOrderToClient(email string, status string) {
+	subject := "Новый заказ"
+	text := "У вашего заказа новый статус"
+	html := "<b>" + "Уважаемый пользователь" + "," + "</b>" + "<p>" + "Статус вашего заказа на lk.rhinodesign.ru" + "-" + status + "<p>"
+	name := "Уважаемый пользователь"
+	_ = SendMail(subject, text, html, name, email)
+}
+
 func SendNewOrderCreatedToClient(email string) {
 	subject := "Новый заказ"
 	text := "У вас новый заказ"

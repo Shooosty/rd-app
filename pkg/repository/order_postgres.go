@@ -28,9 +28,6 @@ func (r *OrderPostgres) Create(order models.Order) (string, error) {
 
 		photographer, _ := r.GetUserById(order.PhotographerId)
 		SendNewOrderCreatedToEmployee(photographer.Email)
-
-		designer, _ := r.GetUserById(order.DesignerId)
-		SendNewOrderCreatedToEmployee(designer.Email)
 	}
 
 	return order.ID, err
@@ -73,6 +70,10 @@ func (r *OrderPostgres) Delete(orderId string) error {
 
 func (r *OrderPostgres) Update(orderId string, input models.UpdateOrderInput) error {
 	err := db.Table(ordersTable).Where("id = ?", orderId).Updates(&input).Error
+
+	order, _ := r.GetById(orderId)
+	user, _ := r.GetUserById(order.UserId)
+	SendUpdateOrderToClient(user.Email, order.Status)
 
 	return err
 }

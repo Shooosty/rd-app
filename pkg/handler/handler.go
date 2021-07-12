@@ -35,6 +35,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	auth := router.Group("/auth")
 	{
 		auth.POST("/sign-up", h.signUp)
+		//auth.POST("/refresh", h.refresh)
 		auth.POST("/sign-in", h.signIn)
 		auth.POST("/reset-password", h.resetPassword)
 	}

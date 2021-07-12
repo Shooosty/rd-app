@@ -16,7 +16,7 @@ type User struct {
 	Email        string    `json:"email" binding:"required"`
 	Phone        string    `json:"phone" binding:"required"`
 	Password     string    `json:"password" sql:"-"`
-	PasswordHash string    `sql:"passwordHash"`
+	PasswordHash string    `json:"-" sql:"passwordHash"`
 	Role         string    `json:"role" binding:"required"`
 }
 

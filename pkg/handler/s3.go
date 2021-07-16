@@ -50,9 +50,11 @@ func UploadPhotoToS3(s *session.Session, file multipart.File, fileName string, f
 	buffer := make([]byte, size)
 	_, _ = file.Read(buffer)
 
+	keyName := fileName + filepath.Ext(originalName)
+
 	_, err := s3.New(s).PutObject(&s3.PutObjectInput{
 		Bucket:             aws.String(AWS_S3_BUCKET),
-		Key:                aws.String(fileName),
+		Key:                aws.String(keyName),
 		ACL:                aws.String("public-read"),
 		Body:               bytes.NewReader(buffer),
 		ContentLength:      aws.Int64(size),

@@ -26,6 +26,7 @@ type Order struct {
 	ManagerId               string         `json:"managerId"`
 	Status                  string         `json:"status"`
 	Contract                string         `json:"contract"`
+	PhotoContract           string         `json:"photoContract"`
 	AdditionalContract      string         `json:"additionalContract"`
 	AttachmentContract      string         `json:"attachmentContract"`
 	Layout                  string         `json:"layout"`
@@ -54,6 +55,7 @@ type UpdateOrderInput struct {
 	LayoutClientDescription *pq.StringArray `json:"layoutClientDescription"`
 	Sections                *pq.StringArray `json:"sections"`
 	PreFormDate             *string         `json:"preFormDate"`
+	PhotoContract           *string         `json:"photoContract"`
 	FormDate                *string         `json:"formDate"`
 	Contract                *string         `json:"contract"`
 	AttachmentContract      *string         `json:"attachmentContract"`
@@ -65,7 +67,7 @@ type UpdateOrderInput struct {
 }
 
 func (i UpdateOrderInput) Validate() error {
-	if i.Address == nil && i.Status == nil && i.AdditionalContract == nil &&
+	if i.Address == nil && i.Status == nil && i.AdditionalContract == nil && i.PhotoContract == nil &&
 		i.UserId == nil && i.DesignerId == nil && i.LayoutClientDescription == nil &&
 		i.ManagerId == nil && i.Layout == nil && i.AttachmentContract == nil && i.Sections == nil &&
 		i.PhotographerId == nil && i.Number == nil && i.InitialDescription == nil &&

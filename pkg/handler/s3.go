@@ -43,7 +43,7 @@ func UploadFileToS3(s *session.Session, file multipart.File, fileHeader *multipa
 	return tempFileName, originalName, size, err
 }
 
-func UploadPhotoToS3(s *session.Session, file multipart.File, fileName string, fileHeader *multipart.FileHeader) (string, int64, error) {
+func UploadPhotoToS3(s *session.Session, file multipart.File, fileName string, fileHeader *multipart.FileHeader) (string, string, int64, error) {
 
 	size := fileHeader.Size
 	originalName := fileHeader.Filename
@@ -63,10 +63,10 @@ func UploadPhotoToS3(s *session.Session, file multipart.File, fileName string, f
 	})
 
 	if err != nil {
-		return "", 0, err
+		return "", "", 0, err
 	}
 
-	return originalName, size, err
+	return keyName, originalName, size, err
 }
 
 func DeleteFileFromS3(s *session.Session, fileName string) error {

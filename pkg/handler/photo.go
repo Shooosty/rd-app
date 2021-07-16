@@ -109,17 +109,17 @@ func (h *Handler) createPhoto(c *gin.Context) {
 		return
 	}
 
-	originalName, size, err := UploadPhotoToS3(s, file, fileName, header)
+	keyName, originalName, size, err := UploadPhotoToS3(s, file, fileName, header)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Could not upload file")
 		return
 	}
 
-	url := "https://rhinodesign.s3.eu-west-3.amazonaws.com/" + fileName
+	url := "https://rhinodesign.s3.eu-west-3.amazonaws.com/" + keyName
 
 	input.Name = originalName
-	input.NameS3 = fileName
+	input.NameS3 = keyName
 	input.Url = url
 	input.Size = size / 1024
 	input.PersonId = personId

@@ -77,7 +77,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		{
 			photos.GET("/", h.getAllPhotos)
 			photos.GET("/:id", h.getPhotoById)
-			photos.POST("/:personId/:orderId", h.createPhoto)
+			photos.POST("/:personId/:orderId/:fileName", h.createPhoto)
 			photos.DELETE("/:id", h.deletePhoto)
 		}
 

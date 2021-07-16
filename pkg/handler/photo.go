@@ -75,6 +75,7 @@ func (h *Handler) getAllPhotosByOrderId(c *gin.Context) {
 func (h *Handler) createPhoto(c *gin.Context) {
 	personId := c.Param("personId")
 	orderId := c.Param("orderId")
+	fileName := c.Param("fileName")
 
 	var input models.Photo
 
@@ -108,7 +109,7 @@ func (h *Handler) createPhoto(c *gin.Context) {
 		return
 	}
 
-	fileName, originalName, size, err := UploadFileToS3(s, file, header)
+	_, originalName, size, err := UploadFileToS3(s, file, header)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Could not upload file")

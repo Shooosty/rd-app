@@ -109,7 +109,7 @@ func (h *Handler) createPhoto(c *gin.Context) {
 		return
 	}
 
-	_, originalName, size, err := UploadFileToS3(s, file, header)
+	originalName, size, err := UploadPhotoToS3(s, file, fileName, header)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Could not upload file")

@@ -43,6 +43,30 @@ func UploadFileToS3(s *session.Session, file multipart.File, fileHeader *multipa
 	return tempFileName, originalName, size, err
 }
 
+func UploadPhotoToS3(s *session.Session, file multipart.File, fileName string, fileHeader *multipart.FileHeader) (string, int64, error) {
+
+	size := fileHeader.Size
+	originalName := fileHeader.Filename
+	buffer := make([]byte, size)
+	_, _ = file.Read(buffer)
+
+	_, err := s3.New(s).PutObject(&s3.PutObjectInput{
+		Bucket:             aws.String(AWS_S3_BUCKET),
+		Key:                aws.String(fileName),
+		ACL:                aws.String("public-read"),
+		Body:               bytes.NewReader(buffer),
+		ContentLength:      aws.Int64(size),
+		ContentType:        aws.String(http.DetectContentType(buffer)),
+		ContentDisposition: aws.String("attachment"),
+	})
+
+	if err != nil {
+		return "", 0, err
+	}
+
+	return originalName, size, err
+}
+
 func DeleteFileFromS3(s *session.Session, fileName string) error {
 	_, err := s3.New(s).DeleteObject(&s3.DeleteObjectInput{
 		Bucket: aws.String(AWS_S3_BUCKET),

@@ -13,6 +13,7 @@ type Order struct {
 	Number                  string         `json:"number"`
 	Sections                pq.StringArray `sql:"type: text[]" json:"sections"`
 	LayoutClientDescription pq.StringArray `sql:"type: text[]" json:"layoutClientDescription"`
+	Tz                      pq.StringArray `sql:"type: text[]" json:"tz"`
 	CreatedAt               time.Time      `json:"createdAt"`
 	UpdatedAt               time.Time      `json:"updateAt"`
 	UserId                  string         `json:"userId"`
@@ -54,6 +55,7 @@ type UpdateOrderInput struct {
 	PhotographerId          *string         `json:"photographerId"`
 	LayoutClientDescription *pq.StringArray `json:"layoutClientDescription"`
 	Sections                *pq.StringArray `json:"sections"`
+	Tz                      *pq.StringArray `json:"tz"`
 	PreFormDate             *string         `json:"preFormDate"`
 	PhotoContract           *string         `json:"photoContract"`
 	FormDate                *string         `json:"formDate"`
@@ -72,7 +74,7 @@ func (i UpdateOrderInput) Validate() error {
 		i.ManagerId == nil && i.Layout == nil && i.AttachmentContract == nil && i.Sections == nil &&
 		i.PhotographerId == nil && i.Number == nil && i.InitialDescription == nil &&
 		i.DesignerDescription == nil && i.Design == nil && i.DateTimes == nil && i.FormDate == nil &&
-		i.PreFormDate == nil && i.Description == nil && i.LayoutFormDate == nil {
+		i.PreFormDate == nil && i.Description == nil && i.LayoutFormDate == nil && i.Tz == nil {
 		return errors.New("update structure has no values")
 	}
 	return nil

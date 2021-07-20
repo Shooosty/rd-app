@@ -79,7 +79,7 @@ func (h *Handler) createPhoto(c *gin.Context) {
 
 	var input models.Photo
 
-	maxSize := int64(40000000) // 5mb max
+	maxSize := int64(25000000) // 25mb max
 
 	err := c.Request.ParseMultipartForm(maxSize)
 	if err != nil {

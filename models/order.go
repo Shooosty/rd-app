@@ -19,6 +19,10 @@ type Order struct {
 	UserId                  string         `json:"userId"`
 	Address                 string         `json:"address"`
 	Description             string         `json:"description"`
+	PupilsMin               int            `json:"pupilsMin"`
+	PupilsMax               int            `json:"pupilsMax"`
+	TeachersMin             int            `json:"teachersMin"`
+	TeachersMax             int            `json:"teachersMax"`
 	DesignerDescription     string         `json:"designerDescription"`
 	InitialDescription      string         `json:"initialDescription"`
 	DesignerId              string         `json:"designerId"`
@@ -58,6 +62,10 @@ type UpdateOrderInput struct {
 	LayoutClientDescription *pq.StringArray `json:"layoutClientDescription"`
 	Sections                *pq.StringArray `json:"sections"`
 	Tz                      *pq.StringArray `json:"tz"`
+	PupilsMin               *int            `json:"pupilsMin"`
+	PupilsMax               *int            `json:"pupilsMax"`
+	TeachersMin             *int            `json:"teachersMin"`
+	TeachersMax             *int            `json:"teachersMax"`
 	LayoutCover             *string         `json:"layoutCover"`
 	YandexDisc              *string         `json:"yandexDisc"`
 	PreFormDate             *string         `json:"preFormDate"`
@@ -79,7 +87,8 @@ func (i UpdateOrderInput) Validate() error {
 		i.PhotographerId == nil && i.Number == nil && i.InitialDescription == nil &&
 		i.DesignerDescription == nil && i.Design == nil && i.DateTimes == nil && i.FormDate == nil &&
 		i.PreFormDate == nil && i.Description == nil && i.LayoutFormDate == nil && i.Tz == nil &&
-		i.LayoutCover == nil && i.YandexDisc == nil {
+		i.LayoutCover == nil && i.YandexDisc == nil && i.PupilsMin == nil && i.PupilsMax == nil &&
+		i.TeachersMin == nil && i.TeachersMax == nil {
 		return errors.New("update structure has no values")
 	}
 	return nil

@@ -62,6 +62,15 @@ func SendMail(subject string, text string, html string, name string, email strin
 	return err
 }
 
+func SendEmailToAdmin(data string) {
+	subject := "Регистрация в личном кабинете"
+	text := "Зарегистрирован новый пользователь: "
+	name := "Уважаемый администратор!"
+	html := "<p>" + "Зарегистрирован новый пользователь: " + data + "<p>"
+	email := "info@rhinodesign.ru"
+	_ = SendMail(subject, text, html, name, email)
+}
+
 func SendPasswordToEmployee(password string, name string, email string) {
 	subject := "Регистрация в личном кабинете"
 	text := "Ваш пароль для входа в кабинет: " + password

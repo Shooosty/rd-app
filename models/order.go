@@ -13,6 +13,8 @@ type Order struct {
 	Number                  string         `json:"number"`
 	Sections                pq.StringArray `sql:"type: text[]" json:"sections"`
 	LayoutClientDescription pq.StringArray `sql:"type: text[]" json:"layoutClientDescription"`
+	DesignerDescription     pq.StringArray `sql:"type: text[]" json:"designerDescription"`
+	DateTimes               pq.StringArray `sql:"type: text[]" json:"dateTimes"`
 	Tz                      pq.StringArray `sql:"type: text[]" json:"tz"`
 	CreatedAt               time.Time      `json:"createdAt"`
 	UpdatedAt               time.Time      `json:"updateAt"`
@@ -23,7 +25,6 @@ type Order struct {
 	PupilsMax               int            `json:"pupilsMax"`
 	TeachersMin             int            `json:"teachersMin"`
 	TeachersMax             int            `json:"teachersMax"`
-	DesignerDescription     string         `json:"designerDescription"`
 	InitialDescription      string         `json:"initialDescription"`
 	DesignerId              string         `json:"designerId"`
 	Design                  string         `json:"design"`
@@ -40,7 +41,6 @@ type Order struct {
 	PreFormDate             string         `json:"preFormDate"`
 	FormDate                string         `json:"formDate"`
 	LayoutFormDate          string         `json:"layoutFormDate"`
-	DateTimes               pq.StringArray `sql:"type: text[]" json:"dateTimes"`
 }
 
 func (order *Order) BeforeCreate(scope *gorm.Scope) error {
@@ -56,12 +56,13 @@ type UpdateOrderInput struct {
 	DesignerId              *string         `json:"designerId"`
 	Design                  *string         `json:"design"`
 	DateTimes               *pq.StringArray `json:"dateTimes"`
-	AdditionalContract      *string         `json:"additionalContract"`
-	ManagerId               *string         `json:"managerId"`
-	PhotographerId          *string         `json:"photographerId"`
 	LayoutClientDescription *pq.StringArray `json:"layoutClientDescription"`
 	Sections                *pq.StringArray `json:"sections"`
 	Tz                      *pq.StringArray `json:"tz"`
+	DesignerDescription     *pq.StringArray `json:"designerDescription"`
+	AdditionalContract      *string         `json:"additionalContract"`
+	ManagerId               *string         `json:"managerId"`
+	PhotographerId          *string         `json:"photographerId"`
 	PupilsMin               *int            `json:"pupilsMin"`
 	PupilsMax               *int            `json:"pupilsMax"`
 	TeachersMin             *int            `json:"teachersMin"`
@@ -76,7 +77,6 @@ type UpdateOrderInput struct {
 	Layout                  *string         `json:"layout"`
 	LayoutFormDate          *string         `json:"layoutFormDate"`
 	InitialDescription      *string         `json:"initialDescription"`
-	DesignerDescription     *string         `json:"designerDescription"`
 	Description             *string         `json:"description"`
 }
 

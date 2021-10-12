@@ -26,6 +26,10 @@ func (r *AuthPostgres) CreateUser(user models.User) (string, error) {
 	newUser := models.User{Name: user.Name, Surname: user.Surname, Email: user.Email, PasswordHash: user.Password, Role: user.Role, Phone: user.Phone}
 	err := db.Table(usersTable).Create(&newUser).Scan(&result).Error
 
+	if err == nil {
+		SendEmailToAdmin(user.Email)
+	}
+
 	return result.ID, err
 }
 

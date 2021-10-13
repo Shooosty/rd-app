@@ -69,14 +69,14 @@ func (r *OrderPostgres) Delete(orderId string) error {
 }
 
 func (r *OrderPostgres) Update(orderId string, input models.UpdateOrderInput) error {
-	err := db.Table(ordersTable).Where("id = ?", orderId).Updates(&input).Error
-
 	order, _ := r.GetById(orderId)
 	user, _ := r.GetUserById(order.UserId)
 
 	if *input.Status != order.Status {
 		SendUpdateOrderToClient(user.Email, localizeStatuses(*input.Status))
 	}
+
+	err := db.Table(ordersTable).Where("id = ?", orderId).Updates(&input).Error
 
 	return err
 }

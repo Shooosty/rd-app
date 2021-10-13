@@ -74,8 +74,8 @@ func (r *OrderPostgres) Update(orderId string, input models.UpdateOrderInput) er
 	order, _ := r.GetById(orderId)
 	user, _ := r.GetUserById(order.UserId)
 
-	if input.Status != nil {
-		SendUpdateOrderToClient(user.Email, localizeStatuses(order.Status))
+	if *input.Status != order.Status {
+		SendUpdateOrderToClient(user.Email, localizeStatuses(*input.Status))
 	}
 
 	return err

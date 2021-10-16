@@ -16,6 +16,7 @@ type Order struct {
 	DesignerDescription     pq.StringArray `sql:"type: text[]" json:"designerDescription"`
 	DateTimes               pq.StringArray `sql:"type: text[]" json:"dateTimes"`
 	Tz                      pq.StringArray `sql:"type: text[]" json:"tz"`
+	StatusHistory           pq.StringArray `sql:"type: text[]" json:"statusHistory"`
 	CreatedAt               time.Time      `json:"createdAt"`
 	UpdatedAt               time.Time      `json:"updateAt"`
 	UserId                  string         `json:"userId"`
@@ -61,6 +62,7 @@ type UpdateOrderInput struct {
 	LayoutClientDescription *pq.StringArray `json:"layoutClientDescription"`
 	Sections                *pq.StringArray `json:"sections"`
 	Tz                      *pq.StringArray `json:"tz"`
+	StatusHistory           *pq.StringArray `json:"statusHistory"`
 	DesignerDescription     *pq.StringArray `json:"designerDescription"`
 	AdditionalContract      *string         `json:"additionalContract"`
 	ManagerId               *string         `json:"managerId"`
@@ -89,7 +91,7 @@ func (i UpdateOrderInput) Validate() error {
 		i.UserId == nil && i.DesignerId == nil && i.LayoutClientDescription == nil &&
 		i.ManagerId == nil && i.Layout == nil && i.AttachmentContract == nil && i.Sections == nil &&
 		i.PhotographerId == nil && i.Number == nil && i.InitialDescription == nil && i.LayoutDate == nil && i.PreProdDate == nil &&
-		i.DesignerDescription == nil && i.Design == nil && i.DateTimes == nil && i.FormDate == nil &&
+		i.DesignerDescription == nil && i.Design == nil && i.DateTimes == nil && i.FormDate == nil && i.StatusHistory == nil &&
 		i.PreFormDate == nil && i.Description == nil && i.LayoutFormDate == nil && i.Tz == nil &&
 		i.LayoutCover == nil && i.YandexDisc == nil && i.PupilsMin == nil && i.PupilsMax == nil &&
 		i.TeachersMin == nil && i.TeachersMax == nil {

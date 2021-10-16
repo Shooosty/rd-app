@@ -40,6 +40,8 @@ type Order struct {
 	YandexDisc              string         `json:"yandexDisc"`
 	PreFormDate             string         `json:"preFormDate"`
 	FormDate                string         `json:"formDate"`
+	LayoutDate              string         `json:"layoutDate"`
+	PreProdDate             string         `json:"PreProdDate"`
 	LayoutFormDate          string         `json:"layoutFormDate"`
 }
 
@@ -75,6 +77,8 @@ type UpdateOrderInput struct {
 	Contract                *string         `json:"contract"`
 	AttachmentContract      *string         `json:"attachmentContract"`
 	Layout                  *string         `json:"layout"`
+	LayoutDate              *string         `json:"layoutDate"`
+	PreProdDate             *string         `json:"PreProdDate"`
 	LayoutFormDate          *string         `json:"layoutFormDate"`
 	InitialDescription      *string         `json:"initialDescription"`
 	Description             *string         `json:"description"`
@@ -84,7 +88,7 @@ func (i UpdateOrderInput) Validate() error {
 	if i.Address == nil && i.Status == nil && i.AdditionalContract == nil && i.PhotoContract == nil &&
 		i.UserId == nil && i.DesignerId == nil && i.LayoutClientDescription == nil &&
 		i.ManagerId == nil && i.Layout == nil && i.AttachmentContract == nil && i.Sections == nil &&
-		i.PhotographerId == nil && i.Number == nil && i.InitialDescription == nil &&
+		i.PhotographerId == nil && i.Number == nil && i.InitialDescription == nil && i.LayoutDate == nil && i.PreProdDate == nil &&
 		i.DesignerDescription == nil && i.Design == nil && i.DateTimes == nil && i.FormDate == nil &&
 		i.PreFormDate == nil && i.Description == nil && i.LayoutFormDate == nil && i.Tz == nil &&
 		i.LayoutCover == nil && i.YandexDisc == nil && i.PupilsMin == nil && i.PupilsMax == nil &&

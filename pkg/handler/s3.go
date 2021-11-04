@@ -7,10 +7,12 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/globalsign/mgo/bson"
+	"github.com/nfnt/resize"
 	"golang.org/x/image/draw"
 	"image"
 	"image/color"
 	"image/jpeg"
+	"log"
 	"mime/multipart"
 	"net/http"
 	"path/filepath"
@@ -77,16 +79,29 @@ func UploadResizedPhotoToS3(s *session.Session, file multipart.File, fileName st
 
 	size := fileHeader.Size
 	originalName := fileHeader.Filename
-	buffer := make([]byte, 25000)
+	buffer := make([]byte, size)
 	_, _ = file.Read(buffer)
+
+	buff := &aws.WriteAtBuffer{}
+
+	imageBytes := buff.Bytes()
+	reader := bytes.NewReader(imageBytes)
+
+	img, err := jpeg.Decode(reader)
+
+	thumbnail := resize.Thumbnail(150, 150, img, resize.Lanczos3)
+
+	log.Printf("Encoding image for upload to S3")
+	buf := new(bytes.Buffer)
+	_ = jpeg.Encode(buf, thumbnail, nil)
 
 	keyName := fileName + "_compressed" + filepath.Ext(originalName)
 
-	_, err := s3.New(s).PutObject(&s3.PutObjectInput{
+	_, err = s3.New(s).PutObject(&s3.PutObjectInput{
 		Bucket:             aws.String(AWS_S3_BUCKET),
 		Key:                aws.String(keyName),
 		ACL:                aws.String("public-read"),
-		Body:               bytes.NewReader(buffer),
+		Body:               bytes.NewReader(buf.Bytes()),
 		ContentLength:      aws.Int64(size),
 		ContentType:        aws.String(http.DetectContentType(buffer)),
 		ContentDisposition: aws.String("attachment"),

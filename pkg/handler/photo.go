@@ -115,7 +115,7 @@ func (h *Handler) createPhoto(c *gin.Context) {
 
 	var newImage image.Image
 
-	newImage = resize.Resize(uint(20000), 0, img, resize.Lanczos3)
+	newImage = resize.Resize(200, 300, img, resize.Lanczos3)
 
 	keyName, originalName, size, err := UploadPhotoToS3(s, file, fileName, header)
 	keyNameResize, err := UploadResizedPhotoToS3(s, newImage, fileName, header)

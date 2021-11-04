@@ -82,7 +82,7 @@ func UploadResizedPhotoToS3(s *session.Session, file multipart.File, fileName st
 
 	resized := compressImageResource(buffer)
 
-	keyName := fileName + filepath.Ext(originalName) + "(compressed)"
+	keyName := fileName + "_compressed_" + filepath.Ext(originalName)
 
 	_, err := s3.New(s).PutObject(&s3.PutObjectInput{
 		Bucket:             aws.String(AWS_S3_BUCKET),

@@ -7,12 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/globalsign/mgo/bson"
-	"github.com/nfnt/resize"
-	"golang.org/x/image/draw"
 	"image"
-	"image/color"
 	"image/jpeg"
-	"log"
 	"mime/multipart"
 	"net/http"
 	"path/filepath"
@@ -75,25 +71,12 @@ func UploadPhotoToS3(s *session.Session, file multipart.File, fileName string, f
 	return keyName, originalName, size, err
 }
 
-func UploadResizedPhotoToS3(s *session.Session, file multipart.File, fileName string, fileHeader *multipart.FileHeader) (string, error) {
-
-	size := fileHeader.Size
+func UploadResizedPhotoToS3(s *session.Session, file image.Image, fileName string, fileHeader *multipart.FileHeader) (string, error) {
 	originalName := fileHeader.Filename
-	buffer := make([]byte, size)
-	_, _ = file.Read(buffer)
 
-	buff := &aws.WriteAtBuffer{}
-
-	imageBytes := buff.Bytes()
-	reader := bytes.NewReader(imageBytes)
-
-	img, err := jpeg.Decode(reader)
-
-	thumbnail := resize.Thumbnail(150, 150, img, resize.Lanczos3)
-
-	log.Printf("Encoding image for upload to S3")
 	buf := new(bytes.Buffer)
-	_ = jpeg.Encode(buf, thumbnail, nil)
+	err := jpeg.Encode(buf, file, nil)
+	fileSize := buf.Len()
 
 	keyName := fileName + "_compressed" + filepath.Ext(originalName)
 
@@ -102,8 +85,8 @@ func UploadResizedPhotoToS3(s *session.Session, file multipart.File, fileName st
 		Key:                aws.String(keyName),
 		ACL:                aws.String("public-read"),
 		Body:               bytes.NewReader(buf.Bytes()),
-		ContentLength:      aws.Int64(size),
-		ContentType:        aws.String(http.DetectContentType(buffer)),
+		ContentLength:      aws.Int64(int64(fileSize)),
+		ContentType:        aws.String(http.DetectContentType(buf.Bytes())),
 		ContentDisposition: aws.String("attachment"),
 	})
 
@@ -139,24 +122,4 @@ func DeleteAllItems(s *session.Session) error {
 	}
 
 	return err
-}
-
-func compressImageResource(data []byte) []byte {
-	imgSrc, _, err := image.Decode(bytes.NewReader(data))
-	if err != nil {
-		return data
-	}
-	newImg := image.NewRGBA(imgSrc.Bounds())
-	draw.Draw(newImg, newImg.Bounds(), &image.Uniform{C: color.White}, image.Point{}, draw.Src)
-	draw.Draw(newImg, newImg.Bounds(), imgSrc, imgSrc.Bounds().Min, draw.Over)
-
-	buf := bytes.Buffer{}
-	err = jpeg.Encode(&buf, newImg, &jpeg.Options{Quality: 40})
-	if err != nil {
-		return data
-	}
-	if buf.Len() > len(data) {
-		return data
-	}
-	return buf.Bytes()
 }

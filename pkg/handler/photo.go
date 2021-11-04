@@ -5,8 +5,10 @@ import (
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/gin-gonic/gin"
+	"github.com/nfnt/resize"
 	"github.com/shooosty/rd-app/models"
 	"github.com/sirupsen/logrus"
+	"image"
 	"net/http"
 )
 
@@ -109,8 +111,14 @@ func (h *Handler) createPhoto(c *gin.Context) {
 		return
 	}
 
+	img, _, err := image.Decode(file)
+
+	var newImage image.Image
+
+	newImage = resize.Resize(uint(20000), 0, img, resize.Lanczos3)
+
 	keyName, originalName, size, err := UploadPhotoToS3(s, file, fileName, header)
-	keyNameResize, err := UploadResizedPhotoToS3(s, file, fileName, header)
+	keyNameResize, err := UploadResizedPhotoToS3(s, newImage, fileName, header)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Could not upload file")

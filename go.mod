@@ -15,4 +15,5 @@ require (
 	github.com/sirupsen/logrus v1.7.0
 	github.com/spf13/viper v1.7.1
 	github.com/swaggo/gin-swagger v1.3.0
+	golang.org/x/image v0.0.0-20190802002840-cff245a6509b
 )

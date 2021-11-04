@@ -7,6 +7,10 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/globalsign/mgo/bson"
+	"golang.org/x/image/draw"
+	"image"
+	"image/color"
+	"image/jpeg"
 	"mime/multipart"
 	"net/http"
 	"path/filepath"
@@ -69,6 +73,34 @@ func UploadPhotoToS3(s *session.Session, file multipart.File, fileName string, f
 	return keyName, originalName, size, err
 }
 
+func UploadResizedPhotoToS3(s *session.Session, file multipart.File, fileName string, fileHeader *multipart.FileHeader) (string, error) {
+
+	size := fileHeader.Size
+	originalName := fileHeader.Filename
+	buffer := make([]byte, size)
+	_, _ = file.Read(buffer)
+
+	resized := compressImageResource(buffer)
+
+	keyName := fileName + filepath.Ext(originalName) + "(compressed)"
+
+	_, err := s3.New(s).PutObject(&s3.PutObjectInput{
+		Bucket:             aws.String(AWS_S3_BUCKET),
+		Key:                aws.String(keyName),
+		ACL:                aws.String("public-read"),
+		Body:               bytes.NewReader(resized),
+		ContentLength:      aws.Int64(size),
+		ContentType:        aws.String(http.DetectContentType(buffer)),
+		ContentDisposition: aws.String("attachment"),
+	})
+
+	if err != nil {
+		return "", err
+	}
+
+	return keyName, err
+}
+
 func DeleteFileFromS3(s *session.Session, fileName string) error {
 	_, err := s3.New(s).DeleteObject(&s3.DeleteObjectInput{
 		Bucket: aws.String(AWS_S3_BUCKET),
@@ -94,4 +126,24 @@ func DeleteAllItems(s *session.Session) error {
 	}
 
 	return err
+}
+
+func compressImageResource(data []byte) []byte {
+	imgSrc, _, err := image.Decode(bytes.NewReader(data))
+	if err != nil {
+		return data
+	}
+	newImg := image.NewRGBA(imgSrc.Bounds())
+	draw.Draw(newImg, newImg.Bounds(), &image.Uniform{C: color.White}, image.Point{}, draw.Src)
+	draw.Draw(newImg, newImg.Bounds(), imgSrc, imgSrc.Bounds().Min, draw.Over)
+
+	buf := bytes.Buffer{}
+	err = jpeg.Encode(&buf, newImg, &jpeg.Options{Quality: 40})
+	if err != nil {
+		return data
+	}
+	if buf.Len() > len(data) {
+		return data
+	}
+	return buf.Bytes()
 }

@@ -111,13 +111,22 @@ func (h *Handler) createPhoto(c *gin.Context) {
 		return
 	}
 
+	keyName, originalName, size, err := UploadPhotoToS3(s, file, fileName, header)
+
 	img, _, err := image.Decode(file)
 
 	var newImage image.Image
 
-	newImage = resize.Resize(200, 300, img, resize.Lanczos3)
+	b := img.Bounds()
+	heightImg := b.Max.Y
+	widthImg := b.Max.X
 
-	keyName, originalName, size, err := UploadPhotoToS3(s, file, fileName, header)
+	// resize image
+	height := int(float64(heightImg) * .40)
+	width := int(float64(widthImg) * .40)
+
+	newImage = resize.Resize(uint(width), uint(height), img, resize.Lanczos3)
+
 	keyNameResize, err := UploadResizedPhotoToS3(s, newImage, fileName, header)
 
 	if err != nil {

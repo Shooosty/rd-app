@@ -9,6 +9,8 @@ import (
 	"github.com/shooosty/rd-app/models"
 	"github.com/sirupsen/logrus"
 	"image"
+	"image/jpeg"
+	"log"
 	"net/http"
 )
 
@@ -113,19 +115,15 @@ func (h *Handler) createPhoto(c *gin.Context) {
 
 	keyName, originalName, size, err := UploadPhotoToS3(s, file, fileName, header)
 
-	img, _, err := image.Decode(file)
+	img, err := jpeg.Decode(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+	file.Close()
 
 	var newImage image.Image
 
-	b := img.Bounds()
-	heightImg := b.Max.Y
-	widthImg := b.Max.X
-
-	// resize image
-	height := int(float64(heightImg) * .40)
-	width := int(float64(widthImg) * .40)
-
-	newImage = resize.Resize(uint(width), uint(height), img, resize.Lanczos3)
+	newImage = resize.Resize(1000, 0, img, resize.Lanczos3)
 
 	keyNameResize, err := UploadResizedPhotoToS3(s, newImage, fileName, header)
 

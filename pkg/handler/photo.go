@@ -108,18 +108,18 @@ func (h *Handler) createPhoto(c *gin.Context) {
 			""),
 	})
 
+	keyName, originalName, size, err := UploadPhotoToS3(s, file, fileName, header)
+
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Could not upload file")
 		return
 	}
 
-	keyName, originalName, size, err := UploadPhotoToS3(s, file, fileName, header)
-
 	img, err := jpeg.Decode(file)
 	if err != nil {
 		log.Fatal(err)
 	}
-	file.Close()
+	defer file.Close()
 
 	var newImage image.Image
 

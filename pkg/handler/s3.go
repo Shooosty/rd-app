@@ -7,8 +7,10 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/globalsign/mgo/bson"
+	"github.com/nfnt/resize"
 	"image"
 	"image/jpeg"
+	"log"
 	"mime/multipart"
 	"net/http"
 	"path/filepath"
@@ -71,11 +73,20 @@ func UploadPhotoToS3(s *session.Session, file multipart.File, fileName string, f
 	return keyName, originalName, size, err
 }
 
-func UploadResizedPhotoToS3(s *session.Session, file image.Image, fileName string, fileHeader *multipart.FileHeader) (string, error) {
+func UploadResizedPhotoToS3(s *session.Session, file multipart.File, fileName string, fileHeader *multipart.FileHeader) (string, error) {
 	originalName := fileHeader.Filename
 
+	img, err := jpeg.Decode(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var newImage image.Image
+
+	newImage = resize.Resize(1000, 0, img, resize.Lanczos3)
+
 	buf := new(bytes.Buffer)
-	err := jpeg.Encode(buf, file, nil)
+	err = jpeg.Encode(buf, newImage, nil)
 	fileSize := buf.Len()
 
 	keyName := fileName + "_compressed" + filepath.Ext(originalName)

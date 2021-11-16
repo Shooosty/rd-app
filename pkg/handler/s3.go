@@ -10,7 +10,6 @@ import (
 	"github.com/nfnt/resize"
 	"image"
 	"image/jpeg"
-	"log"
 	"mime/multipart"
 	"net/http"
 	"path/filepath"
@@ -76,22 +75,19 @@ func UploadPhotoToS3(s *session.Session, file multipart.File, fileName string, f
 func UploadResizedPhotoToS3(s *session.Session, file multipart.File, fileName string, fileHeader *multipart.FileHeader) (string, error) {
 	originalName := fileHeader.Filename
 
-	img, err := jpeg.Decode(file)
-	if err != nil {
-		log.Fatal(err)
-	}
+	img, _ := jpeg.Decode(file)
 
 	var newImage image.Image
 
 	newImage = resize.Resize(1000, 0, img, resize.Lanczos3)
 
 	buf := new(bytes.Buffer)
-	err = jpeg.Encode(buf, newImage, nil)
+	_ = jpeg.Encode(buf, newImage, nil)
 	fileSize := buf.Len()
 
 	keyNameResize := fileName + "_compressed" + filepath.Ext(originalName)
 
-	_, err = s3.New(s).PutObject(&s3.PutObjectInput{
+	_, err := s3.New(s).PutObject(&s3.PutObjectInput{
 		Bucket:             aws.String(AWS_S3_BUCKET),
 		Key:                aws.String(keyNameResize),
 		ACL:                aws.String("public-read"),

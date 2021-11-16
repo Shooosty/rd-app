@@ -79,7 +79,7 @@ func UploadResizedPhotoToS3(s *session.Session, file multipart.File, fileName st
 
 	var newImage image.Image
 
-	newImage = resize.Resize(1000, 0, img, resize.Lanczos3)
+	newImage = resize.Resize(900, 800, img, resize.Lanczos3)
 
 	buf := new(bytes.Buffer)
 	_ = jpeg.Encode(buf, newImage, nil)

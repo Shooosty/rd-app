@@ -89,11 +89,11 @@ func UploadResizedPhotoToS3(s *session.Session, file multipart.File, fileName st
 	err = jpeg.Encode(buf, newImage, nil)
 	fileSize := buf.Len()
 
-	keyName := fileName + "_compressed" + filepath.Ext(originalName)
+	keyNameResize := fileName + "_compressed" + filepath.Ext(originalName)
 
 	_, err = s3.New(s).PutObject(&s3.PutObjectInput{
 		Bucket:             aws.String(AWS_S3_BUCKET),
-		Key:                aws.String(keyName),
+		Key:                aws.String(keyNameResize),
 		ACL:                aws.String("public-read"),
 		Body:               bytes.NewReader(buf.Bytes()),
 		ContentLength:      aws.Int64(int64(fileSize)),
@@ -105,7 +105,7 @@ func UploadResizedPhotoToS3(s *session.Session, file multipart.File, fileName st
 		return "", err
 	}
 
-	return keyName, err
+	return keyNameResize, err
 }
 
 func DeleteFileFromS3(s *session.Session, fileName string) error {

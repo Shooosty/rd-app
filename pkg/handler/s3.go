@@ -106,7 +106,7 @@ func UploadResizedPhotoToS3(s *session.Session, file multipart.File, fileName st
 		ACL:                aws.String("public-read"),
 		Body:               bytes.NewReader(fileBytes),
 		ContentLength:      aws.Int64(int64(fileSize)),
-		ContentType:        aws.String(http.DetectContentType(buf.Bytes())),
+		ContentType:        aws.String(http.DetectContentType(fileBytes)),
 		ContentDisposition: aws.String("attachment"),
 	})
 

@@ -83,7 +83,7 @@ func compressImageResource(file multipart.File) bytes.Buffer {
 	newImage = resize.Resize(900, 800, img, resize.Lanczos3)
 
 	buf := bytes.Buffer{}
-	err = jpeg.Encode(&buf, newImage, nil)
+	err = jpeg.Encode(&buf, newImage, &jpeg.Options{Quality: 40})
 	if err != nil {
 		return bytes.Buffer{}
 	}

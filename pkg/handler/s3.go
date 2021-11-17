@@ -96,7 +96,6 @@ func UploadResizedPhotoToS3(s *session.Session, file multipart.File, fileName st
 
 	buf := compressImageResource(file)
 	fileSize := buf.Len()
-	fileBytes := buf.Bytes()
 
 	keyNameResize := fileName + "_compressed" + filepath.Ext(originalName)
 
@@ -104,9 +103,9 @@ func UploadResizedPhotoToS3(s *session.Session, file multipart.File, fileName st
 		Bucket:             aws.String(AWS_S3_BUCKET),
 		Key:                aws.String(keyNameResize),
 		ACL:                aws.String("public-read"),
-		Body:               bytes.NewReader(fileBytes),
+		Body:               bytes.NewReader(buf.Bytes()),
 		ContentLength:      aws.Int64(int64(fileSize)),
-		ContentType:        aws.String(http.DetectContentType(fileBytes)),
+		ContentType:        aws.String(http.DetectContentType(buf.Bytes())),
 		ContentDisposition: aws.String("attachment"),
 	})
 

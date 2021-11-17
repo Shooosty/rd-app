@@ -73,7 +73,7 @@ func UploadPhotoToS3(s *session.Session, file multipart.File, fileName string, f
 	return keyName, originalName, size, err
 }
 
-func compressImageResource(file multipart.File) bytes.Buffer {
+func compressImageResource(file multipart.File) *bytes.Buffer {
 	var img image.Image
 	var newImage image.Image
 
@@ -84,13 +84,12 @@ func compressImageResource(file multipart.File) bytes.Buffer {
 	}
 	file.Close()
 
-	newImage = resize.Resize(900, 800, img, resize.Lanczos3)
+	newImage = resize.Resize(1000, 0, img, resize.Lanczos3)
 
-	buf := bytes.Buffer{}
-	err = jpeg.Encode(&buf, newImage, &jpeg.Options{Quality: 40})
-	if err != nil {
-		return bytes.Buffer{}
-	}
+	buf := new(bytes.Buffer)
+
+	// write new image to file
+	err = jpeg.Encode(buf, newImage, nil)
 
 	return buf
 }
@@ -100,6 +99,7 @@ func UploadResizedPhotoToS3(s *session.Session, file multipart.File, fileName st
 
 	buf := compressImageResource(file)
 	fileSize := buf.Len()
+	fileBytes := buf.Bytes()
 
 	keyNameResize := fileName + "_compressed" + filepath.Ext(originalName)
 
@@ -107,9 +107,9 @@ func UploadResizedPhotoToS3(s *session.Session, file multipart.File, fileName st
 		Bucket:             aws.String(AWS_S3_BUCKET),
 		Key:                aws.String(keyNameResize),
 		ACL:                aws.String("public-read"),
-		Body:               bytes.NewReader(buf.Bytes()),
+		Body:               bytes.NewReader(fileBytes),
 		ContentLength:      aws.Int64(int64(fileSize)),
-		ContentType:        aws.String(http.DetectContentType(buf.Bytes())),
+		ContentType:        aws.String(http.DetectContentType(fileBytes)),
 		ContentDisposition: aws.String("attachment"),
 	})
 

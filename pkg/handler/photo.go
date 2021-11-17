@@ -96,30 +96,14 @@ func (h *Handler) createPhoto(c *gin.Context) {
 	}
 	defer file.Close()
 
-	s, err := session.NewSession(&aws.Config{
-		Region: aws.String(AWS_S3_REGION),
-		Credentials: credentials.NewStaticCredentials(
-			"AKIAZ4EXIBF2T6T7UB64",
-			"qqBiCHLMG7Nn9rGaIueZwnNxyBwiOGMw0AdK0UUn",
-			""),
-	})
-
-	keyName, originalName, size, err := UploadPhotoToS3(s, file, fileName, header)
+	keyName, originalName, size, err := UploadPhotoToS3(file, fileName, header)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Could not upload file")
 		return
 	}
 
-	sr, err := session.NewSession(&aws.Config{
-		Region: aws.String(AWS_S3_REGION),
-		Credentials: credentials.NewStaticCredentials(
-			"AKIAZ4EXIBF2T6T7UB64",
-			"qqBiCHLMG7Nn9rGaIueZwnNxyBwiOGMw0AdK0UUn",
-			""),
-	})
-
-	keyNameResize, err := UploadResizedPhotoToS3(sr, file, fileName, header)
+	keyNameResize, err := UploadResizedPhotoToS3(file, fileName, header)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Could not upload file")

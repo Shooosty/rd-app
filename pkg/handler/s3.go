@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
@@ -47,7 +48,14 @@ func UploadFileToS3(s *session.Session, file multipart.File, fileHeader *multipa
 	return tempFileName, originalName, size, err
 }
 
-func UploadPhotoToS3(s *session.Session, file multipart.File, fileName string, fileHeader *multipart.FileHeader) (string, string, int64, error) {
+func UploadPhotoToS3(file multipart.File, fileName string, fileHeader *multipart.FileHeader) (string, string, int64, error) {
+	s, err := session.NewSession(&aws.Config{
+		Region: aws.String(AWS_S3_REGION),
+		Credentials: credentials.NewStaticCredentials(
+			"AKIAZ4EXIBF2T6T7UB64",
+			"qqBiCHLMG7Nn9rGaIueZwnNxyBwiOGMw0AdK0UUn",
+			""),
+	})
 
 	size := fileHeader.Size
 	originalName := fileHeader.Filename
@@ -56,7 +64,7 @@ func UploadPhotoToS3(s *session.Session, file multipart.File, fileName string, f
 
 	keyName := fileName + filepath.Ext(originalName)
 
-	_, err := s3.New(s).PutObject(&s3.PutObjectInput{
+	_, err = s3.New(s).PutObject(&s3.PutObjectInput{
 		Bucket:             aws.String(AWS_S3_BUCKET),
 		Key:                aws.String(keyName),
 		ACL:                aws.String("public-read"),
@@ -87,7 +95,15 @@ func CompressImageResource(file multipart.File) image.Image {
 	return newImage
 }
 
-func UploadResizedPhotoToS3(s *session.Session, file multipart.File, fileName string, fileHeader *multipart.FileHeader) (string, error) {
+func UploadResizedPhotoToS3(file multipart.File, fileName string, fileHeader *multipart.FileHeader) (string, error) {
+	s, err := session.NewSession(&aws.Config{
+		Region: aws.String(AWS_S3_REGION),
+		Credentials: credentials.NewStaticCredentials(
+			"AKIAZ4EXIBF2T6T7UB64",
+			"qqBiCHLMG7Nn9rGaIueZwnNxyBwiOGMw0AdK0UUn",
+			""),
+	})
+
 	originalName := fileHeader.Filename
 
 	img := CompressImageResource(file)
@@ -101,7 +117,7 @@ func UploadResizedPhotoToS3(s *session.Session, file multipart.File, fileName st
 
 	keyNameResize := fileName + "_compressed" + filepath.Ext(originalName)
 
-	_, err := s3.New(s).PutObject(&s3.PutObjectInput{
+	_, err = s3.New(s).PutObject(&s3.PutObjectInput{
 		Bucket:             aws.String(AWS_S3_BUCKET),
 		Key:                aws.String(keyNameResize),
 		ACL:                aws.String("public-read"),

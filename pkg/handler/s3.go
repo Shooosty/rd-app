@@ -74,6 +74,7 @@ func UploadPhotoToS3(s *session.Session, file multipart.File, fileName string, f
 }
 
 func compressImageResource(file multipart.File) bytes.Buffer {
+	var img image.Image
 	var newImage image.Image
 
 	// decode jpeg into image.Image

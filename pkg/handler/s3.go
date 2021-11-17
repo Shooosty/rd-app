@@ -10,6 +10,7 @@ import (
 	"github.com/nfnt/resize"
 	"image"
 	"image/jpeg"
+	"log"
 	"mime/multipart"
 	"net/http"
 	"path/filepath"
@@ -73,12 +74,14 @@ func UploadPhotoToS3(s *session.Session, file multipart.File, fileName string, f
 }
 
 func compressImageResource(file multipart.File) bytes.Buffer {
+	var newImage image.Image
+
+	// decode jpeg into image.Image
 	img, err := jpeg.Decode(file)
 	if err != nil {
-		return bytes.Buffer{}
+		log.Fatal(err)
 	}
-
-	var newImage image.Image
+	file.Close()
 
 	newImage = resize.Resize(900, 800, img, resize.Lanczos3)
 

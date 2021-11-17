@@ -48,7 +48,7 @@ func UploadFileToS3(s *session.Session, file multipart.File, fileHeader *multipa
 	return tempFileName, originalName, size, err
 }
 
-func UploadPhotoToS3(file multipart.File, fileName string, fileHeader *multipart.FileHeader) (string, string, int64, error) {
+func UploadPhotosToS3(file multipart.File, fileName string, fileHeader *multipart.FileHeader) (string, string, string, int64, error) {
 	s, err := session.NewSession(&aws.Config{
 		Region: aws.String(AWS_S3_REGION),
 		Credentials: credentials.NewStaticCredentials(
@@ -75,10 +75,12 @@ func UploadPhotoToS3(file multipart.File, fileName string, fileHeader *multipart
 	})
 
 	if err != nil {
-		return "", "", 0, err
+		return "", "", "", 0, err
 	}
 
-	return keyName, originalName, size, err
+	keyNameResize, err := UploadResizedPhotoToS3(file, fileName, fileHeader)
+
+	return keyName, keyNameResize, originalName, size, err
 }
 
 func CompressImageResource(file multipart.File) image.Image {

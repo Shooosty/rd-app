@@ -96,15 +96,9 @@ func (h *Handler) createPhoto(c *gin.Context) {
 	}
 	defer file.Close()
 
-	keyName, originalName, size, err := UploadPhotoToS3(file, fileName, header)
-	keyNameResize, err2 := UploadResizedPhotoToS3(file, fileName, header)
+	keyName, keyNameResize, originalName, size, err := UploadPhotosToS3(file, fileName, header)
 
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "Could not upload file")
-		return
-	}
-
-	if err2 != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Could not upload file")
 		return
 	}

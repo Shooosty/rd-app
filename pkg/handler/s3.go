@@ -90,7 +90,7 @@ func CompressImageResource(file multipart.File) image.Image {
 		fmt.Println("failed to create img", err)
 	}
 
-	newImage = resize.Resize(600, 800, img, resize.Lanczos3)
+	newImage = resize.Resize(1000, 0, img, resize.Lanczos3)
 
 	return newImage
 }

@@ -73,7 +73,7 @@ func UploadPhotoToS3(s *session.Session, file multipart.File, fileName string, f
 	return keyName, originalName, size, err
 }
 
-func compressImageResource(file multipart.File) *bytes.Buffer {
+func CompressImageResource(file multipart.File) *bytes.Buffer {
 	var img image.Image
 	var newImage image.Image
 
@@ -97,7 +97,7 @@ func compressImageResource(file multipart.File) *bytes.Buffer {
 func UploadResizedPhotoToS3(s *session.Session, file multipart.File, fileName string, fileHeader *multipart.FileHeader) (string, error) {
 	originalName := fileHeader.Filename
 
-	buf := compressImageResource(file)
+	buf := CompressImageResource(file)
 	fileSize := buf.Len()
 	fileBytes := buf.Bytes()
 

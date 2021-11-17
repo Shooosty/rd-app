@@ -84,7 +84,7 @@ func CompressImageResource(file multipart.File) bytes.Buffer {
 	}
 	file.Close()
 
-	newImage = resize.Resize(1000, 0, img, resize.Lanczos3)
+	newImage = resize.Resize(1000, 800, img, resize.Lanczos3)
 
 	buf := bytes.Buffer{}
 

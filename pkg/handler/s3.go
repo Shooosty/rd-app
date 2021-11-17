@@ -73,7 +73,7 @@ func UploadPhotoToS3(s *session.Session, file multipart.File, fileName string, f
 	return keyName, originalName, size, err
 }
 
-func CompressImageResource(file multipart.File) *bytes.Buffer {
+func CompressImageResource(file multipart.File) bytes.Buffer {
 	var img image.Image
 	var newImage image.Image
 
@@ -86,10 +86,10 @@ func CompressImageResource(file multipart.File) *bytes.Buffer {
 
 	newImage = resize.Resize(1000, 0, img, resize.Lanczos3)
 
-	buf := new(bytes.Buffer)
+	buf := bytes.Buffer{}
 
 	// write new image to file
-	err = jpeg.Encode(buf, newImage, nil)
+	err = jpeg.Encode(&buf, newImage, nil)
 
 	return buf
 }

@@ -57,6 +57,14 @@ func UploadPhotosToS3(file multipart.File, fileName string, fileHeader *multipar
 			""),
 	})
 
+	sr, err := session.NewSession(&aws.Config{
+		Region: aws.String(AWS_S3_REGION),
+		Credentials: credentials.NewStaticCredentials(
+			"AKIAZ4EXIBF2T6T7UB64",
+			"qqBiCHLMG7Nn9rGaIueZwnNxyBwiOGMw0AdK0UUn",
+			""),
+	})
+
 	size := fileHeader.Size
 	originalName := fileHeader.Filename
 	buffer := make([]byte, size)
@@ -74,11 +82,30 @@ func UploadPhotosToS3(file multipart.File, fileName string, fileHeader *multipar
 		ContentDisposition: aws.String("attachment"),
 	})
 
-	if err != nil {
+	img := CompressImageResource(file)
+
+	// encode image to buffer
+	buf := bytes.Buffer{}
+	_ = jpeg.Encode(&buf, img, nil)
+
+	fileSize := buf.Len()
+	fileBytes := buf.Bytes()
+
+	keyNameResize := fileName + "_compressed" + filepath.Ext(originalName)
+
+	_, err2 := s3.New(sr).PutObject(&s3.PutObjectInput{
+		Bucket:             aws.String(AWS_S3_BUCKET),
+		Key:                aws.String(keyNameResize),
+		ACL:                aws.String("public-read"),
+		Body:               bytes.NewReader(fileBytes),
+		ContentLength:      aws.Int64(int64(fileSize)),
+		ContentType:        aws.String(http.DetectContentType(fileBytes)),
+		ContentDisposition: aws.String("attachment"),
+	})
+
+	if err2 != nil {
 		return "", "", "", 0, err
 	}
-
-	keyNameResize, err := UploadResizedPhotoToS3(s, file, fileName, fileHeader)
 
 	return keyName, keyNameResize, originalName, size, err
 }

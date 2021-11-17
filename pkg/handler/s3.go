@@ -78,7 +78,7 @@ func UploadPhotosToS3(file multipart.File, fileName string, fileHeader *multipar
 		return "", "", "", 0, err
 	}
 
-	keyNameResize, err := UploadResizedPhotoToS3(file, fileName, fileHeader)
+	keyNameResize, err := UploadResizedPhotoToS3(s, file, fileName, fileHeader)
 
 	return keyName, keyNameResize, originalName, size, err
 }
@@ -97,15 +97,7 @@ func CompressImageResource(file multipart.File) image.Image {
 	return newImage
 }
 
-func UploadResizedPhotoToS3(file multipart.File, fileName string, fileHeader *multipart.FileHeader) (string, error) {
-	s, err := session.NewSession(&aws.Config{
-		Region: aws.String(AWS_S3_REGION),
-		Credentials: credentials.NewStaticCredentials(
-			"AKIAZ4EXIBF2T6T7UB64",
-			"qqBiCHLMG7Nn9rGaIueZwnNxyBwiOGMw0AdK0UUn",
-			""),
-	})
-
+func UploadResizedPhotoToS3(s *session.Session, file multipart.File, fileName string, fileHeader *multipart.FileHeader) (string, error) {
 	originalName := fileHeader.Filename
 
 	img := CompressImageResource(file)
@@ -119,7 +111,7 @@ func UploadResizedPhotoToS3(file multipart.File, fileName string, fileHeader *mu
 
 	keyNameResize := fileName + "_compressed" + filepath.Ext(originalName)
 
-	_, err = s3.New(s).PutObject(&s3.PutObjectInput{
+	_, err := s3.New(s).PutObject(&s3.PutObjectInput{
 		Bucket:             aws.String(AWS_S3_BUCKET),
 		Key:                aws.String(keyNameResize),
 		ACL:                aws.String("public-read"),

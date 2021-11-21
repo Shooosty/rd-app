@@ -88,22 +88,29 @@ func (h *Handler) createPhoto(c *gin.Context) {
 		logrus.Print("Image size is ok")
 	}
 
-	file, header, err := c.Request.FormFile("file")
+	file1, header, err := c.Request.FormFile("file")
+	file2, header, err := c.Request.FormFile("file")
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Could not get uploaded file")
 		return
 	}
-	defer file.Close()
+	defer file1.Close()
 
-	keyName, originalName, size, err := UploadPhotoToS3(file, fileName, header)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "Could not get uploaded file")
+		return
+	}
+	defer file2.Close()
+
+	keyName, originalName, size, err := UploadPhotoToS3(file1, fileName, header)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Could not upload file")
 		return
 	}
 
-	keyNameResize, err := UploadResizedPhotoToS3(file, fileName, header)
+	keyNameResize, err := UploadResizedPhotoToS3(file2, fileName, header)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Could not upload file")
